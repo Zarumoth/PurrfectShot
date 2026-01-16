@@ -15,5 +15,12 @@
         public virtual DbSet<Photo> Photos { get; set; } = null!;
 
         public virtual DbSet<Vote> Votes { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PurrfectShotDbContext).Assembly);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

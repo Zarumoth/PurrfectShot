@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PurrfectShot.Web.Data;
 
@@ -11,9 +12,11 @@ using PurrfectShot.Web.Data;
 namespace PurrfectShot.Web.Migrations
 {
     [DbContext(typeof(PurrfectShotDbContext))]
-    partial class PurrfectShotDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260116193218_SeedCats")]
+    partial class SeedCats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
