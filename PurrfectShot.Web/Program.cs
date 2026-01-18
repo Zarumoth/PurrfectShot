@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PurrfectShot.Web.Data;
+using PurrfectShot.Web.Services;
+using PurrfectShot.Web.Services.Interfaces;
 
 namespace PurrfectShot.Web
 {
@@ -19,6 +21,7 @@ namespace PurrfectShot.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<ICatService, CatService>();
 
             var app = builder.Build();
 
