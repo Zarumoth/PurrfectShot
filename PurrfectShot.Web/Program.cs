@@ -22,6 +22,7 @@ namespace PurrfectShot.Web
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<ICatService, CatService>();
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
 
             var app = builder.Build();
 

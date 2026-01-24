@@ -1,0 +1,46 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Web.ViewModels.Photos;
+
+namespace PurrfectShot.Web.Controllers
+{
+    public class PhotosController : Controller
+    {
+        private readonly IPhotoService _photoService;
+        private readonly ICatService _catService;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public PhotosController(
+            IPhotoService photoService,
+            ICatService catService,
+            IWebHostEnvironment webHostEnvironment)
+        {
+            _photoService = photoService;
+            _catService = catService;
+            _webHostEnvironment = webHostEnvironment;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Upload()
+        {
+            var model = new PhotoUploadViewModel();
+            model.Cats = await _catService.GetAllCatsForSelectAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(PhotoUploadViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Cats = await _catService.GetAllCatsForSelectAsync();
+                return View(model);
+            }
+
+            string wwwrootPath = _webHostEnvironment.WebRootPath;
+            await _photoService.UploadPhotoAsync(model, wwwrootPath);
+            return RedirectToAction("Index", "Home");
+        }
+    }
+}

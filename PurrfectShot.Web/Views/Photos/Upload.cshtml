@@ -1,0 +1,48 @@
+﻿@model PurrfectShot.Web.ViewModels.Photos.PhotoUploadViewModel
+
+@{
+    ViewData["Title"] = "Качи Снимка";
+}
+
+<h2 class="text-center">@ViewData["Title"] 📸</h2>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="Upload" method="post" enctype="multipart/form-data">
+
+            <div class="form-group mb-3">
+                <label asp-for="CatId" class="form-label">Избери Котка</label>
+                <select asp-for="CatId" class="form-select">
+                    <option value="">-- Избери коте --</option>
+                    @if (Model.Cats != null)
+                    {
+                        foreach (var cat in Model.Cats)
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CatId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ImageFile" class="form-label">Снимка</label>
+                <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Caption" class="form-label">Описание</label>
+                <textarea asp-for="Caption" class="form-control" rows="2" placeholder="Какво прави котето?"></textarea>
+                <span asp-validation-for="Caption" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Качи Снимката 🚀</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
