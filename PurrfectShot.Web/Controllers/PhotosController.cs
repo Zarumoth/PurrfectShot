@@ -42,5 +42,18 @@ namespace PurrfectShot.Web.Controllers
             await _photoService.UploadPhotoAsync(model, wwwrootPath);
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var photoDetails = await _photoService.GetPhotoDetailsAsync(id);
+
+            if (photoDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(photoDetails);
+        }
     }
 }

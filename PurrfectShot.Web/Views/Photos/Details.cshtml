@@ -1,0 +1,33 @@
+﻿@model PurrfectShot.Web.ViewModels.Photos.PhotoDetailsViewModel
+
+@{
+    ViewData["Title"] = $"Снимка на {Model.CatName}";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="row g-0">
+            <div class="col-md-8 bg-light text-center">
+                <img src="@Model.ImageUrl" class="img-fluid" style="max-height: 600px; object-fit: contain;" alt="@Model.Caption">
+            </div>
+
+            <div class="col-md-4">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">@Model.CatName</h2>
+                    <h6 class="text-muted">@Model.CatBreed</h6>
+                    <hr />
+
+                    <p class="card-text fs-5">"@Model.Caption"</p>
+                    <p class="text-muted"><small>Качена на: @Model.UploadedOn</small></p>
+
+                    <div class="alert alert-info text-center">
+                        <h1>⭐ @Model.Rating.ToString("F1")</h1>
+                        <small>(@Model.VotesCount гласа)</small>
+                    </div>
+
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-100 mt-3">⬅️ Обратно към Галерията</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

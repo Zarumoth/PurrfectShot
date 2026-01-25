@@ -1,4 +1,5 @@
-﻿using PurrfectShot.Web.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PurrfectShot.Web.Data;
 using PurrfectShot.Web.Models;
 using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels.Photos;
@@ -49,6 +50,33 @@ namespace PurrfectShot.Web.Services
 
             await _dbContext.Photos.AddAsync(photo);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(int photoId)
+        {
+            var photo = await _dbContext
+                .Photos
+                .Include(p => p.Cat)
+                .Include(p => p.Votes)
+                .SingleOrDefaultAsync(p => p.Id == photoId);
+
+            if (photo == null)
+            {
+                return null;
+            }
+
+            return new PhotoDetailsViewModel
+            {
+                Id = photo.Id,
+                ImageUrl = photo.FilePath,
+                Caption = photo.Caption,
+                UploadedOn = photo.DateUploaded.ToString("MMMM dd, yyyy"),
+                CatId = photo.Cat.Id,
+                CatName = photo.Cat.Name,
+                CatBreed = photo.Cat.Breed,
+                Rating = photo.Votes.Any() ? photo.Votes.Average(v => v.Stars) : 0.0,
+                VotesCount = photo.Votes.Count
+            };
         }
     }
 }
