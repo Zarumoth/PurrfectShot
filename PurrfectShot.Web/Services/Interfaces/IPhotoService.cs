@@ -1,4 +1,5 @@
 ﻿using PurrfectShot.Web.ViewModels.Photos;
+using PurrfectShot.Web.ViewModels.Votes;
 
 namespace PurrfectShot.Web.Services.Interfaces
 {
@@ -7,5 +8,7 @@ namespace PurrfectShot.Web.Services.Interfaces
         Task UploadPhotoAsync(PhotoUploadViewModel model, string wwwrootPath);
 
         Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(int photoId);
+
+        Task VoteForPhotoAsync(VoteViewModel model);
     }
 }

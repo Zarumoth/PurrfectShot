@@ -18,7 +18,6 @@
 
 
         //Rating Info
-        //TODO: Implement rating system
 
         public double Rating { get; set; }
         public int VotesCount { get; set; }

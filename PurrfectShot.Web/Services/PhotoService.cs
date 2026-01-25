@@ -3,6 +3,7 @@ using PurrfectShot.Web.Data;
 using PurrfectShot.Web.Models;
 using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels.Photos;
+using PurrfectShot.Web.ViewModels.Votes;
 
 namespace PurrfectShot.Web.Services
 {
@@ -77,6 +78,22 @@ namespace PurrfectShot.Web.Services
                 Rating = photo.Votes.Any() ? photo.Votes.Average(v => v.Stars) : 0.0,
                 VotesCount = photo.Votes.Count
             };
+        }
+
+        //Notes:
+        //> We don't have a vote limit implemented (no user accounts)
+        //> To think if we want to track vote timestamps (is this even useful?)
+        public async Task VoteForPhotoAsync(VoteViewModel model)
+        {
+            var vote = new Vote
+            {
+                PhotoId = model.PhotoId,
+                Stars = model.Stars,
+                VoterName = model.VoterName,
+            };
+
+            await _dbContext.Votes.AddAsync(vote);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

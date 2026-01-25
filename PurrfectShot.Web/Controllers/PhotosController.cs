@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels.Photos;
+using PurrfectShot.Web.ViewModels.Votes;
 
 namespace PurrfectShot.Web.Controllers
 {
@@ -54,6 +55,18 @@ namespace PurrfectShot.Web.Controllers
             }
 
             return View(photoDetails);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Vote(VoteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Details", new { id = model.PhotoId });
+            }
+
+            await _photoService.VoteForPhotoAsync(model);
+            return RedirectToAction("Details", new { id = model.PhotoId });
         }
     }
 }

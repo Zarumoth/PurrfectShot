@@ -20,3 +20,34 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Used for Cat Rating Stars */
+.star-rating-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stars-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.star-shape {
+    font-size: 3rem;
+    line-height: 1;
+    font-weight: 900;
+    cursor: default;
+    -webkit-text-stroke: 3px black;
+    paint-order: stroke fill;
+}
+
+.star-filled {
+    color: #ffd700; /*#ffc107*/
+}
+
+.star-empty {
+    color: #e9ecef;
+}

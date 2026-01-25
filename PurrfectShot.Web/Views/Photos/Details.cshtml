@@ -7,10 +7,12 @@
 <div class="container mt-4">
     <div class="card shadow-lg">
         <div class="row g-0">
+            <!-- Left Side - Picture -->
             <div class="col-md-8 bg-light text-center">
                 <img src="@Model.ImageUrl" class="img-fluid" style="max-height: 600px; object-fit: contain;" alt="@Model.Caption">
             </div>
 
+            <!-- Right Side - Info -->
             <div class="col-md-4">
                 <div class="card-body">
                     <h2 class="card-title text-primary">@Model.CatName</h2>
@@ -21,8 +23,56 @@
                     <p class="text-muted"><small>Качена на: @Model.UploadedOn</small></p>
 
                     <div class="alert alert-info text-center">
-                        <h1>⭐ @Model.Rating.ToString("F1")</h1>
-                        <small>(@Model.VotesCount гласа)</small>
+                        <h2 class="fw-bold mb-3">@Model.Rating.ToString("F1") / 5.0</h2>
+
+                        <div class="star-rating-container">
+                            <div class="stars-row">
+                                @{
+                                    int fullStars = (int)Math.Round(Model.Rating, MidpointRounding.AwayFromZero);
+                                    int emptyStars = 5 - fullStars;
+                                }
+
+                                @for (int i = 0; i < fullStars; i++)
+                                {
+                                    <span class="star-shape star-filled">★</span>
+                                }
+                                @for (int i = 0; i < emptyStars; i++)
+                                {
+                                    <span class="star-shape star-empty">★</span>
+                                }
+                            </div>
+
+                            <small class="text-muted fw-bold">(@Model.VotesCount гласа)</small>
+                        </div>
+                    </div>
+
+                    <!-- Vote Form -->
+                    <div class="card mt-3 border-primary">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Оцени @Model.CatName!</h5>
+
+                            <form asp-action="Vote" method="post">
+                                <input type="hidden" name="PhotoId" value="@Model.Id" />
+
+                                <div class="mb-3">
+                                    <label class="form-label">Звездички:</label>
+                                    <select name="Stars" class="form-select">
+                                        <option value="5">⭐⭐⭐⭐⭐ (5) - Супер-Мяу!</option>
+                                        <option value="4">⭐⭐⭐⭐ (4) - Браво-Мяу</option>
+                                        <option value="3">⭐⭐⭐ (3) - Бива-Мяу</option>
+                                        <option value="2">⭐⭐ (2) - Слабо-Мяу</option>
+                                        <option value="1">⭐ (1) - Мяу...</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Твоето име:</label>
+                                    <input type="text" name="VoterName" class="form-control" placeholder="Анонимен Коте-Фен" required minlength="2" />
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Гласувай! 🗳️</button>
+                            </form>
+                        </div>
                     </div>
 
                     <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-100 mt-3">⬅️ Обратно към Галерията</a>
