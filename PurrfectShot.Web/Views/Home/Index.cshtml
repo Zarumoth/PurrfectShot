@@ -1,8 +1,57 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model PurrfectShot.Web.ViewModels.Home.HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Начало";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- HERO -->
+<div class="p-5 mb-4 bg-light rounded-3 shadow-sm text-center">
+    <h1 class="display-4 fw-bold text-primary">Purrfect Shot</h1>
+    <p class="fs-4 text-muted">
+        Официалният календар на домашните ни любимци.
+        Качвай, гласувай и създавай история!
+    </p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+        <a asp-controller="Photos" asp-action="Upload" class="btn btn-primary btn-lg px-4 gap-3">
+            📷 Качи Снимка
+        </a>
+        <!-- TODO: Calendar not yet Implemented -->
+        <a asp-controller="Calendar" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">
+            📅 Виж Календара
+        </a>
+    </div>
+</div>
+
+<!-- Profiles -->
+<div class="container mb-5">
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            <h2 class="text-secondary fw-bold">Прайда</h2>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        @foreach (var cat in Model.FeaturedCats)
+        {
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm text-center hover-effect">
+                    <div class="mt-4 mx-auto" style="width: 120px; height: 120px;">
+                        <img src="@(cat.ProfileImageUrl ?? "https://via.placeholder.com/150?text=No+Photo")"
+                             class="rounded-circle border border-3 border-white shadow"
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             alt="@cat.Name">
+                    </div>
+                    <!-- TODO: Individual Profiles not yet Implemented -->
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@cat.Name</h5>
+                        <p class="text-muted small">@cat.Breed</p>
+                        <a asp-controller="Cats" asp-action="Details" asp-route-id="@cat.Id"
+                           class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                            Виж Профил
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

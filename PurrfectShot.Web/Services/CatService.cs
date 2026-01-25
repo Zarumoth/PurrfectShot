@@ -3,6 +3,7 @@ using PurrfectShot.Web.Data;
 using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels.Cats;
 using PurrfectShot.Web.Models;
+using PurrfectShot.Web.ViewModels.Home;
 
 namespace PurrfectShot.Web.Services
 {
@@ -38,6 +39,24 @@ namespace PurrfectShot.Web.Services
 
             await _dbContext.Cats.AddAsync(cat);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<CatCardViewModel>> GetFeaturedCatsAsync()
+        {
+            return await _dbContext
+                .Cats
+                .AsNoTracking()
+                .Select(c => new CatCardViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Breed = c.Breed,
+                    ProfileImageUrl = c.Photos
+                        .OrderByDescending(p => p.DateUploaded)
+                        .Select(p => p.FilePath)
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
         }
     }
 }

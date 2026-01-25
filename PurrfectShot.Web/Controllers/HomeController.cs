@@ -1,26 +1,28 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels;
+using PurrfectShot.Web.ViewModels.Home;
+using System.Diagnostics;
 
 namespace PurrfectShot.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ICatService _catService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ICatService catService)
         {
-            _logger = logger;
+            _catService = catService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            var model = new HomeIndexViewModel
+            {
+                FeaturedCats = await _catService.GetFeaturedCatsAsync()
+            };
 
-        public IActionResult Privacy()
-        {
-            return View();
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
