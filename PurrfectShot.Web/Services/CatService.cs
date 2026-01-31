@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PurrfectShot.Web.Data;
+using PurrfectShot.Web.Models;
 using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels.Cats;
-using PurrfectShot.Web.Models;
 using PurrfectShot.Web.ViewModels.Home;
+using PurrfectShot.Web.ViewModels.Photos;
 
 namespace PurrfectShot.Web.Services
 {
@@ -28,7 +29,7 @@ namespace PurrfectShot.Web.Services
                 .ToListAsync();
         }
 
-        public async Task AddCatAsync(CatFormViewModel model)
+        public async Task<int> AddCatAsync(CatFormViewModel model)
         {
             var cat = new Cat
             {
@@ -39,6 +40,7 @@ namespace PurrfectShot.Web.Services
 
             await _dbContext.Cats.AddAsync(cat);
             await _dbContext.SaveChangesAsync();
+            return cat.Id;
         }
 
         public async Task<IEnumerable<CatCardViewModel>> GetFeaturedCatsAsync()
@@ -57,6 +59,37 @@ namespace PurrfectShot.Web.Services
                         .FirstOrDefault()
                 })
                 .ToListAsync();
+        }
+
+        public async Task<CatDetailsViewModel?> GetCatDetailsAsync(int id)
+        {
+            return await _dbContext
+                .Cats
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Select(c => new CatDetailsViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Breed = c.Breed,
+                    Description = c.Description,
+                    Photos = c.Photos
+                        .Select(p => new CatPhotoViewModel
+                        {
+                            Id = p.Id,
+                            ImageUrl = p.FilePath,
+                            Rating = p.Votes.Any()
+                                ? p.Votes.Average(v => v.Stars)
+                                : 0,
+                            DateUploaded = p.DateUploaded
+                        })
+                        .OrderByDescending(p => p.Id)
+                        .ToList(),
+                    OverallRating = c.Photos.SelectMany(p => p.Votes).Any()
+                        ? c.Photos.SelectMany(p => p.Votes).Average(v => v.Stars)
+                        : 0
+                })
+                .FirstOrDefaultAsync();
         }
     }
 }

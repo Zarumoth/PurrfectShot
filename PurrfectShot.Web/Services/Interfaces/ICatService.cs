@@ -1,5 +1,6 @@
 ﻿using PurrfectShot.Web.ViewModels.Cats;
 using PurrfectShot.Web.ViewModels.Home;
+using PurrfectShot.Web.ViewModels.Photos;
 
 namespace PurrfectShot.Web.Services.Interfaces
 {
@@ -7,8 +8,10 @@ namespace PurrfectShot.Web.Services.Interfaces
     {
         Task<IEnumerable<CatSelectViewModel>> GetAllCatsForSelectAsync();
 
-        Task AddCatAsync(CatFormViewModel model);
+        Task<int> AddCatAsync(CatFormViewModel model);
 
         Task<IEnumerable<CatCardViewModel>> GetFeaturedCatsAsync();
+
+        Task<CatDetailsViewModel?> GetCatDetailsAsync(int id);
     }
 }

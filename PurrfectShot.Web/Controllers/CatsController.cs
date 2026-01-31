@@ -28,10 +28,19 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
-            await _catService.AddCatAsync(model);
+            int catId = await _catService.AddCatAsync(model);
+            return RedirectToAction(nameof(Details), new { id = catId });
+        }
 
-            // TODO: Redirect to the cat details page after implementing it
-            return RedirectToAction("Index", "Home");
+        public async Task<IActionResult> Details(int id)
+        {
+            var catDetails = await _catService.GetCatDetailsAsync(id);
+            if (catDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(catDetails);
         }
 
     }
