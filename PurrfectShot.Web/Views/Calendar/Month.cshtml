@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PurrfectShot.Web.ViewModels.Photos.PhotoByMonthViewModel>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-primary fw-bold">@ViewData["Title"]</h1>
+        <a asp-action="Index" class="btn btn-outline-secondary">Обратно към Календара</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-light text-center shadow-sm">
+            <p class="lead mb-0">Няма качени снимки за този месец 😿</p>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var photo in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm hover-effect border-0">
+                        <a asp-controller="Photos" asp-action="Details" asp-route-id="@photo.Id" class="text-decoration-none text-dark">
+                            <div class="position-relative overflow-hidden" style="height: 250px;">
+                                <img src="@photo.FilePath" class="card-img-top"
+                                     style="width: 100%; height: 100%; object-fit: cover;"
+                                     alt="Снимка на @photo.CatName">
+
+                                <div class="position-absolute bottom-0 end-0 p-2">
+                                    <span class="badge bg-warning text-dark shadow-sm fs-6">
+                                        ⭐ @photo.Rating.ToString("F1")
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="card-body text-center">
+                                <h5 class="fw-bold">@photo.CatName</h5>
+                                <p class="text-muted small">Качено на: @photo.DateUploaded.ToString("dd MMM")</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

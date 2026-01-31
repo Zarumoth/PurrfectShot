@@ -27,30 +27,33 @@ else
         @foreach (var month in Model)
         {
             <div class="col">
-                <div class="card h-100 shadow border-0 hover-effect position-relative">
+                <div class="card h-100 border-0 shadow-sm calendar-card position-relative overflow-hidden">
 
-                    <div style="height: 200px; overflow: hidden;">
-                        <img src="@month.CoverImageUrl" class="card-img-top"
-                             style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.95);"
-                             alt="Корица за @month.MonthName">
+                    <div class="calendar-img-container">
+                        <img src="@month.CoverImageUrl" class="card-img"
+                             style="height: 300px; object-fit: cover; object-position: center;"
+                             alt="@month.MonthName">
 
-                        <span class="position-absolute top-0 end-0 badge bg-primary m-2 shadow-sm fs-6">
-                            📷 @month.PhotoCount
-                        </span>
+                        <div class="calendar-overlay"></div>
+
+                        <div class="calendar-content">
+                            <span class="badge bg-primary mb-2">📷 @month.PhotoCount снимки</span>
+                            <h3 class="text-white fw-bold text-uppercase mb-0">@month.MonthName</h3>
+                            <p class="text-white-50 small">@month.Year</p>
+
+                            <div class="btn btn-sm btn-light mt-2 view-btn">Преглед</div>
+                        </div>
                     </div>
 
-                    <div class="card-body text-center">
-                        <h3 class="card-title text-capitalize fw-bold text-dark">
-                            @month.MonthName
-                        </h3>
-                        <h5 class="text-muted mb-0">@month.Year</h5>
-
-                        <!-- TODO: Month details page not yet implemented-->
-                        <!-- <a asp-action="MonthDetails" ... class="stretched-link"></a> -->
+                        <a asp-controller="Calendar"
+                           asp-action="Month"
+                           asp-route-year="@month.Year"
+                           asp-route-month="@month.Month"
+                           class="stretched-link">
+                        </a>
 
                     </div>
                 </div>
-            </div>
         }
     </div>
 }

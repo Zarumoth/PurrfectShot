@@ -130,19 +130,23 @@ namespace PurrfectShot.Web.Services
 
             return calendarMonths;
         }
+
+        public async Task <List<PhotoByMonthViewModel>> GetPhotosByMonthAsync(int year, int month)
+        {
+            return await _dbContext
+                .Photos
+                .AsNoTracking()
+                .Where(p => p.DateUploaded.Year == year && p.DateUploaded.Month == month)
+                .Select(p => new PhotoByMonthViewModel
+                {
+                    Id = p.Id,
+                    FilePath = p.FilePath,
+                    CatName = p.Cat.Name,
+                    DateUploaded = p.DateUploaded,
+                    Rating = p.Votes.Any() ? p.Votes.Average(v => v.Stars) : 0.0
+                })
+                .OrderByDescending(p => p.Rating)
+                .ToListAsync();
+        }
     }
 }
-
-/*
-public async Task<IEnumerable<CatSelectViewModel>> GetAllCatsForSelectAsync()
-{
-    return await _dbContext.Cats
-        .AsNoTracking()
-        .Select(c => new CatSelectViewModel
-        {
-            Id = c.Id,
-            Name = c.Name
-        })
-        .ToListAsync();
-}
-*/

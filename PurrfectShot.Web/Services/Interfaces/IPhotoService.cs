@@ -13,5 +13,7 @@ namespace PurrfectShot.Web.Services.Interfaces
         Task VoteForPhotoAsync(VoteViewModel model);
 
         Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync();
+
+        Task<List<PhotoByMonthViewModel>> GetPhotosByMonthAsync(int year, int month);
     }
 }

@@ -1,24 +1,24 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 /* Used for Cat Rating Stars */
@@ -50,4 +50,72 @@ body {
 
 .star-empty {
     color: #e9ecef;
+}
+
+/* Used for Picture Effect - Calendar/Index */
+
+.hover-effect {
+    transition: transform 0.2s ease-in-out;
+}
+
+.hover-effect:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 15px;
+}
+
+.calendar-img-container {
+    position: relative;
+    width: 100%;
+}
+
+.calendar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 100%);
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.calendar-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    width: 100%;
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 0.3s;
+}
+
+.calendar-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3) !important;
+}
+
+    .calendar-card:hover .calendar-content {
+        transform: translateY(-5px);
+    }
+
+    .calendar-card:hover .view-btn {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+
+.view-btn {
+    opacity: 0.8;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.calendar-card .stretched-link {
+    z-index: 3;
 }
