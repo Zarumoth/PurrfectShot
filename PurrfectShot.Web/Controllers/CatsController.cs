@@ -30,6 +30,7 @@ namespace PurrfectShot.Web.Controllers
 
             await _catService.AddCatAsync(model);
 
+            // TODO: Redirect to the cat details page after implementing it
             return RedirectToAction("Index", "Home");
         }
 

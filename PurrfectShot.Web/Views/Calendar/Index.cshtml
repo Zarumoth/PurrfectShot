@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PurrfectShot.Web.ViewModels.Calendar.CalendarMonthViewModel>
+
+@{
+    ViewData["Title"] = "Календар";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-5 text-primary fw-bold"> Котешки Календар</h1>
+    <p class="lead text-muted">
+        Всички най-добри моменти, подредени месец по месец.
+    </p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center p-5 shadow-sm rounded-3">
+        <h2 class="display-6"> Все още е празно тук!</h2>
+        <p class="lead">Няма качени снимки в архива!</p>
+        <a asp-controller="Photos" asp-action="Upload" class="btn btn-primary mt-3">
+            📷 Качи Снимка
+        </a>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var month in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow border-0 hover-effect position-relative">
+
+                    <div style="height: 200px; overflow: hidden;">
+                        <img src="@month.CoverImageUrl" class="card-img-top"
+                             style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.95);"
+                             alt="Корица за @month.MonthName">
+
+                        <span class="position-absolute top-0 end-0 badge bg-primary m-2 shadow-sm fs-6">
+                            📷 @month.PhotoCount
+                        </span>
+                    </div>
+
+                    <div class="card-body text-center">
+                        <h3 class="card-title text-capitalize fw-bold text-dark">
+                            @month.MonthName
+                        </h3>
+                        <h5 class="text-muted mb-0">@month.Year</h5>
+
+                        <!-- TODO: Month details page not yet implemented-->
+                        <!-- <a asp-action="MonthDetails" ... class="stretched-link"></a> -->
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

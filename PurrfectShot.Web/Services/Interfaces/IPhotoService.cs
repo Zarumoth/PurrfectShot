@@ -1,4 +1,5 @@
-﻿using PurrfectShot.Web.ViewModels.Photos;
+﻿using PurrfectShot.Web.ViewModels.Calendar;
+using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 
 namespace PurrfectShot.Web.Services.Interfaces
@@ -10,5 +11,7 @@ namespace PurrfectShot.Web.Services.Interfaces
         Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(int photoId);
 
         Task VoteForPhotoAsync(VoteViewModel model);
+
+        Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync();
     }
 }

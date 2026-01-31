@@ -2,8 +2,11 @@
 using PurrfectShot.Web.Data;
 using PurrfectShot.Web.Models;
 using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Web.ViewModels.Calendar;
+using PurrfectShot.Web.ViewModels.Cats;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
+using System.Globalization;
 
 namespace PurrfectShot.Web.Services
 {
@@ -95,5 +98,51 @@ namespace PurrfectShot.Web.Services
             await _dbContext.Votes.AddAsync(vote);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync()
+        {
+
+            var rawData = await _dbContext
+                .Photos
+                .AsNoTracking()
+                .Select(p => new
+                {
+                    p.DateUploaded.Year,
+                    p.DateUploaded.Month,
+                    p.FilePath,
+                    Rating = p.Votes.Any() ? p.Votes.Average(v => v.Stars) : 0
+                })
+                .ToListAsync();
+
+            var calendarMonths = rawData
+                .GroupBy(p => new { p.Year, p.Month })
+                .Select(g => new CalendarMonthViewModel
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key.Month),
+                    CoverImageUrl = g.OrderByDescending(x => x.Rating).First().FilePath,
+                    PhotoCount = g.Count()
+                })
+                .OrderByDescending(m => m.Year)
+                .ThenByDescending(m => m.Month)
+                .ToList();
+
+            return calendarMonths;
+        }
     }
 }
+
+/*
+public async Task<IEnumerable<CatSelectViewModel>> GetAllCatsForSelectAsync()
+{
+    return await _dbContext.Cats
+        .AsNoTracking()
+        .Select(c => new CatSelectViewModel
+        {
+            Id = c.Id,
+            Name = c.Name
+        })
+        .ToListAsync();
+}
+*/
