@@ -43,5 +43,30 @@ namespace PurrfectShot.Web.Controllers
             return View(catDetails);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var catToEdit = await _catService.GetCatForEditAsync(id);
+
+            if (catToEdit == null)
+            {
+                return NotFound();
+            }
+
+            return View(catToEdit);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CatEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _catService.UpdateCatAsync(model);
+            return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
     }
 }

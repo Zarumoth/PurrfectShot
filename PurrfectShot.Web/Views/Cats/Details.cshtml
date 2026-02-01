@@ -11,6 +11,11 @@
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
             <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
         </ol>
+
+        <!-- Update/Edit Cat -->
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">
+            ✏️ Редактирай профила
+        </a>
     </nav>
 
     <div class="text-center my-5">

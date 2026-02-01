@@ -91,5 +91,36 @@ namespace PurrfectShot.Web.Services
                 })
                 .FirstOrDefaultAsync();
         }
+
+        //GET
+        public async Task<CatEditViewModel?> GetCatForEditAsync(int id)
+        {
+            return await _dbContext.Cats
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Select(c => new CatEditViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Breed = c.Breed,
+                    Description = c.Description
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        //POST
+        public async Task UpdateCatAsync(CatEditViewModel model)
+        {
+            var cat = await _dbContext.Cats.FindAsync(model.Id);
+
+            if (cat != null)
+            {
+                cat.Name = model.Name;
+                cat.Breed = model.Breed;
+                cat.Description = model.Description;
+
+                await _dbContext.SaveChangesAsync();
+            }
+        }
     }
 }
