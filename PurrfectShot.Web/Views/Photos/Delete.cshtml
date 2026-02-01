@@ -1,0 +1,62 @@
+﻿@model PurrfectShot.Web.ViewModels.Photos.PhotoDeleteViewModel
+
+@{
+    ViewData["Title"] = $"Изтриване на снимка";
+}
+
+<div class="container mt-3">
+
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Cats" asp-action="Details" asp-route-id="@Model.CatId" class="text-decoration-none text-muted">@Model.CatName</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Photos" asp-action="Details" asp-route-id="@Model.Id" class="text-decoration-none text-muted">Снимка</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Изтриване</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center my-4 text-danger">⚠️ Потвърждение за изтриване</h2>
+    <hr />
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 bg-light rounded-4">
+                <div class="card-body p-5">
+                    <div class="alert alert-danger text-center py-4">
+                        <h4 class="alert-heading fw-bold">Внимание! 🛑</h4>
+                        <p class="mb-0 fs-5">
+                            Сигурни ли сте, че искате да изтриете тази снимка?
+                        </p>
+                        <hr>
+                        <p class="small mb-0">
+                            Това действие е необратимо. Тази снимка ще бъде изтрита завинаги.
+                        </p>
+                    </div>
+
+                    <!-- Picture Visual / Preview -->
+                    <div class="text-center my-4">
+                        <img src="@Model.ImageUrl" class="img-thumbnail rounded shadow-sm"
+                             style="max-height: 250px; object-fit: contain;" alt="За изтриване" />
+                    </div>
+
+                    <form asp-action="Delete" method="post" class="text-center mt-4">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CatId" />
+                        <input type="hidden" asp-for="ImageUrl" />
+                        <input type="hidden" asp-for="CatName" />
+
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                            <button type="submit" class="btn btn-danger btn-lg px-5 shadow">Да, изтрий завинаги!</button>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg px-5">Не, върни ме обратно</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

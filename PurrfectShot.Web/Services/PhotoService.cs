@@ -131,7 +131,7 @@ namespace PurrfectShot.Web.Services
             return calendarMonths;
         }
 
-        public async Task <List<PhotoByMonthViewModel>> GetPhotosByMonthAsync(int year, int month)
+        public async Task<List<PhotoByMonthViewModel>> GetPhotosByMonthAsync(int year, int month)
         {
             return await _dbContext
                 .Photos
@@ -175,6 +175,47 @@ namespace PurrfectShot.Web.Services
                 photo.Caption = model.Caption;
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(int id)
+        {
+            return await _dbContext.Photos
+                .AsNoTracking()
+                .Where(p => p.Id == id)
+                .Select(p => new PhotoDeleteViewModel
+                {
+                    Id = p.Id,
+                    CatId = p.CatId,
+                    ImageUrl = p.FilePath,
+                    CatName = p.Cat.Name
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<int> DeletePhotoAsync(int id, string webRootPath)
+        {
+            var photo = await _dbContext.Photos.FindAsync(id);
+
+            if (photo == null)
+            {
+                return 0;
+            }
+
+            int catId = photo.CatId;
+
+            //Delete physical file
+            string fullFilePath = Path.Combine(webRootPath, photo.FilePath.TrimStart('/'));
+
+            if (File.Exists(fullFilePath))
+            {
+                File.Delete(fullFilePath);
+            }
+
+            //Delete database record
+            _dbContext.Photos.Remove(photo);
+            await _dbContext.SaveChangesAsync();
+
+            return catId;
         }
     }
 }

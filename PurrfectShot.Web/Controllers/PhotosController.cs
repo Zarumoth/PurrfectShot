@@ -94,5 +94,33 @@ namespace PurrfectShot.Web.Controllers
             await _photoService.UpdatePhotoAsync(model);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var photoToDelete = await _photoService.GetPhotoForDeleteAsync(id);
+
+            if (photoToDelete == null)
+            {
+                return NotFound();
+            }
+
+            return View(photoToDelete);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            int catId = await _photoService.DeletePhotoAsync(id, webRootPath);
+
+            if (catId == 0)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Details", "Cats", new { id = catId });
+        }
     }
 }

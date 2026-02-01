@@ -1,4 +1,5 @@
 ﻿using PurrfectShot.Web.ViewModels.Calendar;
+using PurrfectShot.Web.ViewModels.Cats;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 
@@ -19,5 +20,9 @@ namespace PurrfectShot.Web.Services.Interfaces
         Task<PhotoEditViewModel?> GetPhotoForEditAsync(int photoId);
 
         Task UpdatePhotoAsync(PhotoEditViewModel model);
+
+        Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(int id);
+
+        Task<int> DeletePhotoAsync(int id, string webRootPath);
     }
 }
