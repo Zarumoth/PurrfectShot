@@ -1,0 +1,55 @@
+﻿@model PurrfectShot.Web.ViewModels.Cats.CatEditViewModel
+
+@{
+    ViewData["Title"] = $"Редактиране на профила на {Model.Name}";
+}
+
+<div class="container mt-3">
+
+    <!-- Breadcrumbs за консистенция -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
+            <li class="breadcrumb-item"><a asp-action="Details" asp-route-id="@Model.Id" class="text-decoration-none text-muted">@Model.Name</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Редактиране</li>
+        </ol>
+    </nav>
+
+    <h2 class="text-center my-4 text-primary">✏️ @ViewData["Title"]</h2>
+    <hr />
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="Edit" method="post" class="card p-4 shadow-sm border-0 bg-light rounded-4">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="form-label fw-bold">Име</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Breed" class="form-label fw-bold">Порода</label>
+                    <input asp-for="Breed" class="form-control" />
+                    <span asp-validation-for="Breed" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="form-label fw-bold">Описание</label>
+                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">Запази промените</button>
+                    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Отказ</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
