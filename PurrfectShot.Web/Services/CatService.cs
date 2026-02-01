@@ -122,5 +122,25 @@ namespace PurrfectShot.Web.Services
                 await _dbContext.SaveChangesAsync();
             }
         }
+
+        public async Task<CatDeleteViewModel?> GetCatForDeleteAsync(int id)
+        {
+            return await _dbContext.Cats
+                .AsNoTracking()
+                .Where(c => c.Id == id)
+                .Select(c => new CatDeleteViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task DeleteCatAsync(int id)
+        {
+            var cat = new Cat { Id = id };
+            _dbContext.Cats.Remove(cat);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

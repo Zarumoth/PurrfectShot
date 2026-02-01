@@ -17,5 +17,9 @@ namespace PurrfectShot.Web.Services.Interfaces
         Task<CatEditViewModel?> GetCatForEditAsync(int id);
 
         Task UpdateCatAsync(CatEditViewModel model);
+
+        Task<CatDeleteViewModel> GetCatForDeleteAsync (int id);
+
+        Task DeleteCatAsync(int id);
     }
 }

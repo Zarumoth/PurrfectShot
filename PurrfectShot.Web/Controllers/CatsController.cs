@@ -68,5 +68,26 @@ namespace PurrfectShot.Web.Controllers
             await _catService.UpdateCatAsync(model);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var catToDelete = await _catService.GetCatForDeleteAsync(id);
+
+            if (catToDelete == null)
+            {
+                return NotFound();
+            }
+
+            return View(catToDelete);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _catService.DeleteCatAsync(id);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
