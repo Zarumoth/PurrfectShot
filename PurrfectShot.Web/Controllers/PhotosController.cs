@@ -68,5 +68,31 @@ namespace PurrfectShot.Web.Controllers
             await _photoService.VoteForPhotoAsync(model);
             return RedirectToAction("Details", new { id = model.PhotoId });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var photoToEdit = await _photoService.GetPhotoForEditAsync(id);
+
+            if (photoToEdit == null)
+            {
+                return NotFound();
+            }
+
+            return View(photoToEdit);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(PhotoEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await _photoService.UpdatePhotoAsync(model);
+            return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
     }
 }

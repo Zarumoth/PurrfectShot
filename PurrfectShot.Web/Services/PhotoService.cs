@@ -148,5 +148,33 @@ namespace PurrfectShot.Web.Services
                 .OrderByDescending(p => p.Rating)
                 .ToListAsync();
         }
+
+        public async Task<PhotoEditViewModel?> GetPhotoForEditAsync(int photoId)
+        {
+            return await _dbContext.Photos
+                .AsNoTracking()
+                .Where(p => p.Id == photoId)
+                .Select(p => new PhotoEditViewModel
+                {
+                    Id = p.Id,
+                    ImageUrl = p.FilePath,
+                    Caption = p.Caption,
+                    CatId = p.CatId,
+                    CatName = p.Cat.Name
+
+                })
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task UpdatePhotoAsync(PhotoEditViewModel model)
+        {
+            var photo = await _dbContext.Photos.FindAsync(model.Id);
+
+            if (photo != null)
+            {
+                photo.Caption = model.Caption;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
     }
 }

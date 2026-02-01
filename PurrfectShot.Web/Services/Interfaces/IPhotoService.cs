@@ -15,5 +15,9 @@ namespace PurrfectShot.Web.Services.Interfaces
         Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync();
 
         Task<List<PhotoByMonthViewModel>> GetPhotosByMonthAsync(int year, int month);
+
+        Task<PhotoEditViewModel?> GetPhotoForEditAsync(int photoId);
+
+        Task UpdatePhotoAsync(PhotoEditViewModel model);
     }
 }
