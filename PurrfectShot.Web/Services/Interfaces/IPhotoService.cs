@@ -7,19 +7,19 @@ namespace PurrfectShot.Web.Services.Interfaces
 {
     public interface IPhotoService
     {
-        Task UploadPhotoAsync(PhotoUploadViewModel model, string wwwrootPath);
+        Task UploadPhotoAsync(PhotoInputModel model, string wwwrootPath);
 
         Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(int photoId);
 
-        Task VoteForPhotoAsync(VoteViewModel model);
+        Task VoteForPhotoAsync(VoteInputModel model);
 
         Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync();
 
-        Task<List<PhotoByMonthViewModel>> GetPhotosByMonthAsync(int year, int month);
+        Task<List<PhotoCardViewModel>> GetPhotosByMonthAsync(int year, int month);
 
-        Task<PhotoEditViewModel?> GetPhotoForEditAsync(int photoId);
+        Task<PhotoEditInputModel?> GetPhotoForEditAsync(int photoId);
 
-        Task UpdatePhotoAsync(PhotoEditViewModel model);
+        Task UpdatePhotoAsync(PhotoEditInputModel model);
 
         Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(int id);
 

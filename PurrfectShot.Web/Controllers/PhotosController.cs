@@ -24,14 +24,14 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Upload()
         {
-            var model = new PhotoUploadViewModel();
+            var model = new PhotoInputModel();
             model.Cats = await _catService.GetAllCatsForSelectAsync();
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Upload(PhotoUploadViewModel model)
+        public async Task<IActionResult> Upload(PhotoInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -58,7 +58,7 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Vote(VoteViewModel model)
+        public async Task<IActionResult> Vote(VoteInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(PhotoEditViewModel model)
+        public async Task<IActionResult> Edit(PhotoEditInputModel model)
         {
             if (!ModelState.IsValid)
             {

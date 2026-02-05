@@ -5,7 +5,7 @@ using static PurrfectShot.Web.Common.EntityValidation.Photo;
 
 namespace PurrfectShot.Web.ViewModels.Photos
 {
-    public class PhotoUploadViewModel
+    public class PhotoInputModel
     {
         [Required(ErrorMessage = "Няма избрана котка от списъка!")]
         [Display(Name = "Котка")]

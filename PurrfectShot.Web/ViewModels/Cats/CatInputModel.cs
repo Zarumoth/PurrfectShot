@@ -3,7 +3,7 @@ using static PurrfectShot.Web.Common.EntityValidation.Cat;
 
 namespace PurrfectShot.Web.ViewModels.Cats
 {
-    public class CatFormViewModel
+    public class CatInputModel
     {
         [Required(ErrorMessage = "Всяко коте си има име!")]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Името трябва да е между {2} и {1} символа.")]

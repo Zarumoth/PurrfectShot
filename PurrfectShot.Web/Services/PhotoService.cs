@@ -19,7 +19,7 @@ namespace PurrfectShot.Web.Services
             _dbContext = dbContext;
         }
 
-        public async Task UploadPhotoAsync(PhotoUploadViewModel model, string wwwrootPath)
+        public async Task UploadPhotoAsync(PhotoInputModel model, string wwwrootPath)
         {
             //Generate unique file name + extension
             string fileExtension = Path.GetExtension(model.ImageFile.FileName);
@@ -86,7 +86,7 @@ namespace PurrfectShot.Web.Services
         //Notes:
         //> We don't have a vote limit implemented (no user accounts)
         //> To think if we want to track vote timestamps (is this even useful?)
-        public async Task VoteForPhotoAsync(VoteViewModel model)
+        public async Task VoteForPhotoAsync(VoteInputModel model)
         {
             var vote = new Vote
             {
@@ -131,13 +131,13 @@ namespace PurrfectShot.Web.Services
             return calendarMonths;
         }
 
-        public async Task<List<PhotoByMonthViewModel>> GetPhotosByMonthAsync(int year, int month)
+        public async Task<List<PhotoCardViewModel>> GetPhotosByMonthAsync(int year, int month)
         {
             return await _dbContext
                 .Photos
                 .AsNoTracking()
                 .Where(p => p.DateUploaded.Year == year && p.DateUploaded.Month == month)
-                .Select(p => new PhotoByMonthViewModel
+                .Select(p => new PhotoCardViewModel
                 {
                     Id = p.Id,
                     FilePath = p.FilePath,
@@ -149,12 +149,12 @@ namespace PurrfectShot.Web.Services
                 .ToListAsync();
         }
 
-        public async Task<PhotoEditViewModel?> GetPhotoForEditAsync(int photoId)
+        public async Task<PhotoEditInputModel?> GetPhotoForEditAsync(int photoId)
         {
             return await _dbContext.Photos
                 .AsNoTracking()
                 .Where(p => p.Id == photoId)
-                .Select(p => new PhotoEditViewModel
+                .Select(p => new PhotoEditInputModel
                 {
                     Id = p.Id,
                     ImageUrl = p.FilePath,
@@ -166,7 +166,7 @@ namespace PurrfectShot.Web.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task UpdatePhotoAsync(PhotoEditViewModel model)
+        public async Task UpdatePhotoAsync(PhotoEditInputModel model)
         {
             var photo = await _dbContext.Photos.FindAsync(model.Id);
 

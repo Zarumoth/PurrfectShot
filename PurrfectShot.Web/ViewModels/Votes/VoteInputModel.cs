@@ -3,7 +3,7 @@ using static PurrfectShot.Web.Common.EntityValidation.Vote;
 
 namespace PurrfectShot.Web.ViewModels.Votes
 {
-    public class VoteViewModel
+    public class VoteInputModel
     {
         [Required]
         public int PhotoId { get; set; }

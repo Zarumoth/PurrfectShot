@@ -3,7 +3,7 @@ using static PurrfectShot.Web.Common.EntityValidation.Photo;
 
 namespace PurrfectShot.Web.ViewModels.Photos
 {
-    public class PhotoEditViewModel
+    public class PhotoEditInputModel
     {
         [Required]
         public int Id { get; set; }

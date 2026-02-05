@@ -17,11 +17,11 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View(new CatFormViewModel());
+            return View(new CatInputModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CatFormViewModel model)
+        public async Task<IActionResult> Add(CatInputModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -58,7 +58,7 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CatEditViewModel model)
+        public async Task<IActionResult> Edit(CatEditInputModel model)
         {
             if (!ModelState.IsValid)
             {

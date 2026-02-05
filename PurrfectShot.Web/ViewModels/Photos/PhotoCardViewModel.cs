@@ -1,6 +1,6 @@
 ﻿namespace PurrfectShot.Web.ViewModels.Photos
 {
-    public class PhotoByMonthViewModel
+    public class PhotoCardViewModel
     {
         public int Id { get; set; }
         public string FilePath { get; set; } = null!;

@@ -8,15 +8,15 @@ namespace PurrfectShot.Web.Services.Interfaces
     {
         Task<IEnumerable<CatSelectViewModel>> GetAllCatsForSelectAsync();
 
-        Task<int> AddCatAsync(CatFormViewModel model);
+        Task<int> AddCatAsync(CatInputModel model);
 
         Task<IEnumerable<CatCardViewModel>> GetFeaturedCatsAsync();
 
         Task<CatDetailsViewModel?> GetCatDetailsAsync(int id);
 
-        Task<CatEditViewModel?> GetCatForEditAsync(int id);
+        Task<CatEditInputModel?> GetCatForEditAsync(int id);
 
-        Task UpdateCatAsync(CatEditViewModel model);
+        Task UpdateCatAsync(CatEditInputModel model);
 
         Task<CatDeleteViewModel> GetCatForDeleteAsync (int id);
 

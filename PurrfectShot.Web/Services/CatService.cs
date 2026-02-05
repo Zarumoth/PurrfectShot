@@ -29,7 +29,7 @@ namespace PurrfectShot.Web.Services
                 .ToListAsync();
         }
 
-        public async Task<int> AddCatAsync(CatFormViewModel model)
+        public async Task<int> AddCatAsync(CatInputModel model)
         {
             var cat = new Cat
             {
@@ -93,12 +93,12 @@ namespace PurrfectShot.Web.Services
         }
 
         //GET
-        public async Task<CatEditViewModel?> GetCatForEditAsync(int id)
+        public async Task<CatEditInputModel?> GetCatForEditAsync(int id)
         {
             return await _dbContext.Cats
                 .AsNoTracking()
                 .Where(c => c.Id == id)
-                .Select(c => new CatEditViewModel
+                .Select(c => new CatEditInputModel
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -109,7 +109,7 @@ namespace PurrfectShot.Web.Services
         }
 
         //POST
-        public async Task UpdateCatAsync(CatEditViewModel model)
+        public async Task UpdateCatAsync(CatEditInputModel model)
         {
             var cat = await _dbContext.Cats.FindAsync(model.Id);
 
