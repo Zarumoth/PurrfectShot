@@ -5,27 +5,14 @@ using PurrfectShot.Web.ViewModels.Votes;
 
 namespace PurrfectShot.Web.Controllers
 {
-    public class PhotosController : Controller
+    public class PhotosController(IPhotoService photoService, ICatService catService, IWebHostEnvironment webHostEnvironment) : Controller
     {
-        private readonly IPhotoService _photoService;
-        private readonly ICatService _catService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public PhotosController(
-            IPhotoService photoService,
-            ICatService catService,
-            IWebHostEnvironment webHostEnvironment)
-        {
-            _photoService = photoService;
-            _catService = catService;
-            _webHostEnvironment = webHostEnvironment;
-        }
 
         [HttpGet]
         public async Task<IActionResult> Upload()
         {
             var model = new PhotoInputModel();
-            model.Cats = await _catService.GetAllCatsForSelectAsync();
+            model.Cats = await catService.GetAllCatsForSelectAsync();
 
             return View(model);
         }
@@ -35,19 +22,19 @@ namespace PurrfectShot.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Cats = await _catService.GetAllCatsForSelectAsync();
+                model.Cats = await catService.GetAllCatsForSelectAsync();
                 return View(model);
             }
 
-            string wwwrootPath = _webHostEnvironment.WebRootPath;
-            await _photoService.UploadPhotoAsync(model, wwwrootPath);
+            string wwwrootPath = webHostEnvironment.WebRootPath;
+            await photoService.UploadPhotoAsync(model, wwwrootPath);
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var photoDetails = await _photoService.GetPhotoDetailsAsync(id);
+            var photoDetails = await photoService.GetPhotoDetailsAsync(id);
 
             if (photoDetails == null)
             {
@@ -65,14 +52,14 @@ namespace PurrfectShot.Web.Controllers
                 return RedirectToAction("Details", new { id = model.PhotoId });
             }
 
-            await _photoService.VoteForPhotoAsync(model);
+            await photoService.VoteForPhotoAsync(model);
             return RedirectToAction("Details", new { id = model.PhotoId });
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var photoToEdit = await _photoService.GetPhotoForEditAsync(id);
+            var photoToEdit = await photoService.GetPhotoForEditAsync(id);
 
             if (photoToEdit == null)
             {
@@ -91,14 +78,14 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
-            await _photoService.UpdatePhotoAsync(model);
+            await photoService.UpdatePhotoAsync(model);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var photoToDelete = await _photoService.GetPhotoForDeleteAsync(id);
+            var photoToDelete = await photoService.GetPhotoForDeleteAsync(id);
 
             if (photoToDelete == null)
             {
@@ -112,8 +99,8 @@ namespace PurrfectShot.Web.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            int catId = await _photoService.DeletePhotoAsync(id, webRootPath);
+            string webRootPath = webHostEnvironment.WebRootPath;
+            int catId = await photoService.DeletePhotoAsync(id, webRootPath);
 
             if (catId == 0)
             {

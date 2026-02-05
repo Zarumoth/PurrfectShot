@@ -4,24 +4,18 @@ using System.Globalization;
 
 namespace PurrfectShot.Web.Controllers
 {
-    public class CalendarController : Controller
+    public class CalendarController (IPhotoService photoService) : Controller
     {
-        private readonly IPhotoService _photoService;
-
-        public CalendarController(IPhotoService photoService)
-        {
-            _photoService = photoService;
-        }
 
         public async Task<IActionResult> Index()
         {
-            var model = await _photoService.GetCalendarMonthsAsync();
+            var model = await photoService.GetCalendarMonthsAsync();
             return View(model);
         }
 
         public async Task<IActionResult> Month(int year, int month)
         {
-            var photos = await _photoService.GetPhotosByMonthAsync(year, month);
+            var photos = await photoService.GetPhotosByMonthAsync(year, month);
 
             ViewData["Title"] = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {year}";
 

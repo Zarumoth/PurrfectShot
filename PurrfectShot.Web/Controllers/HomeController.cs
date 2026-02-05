@@ -6,20 +6,14 @@ using System.Diagnostics;
 
 namespace PurrfectShot.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController (ICatService catService) : Controller
     {
-        private readonly ICatService _catService;
-
-        public HomeController(ICatService catService)
-        {
-            _catService = catService;
-        }
 
         public async Task<IActionResult> Index()
         {
             var model = new HomeIndexViewModel
             {
-                FeaturedCats = await _catService.GetFeaturedCatsAsync()
+                FeaturedCats = await catService.GetFeaturedCatsAsync()
             };
 
             return View(model);

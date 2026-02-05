@@ -4,15 +4,8 @@ using PurrfectShot.Web.ViewModels.Cats;
 
 namespace PurrfectShot.Web.Controllers
 {
-    public class CatsController : Controller
+    public class CatsController (ICatService catService) : Controller
     {
-        private readonly ICatService _catService;
-
-        public CatsController(ICatService catService)
-        {
-            _catService = catService;
-        }
-
 
         [HttpGet]
         public IActionResult Add()
@@ -28,13 +21,13 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
-            int catId = await _catService.AddCatAsync(model);
+            int catId = await catService.AddCatAsync(model);
             return RedirectToAction(nameof(Details), new { id = catId });
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var catDetails = await _catService.GetCatDetailsAsync(id);
+            var catDetails = await catService.GetCatDetailsAsync(id);
             if (catDetails == null)
             {
                 return NotFound();
@@ -46,7 +39,7 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var catToEdit = await _catService.GetCatForEditAsync(id);
+            var catToEdit = await catService.GetCatForEditAsync(id);
 
             if (catToEdit == null)
             {
@@ -65,14 +58,14 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
-            await _catService.UpdateCatAsync(model);
+            await catService.UpdateCatAsync(model);
             return RedirectToAction(nameof(Details), new { id = model.Id });
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var catToDelete = await _catService.GetCatForDeleteAsync(id);
+            var catToDelete = await catService.GetCatForDeleteAsync(id);
 
             if (catToDelete == null)
             {
@@ -86,7 +79,7 @@ namespace PurrfectShot.Web.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _catService.DeleteCatAsync(id);
+            await catService.DeleteCatAsync(id);
             return RedirectToAction("Index", "Home");
         }
     }
