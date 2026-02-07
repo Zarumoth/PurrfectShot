@@ -3,7 +3,6 @@ using PurrfectShot.Web.Data;
 using PurrfectShot.Web.Models;
 using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels.Cats;
-using PurrfectShot.Web.ViewModels.Home;
 using PurrfectShot.Web.ViewModels.Photos;
 
 namespace PurrfectShot.Web.Services
