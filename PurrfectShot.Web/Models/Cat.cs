@@ -1,6 +1,8 @@
 ﻿namespace PurrfectShot.Web.Models
 {
+    using Microsoft.EntityFrameworkCore;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using static PurrfectShot.Web.Common.EntityValidation.Cat;
 
     public class Cat
@@ -19,6 +21,11 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
+
+        [Comment("The ID of the photo selected as the main profile picture for the cat.")]
+        public int? MainPhotoId { get; set; }
+
+        public virtual Photo? MainPhoto { get; set; }
 
         public virtual ICollection<Photo> Photos { get; set; }
             = new HashSet<Photo>();

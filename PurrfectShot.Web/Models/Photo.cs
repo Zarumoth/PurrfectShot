@@ -20,7 +20,6 @@
         public string FilePath { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(Cat))]
         public int CatId { get; set; }
 
         public virtual Cat Cat { get; set; } = null!;

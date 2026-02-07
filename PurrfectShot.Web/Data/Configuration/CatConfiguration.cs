@@ -10,6 +10,18 @@ namespace PurrfectShot.Web.Data.Configuration
         public void Configure(EntityTypeBuilder<Cat> builder)
         {
             builder
+                .HasOne(c => c.MainPhoto)
+                .WithMany()
+                .HasForeignKey(c => c.MainPhotoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .HasMany(c => c.Photos)
+                .WithOne(p => p.Cat)
+                .HasForeignKey(p => p.CatId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .HasData(CreateCats());
         }
 
