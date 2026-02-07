@@ -90,7 +90,7 @@ namespace PurrfectShot.Web.Migrations
                             Breed = "Европейска Късокосместа",
                             Description = "Най-малкото ни вече не-бебе коте, модел Морти. Позната като Хъни-Бъни",
                             IsActive = true,
-                            Name = "Хъни"
+                            Name = "Хъни-Бъни"
                         });
                 });
 
@@ -122,7 +122,299 @@ namespace PurrfectShot.Web.Migrations
 
                     b.HasIndex("CatId");
 
+                    b.HasIndex("DateUploaded");
+
                     b.ToTable("Photos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 101,
+                            Caption = "Ами ако никога не мърдна от тук?",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_1.jpg"
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Caption = "Слийпи блем",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 3, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_2.jpg"
+                        },
+                        new
+                        {
+                            Id = 103,
+                            Caption = "Лордът на слънчевите бани",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 1, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_3.jpg"
+                        },
+                        new
+                        {
+                            Id = 104,
+                            Caption = "Гледаме си от пенхауса",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_4.jpg"
+                        },
+                        new
+                        {
+                            Id = 105,
+                            Caption = "Заспал блем в котешкото легло",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_5.jpg"
+                        },
+                        new
+                        {
+                            Id = 106,
+                            Caption = "Отново... спим",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_6.jpg"
+                        },
+                        new
+                        {
+                            Id = 107,
+                            Caption = "Морти и неговата кашоно-къща",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_7.jpg"
+                        },
+                        new
+                        {
+                            Id = 108,
+                            Caption = "Дай *прозявка* пет",
+                            CatId = 1,
+                            DateUploaded = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/SirMortiPhoto_8.jpg"
+                        },
+                        new
+                        {
+                            Id = 201,
+                            Caption = "Когато си най-сладката писанка на света",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_1.jpg"
+                        },
+                        new
+                        {
+                            Id = 202,
+                            Caption = "Размисли над живота от новото си легло",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_2.jpg"
+                        },
+                        new
+                        {
+                            Id = 203,
+                            Caption = "..или просто прозявка",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_3.jpg"
+                        },
+                        new
+                        {
+                            Id = 204,
+                            Caption = "В пастта на акулата",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_4.jpg"
+                        },
+                        new
+                        {
+                            Id = 205,
+                            Caption = "Две котки, една перална",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 7, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_5.jpg"
+                        },
+                        new
+                        {
+                            Id = 206,
+                            Caption = "Не само щраусите могат така",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 2, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_6.jpg"
+                        },
+                        new
+                        {
+                            Id = 207,
+                            Caption = "А ти какво гледаш?",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_7.jpg"
+                        },
+                        new
+                        {
+                            Id = 208,
+                            Caption = "Лейди Фрайни, върху трупът на лисицата",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_8.jpg"
+                        },
+                        new
+                        {
+                            Id = 209,
+                            Caption = "Тунелни истории",
+                            CatId = 2,
+                            DateUploaded = new DateTime(2026, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/LadyPhrynePhoto_9.jpg"
+                        },
+                        new
+                        {
+                            Id = 301,
+                            Caption = "Венти - най-бързият селфи-майстор",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_1.jpg"
+                        },
+                        new
+                        {
+                            Id = 302,
+                            Caption = "Ето така се мият котешките лапи",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 2, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_2.jpg"
+                        },
+                        new
+                        {
+                            Id = 303,
+                            Caption = "Снейк кат",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_3.jpg"
+                        },
+                        new
+                        {
+                            Id = 304,
+                            Caption = "Диванът не е достатъчно голям",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_4.jpg"
+                        },
+                        new
+                        {
+                            Id = 305,
+                            Caption = "Vent do you want?",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 12, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_5.jpg"
+                        },
+                        new
+                        {
+                            Id = 306,
+                            Caption = "Най-добре е върху лапата на папа",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_6.jpg"
+                        },
+                        new
+                        {
+                            Id = 307,
+                            Caption = "Малко блем и карти",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 2, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_7.jpg"
+                        },
+                        new
+                        {
+                            Id = 308,
+                            Caption = "Не, всъщност, ето така се мият котешки лапи",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_8.jpg"
+                        },
+                        new
+                        {
+                            Id = 309,
+                            Caption = "It's just me and my cat bed",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_9.jpg"
+                        },
+                        new
+                        {
+                            Id = 310,
+                            Caption = "Венти, йога-котка",
+                            CatId = 3,
+                            DateUploaded = new DateTime(2026, 11, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/VentiPhoto_10.jpg"
+                        },
+                        new
+                        {
+                            Id = 401,
+                            Caption = "Хъни-Бъни и нейната аура на сладост",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_1.jpg"
+                        },
+                        new
+                        {
+                            Id = 402,
+                            Caption = "Заспали и завити с на мама дрехите",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 11, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_2.jpg"
+                        },
+                        new
+                        {
+                            Id = 403,
+                            Caption = "Когато се миеш на трона",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_3.jpg"
+                        },
+                        new
+                        {
+                            Id = 404,
+                            Caption = "Дебнейки от стола",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_4.jpg"
+                        },
+                        new
+                        {
+                            Id = 405,
+                            Caption = "Honey Bunny means business",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_5.jpg"
+                        },
+                        new
+                        {
+                            Id = 406,
+                            Caption = "Облизваме се на стола на папа",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 3, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_6.jpg"
+                        },
+                        new
+                        {
+                            Id = 407,
+                            Caption = "Папа, защо батко ме мие?",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_7.jpg"
+                        },
+                        new
+                        {
+                            Id = 408,
+                            Caption = "*музика от Цар Лъв*",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_8.jpg"
+                        },
+                        new
+                        {
+                            Id = 409,
+                            Caption = "Знам, че той ме гледа",
+                            CatId = 4,
+                            DateUploaded = new DateTime(2026, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FilePath = "/images/seed/HoneyBuneyPhoto_9.jpg"
+                        });
                 });
 
             modelBuilder.Entity("PurrfectShot.Web.Models.Vote", b =>

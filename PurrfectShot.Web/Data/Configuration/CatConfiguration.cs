@@ -60,7 +60,7 @@ namespace PurrfectShot.Web.Data.Configuration
             cats.Add(new Cat
             {
                 Id = 4,
-                Name = "Хъни",
+                Name = "Хъни-Бъни",
                 Breed = "Европейска Късокосместа",
                 Description = "Най-малкото ни вече не-бебе коте, модел Морти. Позната като Хъни-Бъни",
                 IsActive = true
