@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PurrfectShot.Web.Services;
 using PurrfectShot.Web.Services.Interfaces;
 using PurrfectShot.Web.ViewModels.Cats;
 
 namespace PurrfectShot.Web.Controllers
 {
-    public class CatsController(ICatService catService) : Controller
+    public class CatsController(ICatService catService, IPhotoService photoService) : Controller
     {
 
         [HttpGet]
@@ -157,18 +158,20 @@ namespace PurrfectShot.Web.Controllers
             if (id <= 0)
                 return BadRequest();
 
-            try
-            {
-                await catService.DeleteCatAsync(id);
+            var hasPhotos = await photoService.GetPhotoCountByCatIdAsync(id) > 0;
 
-                TempData["Success"] = "Котката и всички нейни снимки бяха премахнати успешно.";
-                return RedirectToAction(nameof(Index), "Home");
-            }
-            catch (Exception)
+            if (hasPhotos)
             {
-                TempData["Error"] = "Възникна системна грешка при опит за изтриване.";
-                return RedirectToAction(nameof(Index), "Home");
+                await catService.ArchiveCatAsync(id);
+                TempData["Success"] = "Профилът е архивиран. Снимките остават в календара!";
             }
+            else
+            {
+                await catService.DeleteCatPermanentlyAsync(id);
+                TempData["Success"] = "Записът беше изтрит окончателно.";
+            }
+
+            return RedirectToAction(nameof(Index), "Home");
         }
     }
 }

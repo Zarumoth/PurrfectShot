@@ -12,62 +12,73 @@
             <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
         </ol>
 
-        <!-- Update/Edit Cat -->
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">
-            ✏️ Редактирай профила
-        </a>
-        <!-- Delete Cat -->
-        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">
-            🛑 Изтриване на профила
-        </a>
+        <div class="btn-group">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                ✏️ Редактирай
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger">
+                🛑 @(Model.IsActive ? "Архивирай" : "Изтрий")
+            </a>
+        </div>
     </nav>
 
-    <div class="text-center my-5">
-        <h1 class="display-3 fw-bold text-primary mb-0">
-            @Model.Name
-            <span class="badge rounded-pill fw-normal align-middle ms-2"
-                  style="background-color: #e7f1ff; color: #0d6efd; border: 1px solid #cfe2ff; font-size: 0.9rem; padding: 0.4em 0.8em;">
-                @Model.Breed
-            </span>
-        </h1>
-    </div>
-
-    <!-- Cat Description -->
-    <div class="row justify-content-center mb-5">
-        <div class="col-md-8">
-            <div class="bio-box p-4 p-md-5">
-                <div class="d-flex align-items-center mb-3">
-                    <h5 class="mb-0 fw-bold text-dark">Историята на @Model.Name</h5>
+    <div class="text-center my-4">
+        <div class="text-center my-4">
+            @if (!Model.IsActive)
+            {
+                <div class="mb-3">
+                    <span class="badge bg-secondary px-3 py-2 rounded-pill shadow-sm">
+                        <i class="bi bi-archive-fill me-1"></i> Този профил е архивиран
+                    </span>
+                    <p class="text-muted small mt-2 fst-italic">Снимките на това коте се пазят в златния фонд на семейството.</p>
                 </div>
-                <p class="fs-5 text-dark mb-0 fst-italic">
-                    @Model.Description
-                </p>
+            }
+
+            <h1 class="display-3 fw-bold text-primary mb-0">
+                @Model.Name
+                <span class="badge rounded-pill fw-normal align-middle ms-2"
+                      style="background-color: #e7f1ff; color: #0d6efd; border: 1px solid #cfe2ff; font-size: 0.9rem; padding: 0.4em 0.8em;">
+                    @Model.Breed
+                </span>
+            </h1>
+        </div>
+
+        <!-- Cat Description -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="bio-box p-4 p-md-5">
+                    <div class="d-flex align-items-center mb-3">
+                        <h5 class="mb-0 fw-bold text-dark">Историята на @Model.Name</h5>
+                    </div>
+                    <p class="fs-5 text-dark mb-0 fst-italic">
+                        @Model.Description
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Gallery Part -->
-    <div class="d-flex justify-content-between align-items-end border-bottom pb-2 mb-4">
-        <h3 class="mb-0 text-secondary">📸 Личен албум</h3>
-        <span class="text-muted small">@Model.Photos.Count() снимки</span>
-    </div>
+        <!-- Gallery Part -->
+        <div class="d-flex justify-content-between align-items-end border-bottom pb-2 mb-4">
+            <h3 class="mb-0 text-secondary">📸 Личен албум</h3>
+            <span class="text-muted small">@Model.Photos.Count() снимки</span>
+        </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var photo in Model.Photos)
-        {
-            <div class="col">
-                <div class="card h-100 shadow-sm hover-effect border-0 overflow-hidden rounded-3">
-                    <a asp-controller="Photos" asp-action="Details" asp-route-id="@photo.Id">
-                        <img src="@photo.ImageUrl" class="card-img-top"
-                             style="height: 280px; object-fit: cover;"
-                             alt="Снимка на @Model.Name">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var photo in Model.Photos)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm hover-effect border-0 overflow-hidden rounded-3">
+                        <a asp-controller="Photos" asp-action="Details" asp-route-id="@photo.Id">
+                            <img src="@photo.ImageUrl" class="card-img-top"
+                                 style="height: 280px; object-fit: cover;"
+                                 alt="Снимка на @Model.Name">
 
-                        <div class="position-absolute bottom-0 end-0 p-2">
-                            <span class="badge bg-warning text-dark shadow-sm">⭐ @photo.Rating.ToString("F1")</span>
-                        </div>
-                    </a>
+                            <div class="position-absolute bottom-0 end-0 p-2">
+                                <span class="badge bg-warning text-dark shadow-sm">⭐ @photo.Rating.ToString("F1")</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>

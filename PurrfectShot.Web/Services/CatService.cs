@@ -27,6 +27,7 @@ namespace PurrfectShot.Web.Services
         {
             return await _dbContext.Cats
                 .AsNoTracking()
+                .Where(c => c.IsActive)
                 .Select(c => new CatSelectViewModel
                 {
                     Id = c.Id,
@@ -54,6 +55,7 @@ namespace PurrfectShot.Web.Services
             return await _dbContext
                 .Cats
                 .AsNoTracking()
+                .Where(c => c.IsActive)
                 .Select(c => new CatCardViewModel
                 {
                     Id = c.Id,
@@ -102,7 +104,8 @@ namespace PurrfectShot.Web.Services
         //GET
         public async Task<CatEditInputModel?> GetCatForEditAsync(int id)
         {
-            return await _dbContext.Cats
+            return await _dbContext
+                .Cats
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .Select(c => new CatEditInputModel
@@ -132,7 +135,8 @@ namespace PurrfectShot.Web.Services
 
         public async Task<CatDeleteViewModel?> GetCatForDeleteAsync(int id)
         {
-            return await _dbContext.Cats
+            return await _dbContext
+                .Cats
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .Select(c => new CatDeleteViewModel
@@ -143,11 +147,22 @@ namespace PurrfectShot.Web.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task DeleteCatAsync(int id)
+        public async Task DeleteCatPermanentlyAsync(int id)
         {
             var cat = new Cat { Id = id };
             _dbContext.Cats.Remove(cat);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task ArchiveCatAsync(int id)
+        {
+            var cat = await _dbContext.Cats.FindAsync(id);
+
+            if (cat != null)
+            {
+                cat.IsActive = false;
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }

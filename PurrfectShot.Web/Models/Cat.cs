@@ -22,6 +22,9 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; } = null!;
 
+        [Comment("Indicates if the cat is still an active member of the household gallery.")]
+        public bool IsActive { get; set; } = true;
+
         [Comment("The ID of the photo selected as the main profile picture for the cat.")]
         public int? MainPhotoId { get; set; }
 

@@ -34,7 +34,8 @@ namespace PurrfectShot.Web.Data.Configuration
                 Id = 1,
                 Name = "Сър Мортимър",
                 Breed = "Tuxedo Cat",
-                Description = "Сладък, мил и добричък. Най-добрият котко-татко"
+                Description = "Сладък, мил и добричък. Най-добрият котко-татко",
+                IsActive = true
             });
 
             cats.Add(new Cat
@@ -42,7 +43,9 @@ namespace PurrfectShot.Web.Data.Configuration
                 Id = 2,
                 Name = "Лейди Фрайни",
                 Breed = "Европейска Късокосместа",
-                Description = "Най-сладката рижа маца. Най-лесно определена като котка с характер"
+                Description = "Най-сладката рижа маца. Най-лесно определена като котка с характер",
+                IsActive = true
+
             });
 
             cats.Add(new Cat
@@ -50,7 +53,8 @@ namespace PurrfectShot.Web.Data.Configuration
                 Id = 3,
                 Name = "Венти",
                 Breed = "Египетска Мау",
-                Description = "Отговаря на името си, най-бързият скокльо-котарак. Обича да води дълги и пълноценни разговори"
+                Description = "Отговаря на името си, най-бързият скокльо-котарак. Обича да води дълги и пълноценни разговори",
+                IsActive = true
             });
 
             cats.Add(new Cat
@@ -58,7 +62,8 @@ namespace PurrfectShot.Web.Data.Configuration
                 Id = 4,
                 Name = "Хъни",
                 Breed = "Европейска Късокосместа",
-                Description = "Най-малкото ни вече не-бебе коте, модел Морти. Позната като Хъни-Бъни"
+                Description = "Най-малкото ни вече не-бебе коте, модел Морти. Позната като Хъни-Бъни",
+                IsActive = true
             });
 
             return cats;

@@ -12,6 +12,8 @@ namespace PurrfectShot.Web.ViewModels.Cats
 
         public string Description { get; set; } = null!;
 
+        public bool IsActive { get; set; }
+
         public IEnumerable<CatPhotoViewModel> Photos { get; set; } 
             = new List<CatPhotoViewModel>();
 
