@@ -4,53 +4,92 @@
     ViewData["Title"] = "Начало";
 }
 
-<!-- HERO -->
-<div class="p-5 mb-4 bg-light rounded-3 shadow-sm text-center">
-    <h1 class="display-4 fw-bold text-primary">Purrfect Shot</h1>
-    <p class="fs-4 text-muted">
-        Официалният календар на домашните ни любимци.
-        Качвай, гласувай и създавай история!
+<!-- Hero Section -->
+<div class="p-5 mb-5 bg-light rounded-4 shadow-sm text-center position-relative overflow-hidden">
+    <div class="position-absolute top-0 start-0 p-3 opacity-10 mt-n3 ms-n3">
+        <i class="bi bi-camera-fill display-1"></i>
+    </div>
+
+    <h1 class="display-4 fw-bold text-primary mb-3">Purrfect Shot</h1>
+    <p class="fs-4 text-muted mx-auto mb-4" style="max-width: 800px;">
+        Добре дошли в официалния архив на семейния ни прайд!
+        Мястото, където събираме най-добрите кадри на нашите съкоткоранти,
+        гласуваме за любимци и подготвяме годишния календар.
     </p>
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
-        <a asp-controller="Photos" asp-action="Upload" class="btn btn-primary btn-lg px-4 gap-3">
+
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <a asp-controller="Photos" asp-action="Upload" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm">
             📷 Качи Снимка
         </a>
-        <a asp-controller="Calendar" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">
+        <a asp-controller="Calendar" asp-action="Index" class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-pill">
             📅 Виж Календара
         </a>
     </div>
 </div>
 
-<!-- Profiles -->
+<!-- Cat Profiles Section -->
 <div class="container mb-5">
-    <div class="row align-items-center mb-3">
+    <div class="row align-items-center mb-4">
         <div class="col">
-            <h2 class="text-secondary fw-bold">Прайда</h2>
+            <h2 class="text-secondary fw-bold border-bottom pb-2">Прайда</h2>
         </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        @foreach (var cat in Model.FeaturedCats)
-        {
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm text-center hover-effect">
-                    <div class="mt-4 mx-auto" style="width: 120px; height: 120px;">
-                        <img src="@(cat.ProfileImageUrl ?? "https://via.placeholder.com/150?text=No+Photo")"
-                             class="rounded-circle border border-3 border-white shadow"
-                             style="width: 100%; height: 100%; object-fit: cover;"
-                             alt="@cat.Name">
-                    </div>
-                    <!-- TODO: Individual Profiles not yet Implemented -->
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">@cat.Name</h5>
-                        <p class="text-muted small">@cat.Breed</p>
-                        <a asp-controller="Cats" asp-action="Details" asp-route-id="@cat.Id"
-                           class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                            Виж Профил
-                        </a>
+    @if (!Model.FeaturedCats.Any())
+    {
+        <div class="alert alert-info text-center shadow-sm">
+            Още няма регистрирани котки. <a asp-controller="Cats" asp-action="Add">Добави първата!</a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            @foreach (var cat in Model.FeaturedCats)
+            {
+                <div class="col">
+                    <!-- Cat Card -->
+                    <div class="card h-100 border-0 shadow-sm text-center hover-effect p-3 rounded-4 position-relative">
+
+                        <!-- Photo Frame -->
+                        <div class="position-relative mx-auto mt-2" style="width: 130px; height: 130px;">
+                            <img src="@(cat.ProfileImageUrl ?? "/images/Default_Cat_Image.png")"
+                                 class="rounded-circle border border-4 border-white shadow-sm"
+                                 style="width: 100%; height: 100%; object-fit: cover;"
+                                 alt="@cat.Name">
+
+                            <!-- Photo Counter -->
+                            <span class="position-absolute bottom-0 end-0 badge rounded-pill bg-secondary shadow-sm py-1 px-2"
+                                  style="font-size: 0.75rem; transform: translate(15%, 5%); border: 2px solid white; opacity: 0.95; z-index: 2;">
+                                📷 @cat.PhotoCount
+                            </span>
+                        </div>
+
+                        <div class="card-body d-flex flex-column px-0 pb-0">
+
+                            <!-- Cat Name -->
+                            <div class="d-flex align-items-center justify-content-center" style="height: 3.5rem;">
+                                <h5 class="card-title fw-bold text-dark m-0">@cat.Name</h5>
+                            </div>
+
+                            <!-- Cat Breed -->
+                            <div class="my-2 d-flex justify-content-center">
+                                <span class="badge rounded-pill fw-normal text-wrap"
+                                      style="background-color: #e7f1ff; color: #0d6efd; border: 1px solid #cfe2ff; font-size: 0.75rem; max-width: 95%;">
+                                    @cat.Breed
+                                </span>
+                            </div>
+
+                            <!-- Cat Profile Button -->
+                            <div class="mt-auto pt-3">
+                                <a asp-controller="Cats" asp-action="Details" asp-route-id="@cat.Id"
+                                   class="btn btn-sm btn-outline-primary rounded-pill px-4 w-100 stretched-link">
+                                    Виж Профил
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>
