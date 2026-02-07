@@ -33,7 +33,7 @@ namespace PurrfectShot.Web.Controllers
                 model.Cats = await catService.GetAllCatsForSelectAsync();
                 return View(model);
             }
-            
+
             string wwwrootPath = webHostEnvironment.WebRootPath;
             await photoService.UploadPhotoAsync(model, wwwrootPath);
             return RedirectToAction("Index", "Home");
@@ -68,6 +68,30 @@ namespace PurrfectShot.Web.Controllers
             await photoService.VoteForPhotoAsync(model);
             return RedirectToAction("Details", new { id = model.PhotoId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SetProfilePicture(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            await photoService.SetProfilePicture(id);
+
+            //TODO: Imlement success messages in the other controllers and views as well
+            //TODO: Try-Catch galore, implement it in all methods that interact with the database and file system, to prevent crashes and show user-friendly error messages
+            try
+            {
+                await photoService.SetProfilePicture(id);
+                TempData["Success"] = "Профилната снимка беше зададена!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Не успяхме да зададем профилна снимка.";
+            }
+
+            return RedirectToAction(nameof(Details), new { id = id });
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

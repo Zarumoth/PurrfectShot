@@ -72,12 +72,18 @@
 
                                 <button type="submit" class="btn btn-primary w-100">Гласувай! 🗳️</button>
                             </form>
+                            <div class="text-center">
+                                <form asp-action="SetProfilePicture" asp-route-id="@Model.Id" method="post">
+                                    <button type="submit" class="btn btn-outline-success btn-sm w-100 shadow-sm">
+                                        ⭐ Задай като профилна снимка на @Model.CatName
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
 
-                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-100 mt-3">⬅️ Обратно към Галерията</a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary w-100 mt-3">⬅️ Обратно към Галерията</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>

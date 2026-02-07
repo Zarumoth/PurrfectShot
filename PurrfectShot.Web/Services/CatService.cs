@@ -59,10 +59,11 @@ namespace PurrfectShot.Web.Services
                     Id = c.Id,
                     Name = c.Name,
                     Breed = c.Breed,
-                    ProfileImageUrl = c.Photos
-                        .OrderByDescending(p => p.DateUploaded)
-                        .Select(p => p.FilePath)
-                        .FirstOrDefault()
+                    ProfileImageUrl = c.MainPhoto != null
+                        ? c.MainPhoto.FilePath
+                        : c.Photos.OrderByDescending(p => p.DateUploaded)
+                            .Select(p => p.FilePath)
+                            .FirstOrDefault()
                 })
                 .ToListAsync();
         }

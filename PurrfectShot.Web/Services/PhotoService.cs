@@ -83,6 +83,30 @@ namespace PurrfectShot.Web.Services
             };
         }
 
+        public async Task SetProfilePicture(int photoId)
+        {
+
+            if (photoId <= 0)
+                throw new ArgumentException("Invalid photo ID.");
+
+            var photo = await _dbContext
+                .Photos
+                .FindAsync(photoId);
+
+            if (photo == null) 
+                throw new InvalidOperationException("Photo not found.");
+
+            var cat = await _dbContext
+                .Cats
+                .FindAsync(photo.CatId);
+
+            if (cat == null)
+                throw new InvalidOperationException("Associated cat not found.");
+
+            cat.MainPhotoId = photoId;
+            await _dbContext.SaveChangesAsync();
+        }
+
         //Notes:
         //> We don't have a vote limit implemented (no user accounts)
         //> To think if we want to track vote timestamps (is this even useful?)
