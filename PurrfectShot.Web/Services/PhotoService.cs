@@ -107,6 +107,26 @@ namespace PurrfectShot.Web.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<(int totalPhotos, int totalVotes)> GetGlobalStatisticsAsync()
+        {
+            int totalPhotos = await _dbContext
+                .Photos
+                .CountAsync();
+
+            int totalVotes = await _dbContext
+                .Votes
+                .CountAsync();
+
+            return (totalPhotos, totalVotes);
+        }
+
+        public async Task<int> GetPhotoCountByCatIdAsync(int catId)
+        {
+            return await _dbContext
+                .Photos
+                .CountAsync(p => p.CatId == catId);
+        }
+
         //Notes:
         //> We don't have a vote limit implemented (no user accounts)
         //> To think if we want to track vote timestamps (is this even useful?)

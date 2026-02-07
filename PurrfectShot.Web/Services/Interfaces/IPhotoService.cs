@@ -13,6 +13,10 @@ namespace PurrfectShot.Web.Services.Interfaces
 
         Task SetProfilePicture(int photoId);
 
+        Task<(int totalPhotos, int totalVotes)> GetGlobalStatisticsAsync();
+
+        Task<int> GetPhotoCountByCatIdAsync(int catId);
+
         Task VoteForPhotoAsync(VoteInputModel model);
 
         Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync();
