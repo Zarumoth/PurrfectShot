@@ -16,6 +16,13 @@ namespace PurrfectShot.Web.Services
             _dbContext = dbContext;
         }
 
+        public async Task<bool> ExistsByIdAsync(int id)
+        {
+            return await _dbContext
+                .Cats
+                .AnyAsync(c => c.Id == id);
+        }
+
         public async Task<IEnumerable<CatSelectViewModel>> GetAllCatsForSelectAsync()
         {
             return await _dbContext.Cats

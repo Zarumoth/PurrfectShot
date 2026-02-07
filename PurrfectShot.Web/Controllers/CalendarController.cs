@@ -15,6 +15,11 @@ namespace PurrfectShot.Web.Controllers
 
         public async Task<IActionResult> Month(int year, int month)
         {
+            if (year <= 0 || month <=0)
+            {
+                return BadRequest();
+            }
+
             var photos = await photoService.GetPhotosByMonthAsync(year, month);
 
             ViewData["Title"] = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {year}";

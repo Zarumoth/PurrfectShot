@@ -9,6 +9,8 @@ namespace PurrfectShot.Web.Services.Interfaces
 
         Task<int> AddCatAsync(CatInputModel model);
 
+        Task<bool> ExistsByIdAsync(int id);
+
         Task<IEnumerable<CatCardViewModel>> GetFeaturedCatsAsync();
 
         Task<CatDetailsViewModel?> GetCatDetailsAsync(int id);

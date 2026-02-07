@@ -26,6 +26,14 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
+            if (!await catService.ExistsByIdAsync(model.CatId))
+            {
+                ModelState.AddModelError(nameof(model.CatId), "Избраната котка не съществува в системата!");
+
+                model.Cats = await catService.GetAllCatsForSelectAsync();
+                return View(model);
+            }
+            
             string wwwrootPath = webHostEnvironment.WebRootPath;
             await photoService.UploadPhotoAsync(model, wwwrootPath);
             return RedirectToAction("Index", "Home");
@@ -34,6 +42,11 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             var photoDetails = await photoService.GetPhotoDetailsAsync(id);
 
             if (photoDetails == null)
@@ -59,6 +72,11 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             var photoToEdit = await photoService.GetPhotoForEditAsync(id);
 
             if (photoToEdit == null)
@@ -85,6 +103,11 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             var photoToDelete = await photoService.GetPhotoForDeleteAsync(id);
 
             if (photoToDelete == null)
@@ -99,6 +122,11 @@ namespace PurrfectShot.Web.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             string webRootPath = webHostEnvironment.WebRootPath;
             int catId = await photoService.DeletePhotoAsync(id, webRootPath);
 

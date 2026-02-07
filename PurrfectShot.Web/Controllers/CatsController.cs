@@ -27,7 +27,13 @@ namespace PurrfectShot.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             var catDetails = await catService.GetCatDetailsAsync(id);
+
             if (catDetails == null)
             {
                 return NotFound();
@@ -39,6 +45,11 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             var catToEdit = await catService.GetCatForEditAsync(id);
 
             if (catToEdit == null)
@@ -65,6 +76,11 @@ namespace PurrfectShot.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             var catToDelete = await catService.GetCatForDeleteAsync(id);
 
             if (catToDelete == null)
@@ -79,6 +95,11 @@ namespace PurrfectShot.Web.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest();
+            }
+
             await catService.DeleteCatAsync(id);
             return RedirectToAction("Index", "Home");
         }
