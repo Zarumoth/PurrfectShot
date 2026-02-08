@@ -7,6 +7,7 @@ using PurrfectShot.Web.ViewModels.Cats;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 using System.Globalization;
+using static PurrfectShot.Web.Common.EntityValidation;
 
 namespace PurrfectShot.Web.Services
 {
@@ -44,7 +45,7 @@ namespace PurrfectShot.Web.Services
             }
 
             //Create a new Photo entity and save it (the path) to the database
-            var photo = new Photo
+            var photo = new Models.Photo
             {
                 CatId = model.CatId,
                 Caption = model.Caption,
@@ -69,12 +70,20 @@ namespace PurrfectShot.Web.Services
                 return null;
             }
 
+            var bgCulture = new CultureInfo("bg-BG");
+
+            var day = photo.DateUploaded.Day;
+            var rawMonth = bgCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month);
+            var year = photo.DateUploaded.Year;
+
+            string formattedDate = $"{day:D2} {ToTitleCase(rawMonth)} {year}";
+
             return new PhotoDetailsViewModel
             {
                 Id = photo.Id,
                 ImageUrl = photo.FilePath,
                 Caption = photo.Caption,
-                UploadedOn = photo.DateUploaded.ToString("MMMM dd, yyyy"),
+                UploadedOn = formattedDate,
                 CatId = photo.Cat.Id,
                 CatName = photo.Cat.Name,
                 CatBreed = photo.Cat.Breed,
@@ -82,7 +91,7 @@ namespace PurrfectShot.Web.Services
                 VotesCount = photo.Votes.Count,
                 Month = photo.DateUploaded.Month,
                 Year = photo.DateUploaded.Year,
-                MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month),
+                MonthName = ToTitleCase(bgCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month)),
                 IsMainPhoto = photo.Id == photo.Cat.MainPhotoId,
                 IsActive = photo.Cat.IsActive
             };
@@ -137,7 +146,7 @@ namespace PurrfectShot.Web.Services
         //> To think if we want to track vote timestamps (is this even useful?)
         public async Task VoteForPhotoAsync(VoteInputModel model)
         {
-            var vote = new Vote
+            var vote = new Models.Vote
             {
                 PhotoId = model.PhotoId,
                 Stars = model.Stars,
@@ -163,13 +172,15 @@ namespace PurrfectShot.Web.Services
                 })
                 .ToListAsync();
 
+            var bgCulture = new CultureInfo("bg-BG");
+
             var calendarMonths = rawData
                 .GroupBy(p => new { p.Year, p.Month })
                 .Select(g => new CalendarMonthViewModel
                 {
                     Year = g.Key.Year,
                     Month = g.Key.Month,
-                    MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key.Month),
+                    MonthName = ToTitleCase(bgCulture.DateTimeFormat.GetMonthName(g.Key.Month)),
                     CoverImageUrl = g.OrderByDescending(x => x.Rating).First().FilePath,
                     PhotoCount = g.Count()
                 })
@@ -265,6 +276,14 @@ namespace PurrfectShot.Web.Services
             await _dbContext.SaveChangesAsync();
 
             return catId;
+        }
+
+        //Helper: Used for BG-Month Upper Starting Letter
+        private string ToTitleCase(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return input;
+
+            return char.ToUpper(input[0]) + input.Substring(1);
         }
     }
 }

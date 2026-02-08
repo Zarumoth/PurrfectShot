@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PurrfectShot.Web.ViewModels.Photos.PhotoCardViewModel>
+﻿@using System.Globalization
+@model IEnumerable<PurrfectShot.Web.ViewModels.Photos.PhotoCardViewModel>
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -43,7 +44,7 @@
 
                             <div class="card-body text-center">
                                 <h5 class="fw-bold">@photo.CatName</h5>
-                                <p class="text-muted small">Качено на: @photo.DateUploaded.ToString("dd MMM")</p>
+                                <p class="text-muted small">Качено на: @photo.DateUploaded.ToString("dd MMM", new CultureInfo("bg-BG"))</p>
                             </div>
                         </a>
                     </div>

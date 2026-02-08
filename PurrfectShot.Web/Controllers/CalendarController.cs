@@ -32,11 +32,15 @@ namespace PurrfectShot.Web.Controllers
                 return BadRequest();
             }
 
+            var bgCulture = new CultureInfo("bg-BG");
+
             try
             {
                 var photos = await photoService.GetPhotosByMonthAsync(year, month);
+                var monthName = bgCulture.DateTimeFormat.GetMonthName(month);
+                monthName = char.ToUpper(monthName[0]) + monthName.Substring(1);
 
-                ViewData["Title"] = $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month)} {year}";
+                ViewData["Title"] = $"{monthName} {year}";
 
                 return View(photos);
             }
