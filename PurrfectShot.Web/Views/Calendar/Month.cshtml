@@ -6,6 +6,15 @@
         <a asp-action="Index" class="btn btn-outline-secondary">Обратно към Календара</a>
     </div>
 
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb" class="mt-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Calendar" asp-action="Index" class="text-decoration-none text-muted">Календар</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+
     @if (!Model.Any())
     {
         <div class="alert alert-light text-center shadow-sm">
