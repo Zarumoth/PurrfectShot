@@ -21,6 +21,7 @@
         public int CatId { get; set; }
         public string CatName { get; set; } = null!;
         public string CatBreed { get; set; } = null!;
+        public bool IsActive { get; set; }
 
 
         //Rating Info

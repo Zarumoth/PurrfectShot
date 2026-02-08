@@ -84,6 +84,7 @@ namespace PurrfectShot.Web.Services
                     Name = c.Name,
                     Breed = c.Breed,
                     Description = c.Description,
+                    IsActive = c.IsActive,
                     Photos = c.Photos
                         .Select(p => new CatPhotoViewModel
                         {
@@ -145,6 +146,8 @@ namespace PurrfectShot.Web.Services
                 {
                     Id = c.Id,
                     Name = c.Name,
+                    IsActive = c.IsActive,
+                    HasPhotos = c.Photos.Any()
                 })
                 .FirstOrDefaultAsync();
         }

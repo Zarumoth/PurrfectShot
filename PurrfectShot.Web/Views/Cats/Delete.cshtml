@@ -5,7 +5,6 @@
 }
 
 <div class="container mt-3">
-
     <!-- Breadcrumb Navigation -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -20,29 +19,84 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm border-0 bg-light rounded-4">
-                <div class="card-body p-5">
-                    <div class="alert alert-danger text-center py-4">
-                        <h4 class="alert-heading fw-bold">Внимание! 🛑</h4>
-                        <p class="mb-0 fs-5">
-                            Сигурни ли сте, че искате да изтриете профила на <strong>@Model.Name</strong>?
-                        </p>
-                        <hr>
-                        <p class="small mb-0">
-                            Това действие е необратимо. Всички снимки в албума и гласовете към тях ще бъдат изтрити завинаги.
-                        </p>
-                    </div>
 
-                    <form asp-action="Delete" method="post" class="text-center mt-4">
-                        <input type="hidden" asp-for="Id" />
-
-                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                            <button type="submit" class="btn btn-danger btn-lg px-5 shadow">Да, изтрий всичко!</button>
-                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg px-5">Не, върни ме обратно</a>
+            @if (Model.IsActive && !Model.HasPhotos)
+            {
+                <!-- Scenario 1 - Active Cat Profile, No Photos - Delete Allowed -->
+                <div class="card shadow-sm border-0 bg-light rounded-4 border-start border-danger border-5">
+                    <div class="card-body p-5 text-center">
+                        <div class="alert alert-danger py-4 shadow-sm">
+                            <h4 class="alert-heading fw-bold text-uppercase">Окончателно изтриване ⚠️</h4>
+                            <p class="mb-0 fs-5">Профилът на <strong>@Model.Name</strong> няма свързани снимки и може да бъде премахнат завинаги.</p>
                         </div>
-                    </form>
+
+                        <form asp-action="Delete" method="post" class="mt-4">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                                <button type="submit" class="btn btn-danger btn-lg px-5 shadow">Изтрий завинаги</button>
+                                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg px-5">Отказ</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            }
+            else if (Model.IsActive)
+            {
+                <!-- Scenario 2 - Active Cat Profile - Can Archive -->
+                <div class="card shadow-sm border-0 bg-light rounded-4">
+                    <div class="card-body p-5">
+                        <div class="alert alert-warning text-center py-4 shadow-sm border-0">
+                            <h4 class="alert-heading fw-bold">📦 Архивиране</h4>
+                            <p class="mb-0 fs-5">Сигурни ли сте, че искате да преместите <strong>@Model.Name</strong> в архива?</p>
+                        </div>
+                        <p class="text-center text-muted fst-italic">Снимките ще останат в календара, но профилът няма да е част от активния Прайд.</p>
+
+                        <form asp-action="Delete" method="post" class="text-center mt-4">
+                            <input type="hidden" asp-for="Id" />
+                            <button type="submit" class="btn btn-warning btn-lg px-5 shadow">Да, архивирай!</button>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg px-5">Отказ</a>
+                        </form>
+                    </div>
+                </div>
+            }
+            else if (Model.HasPhotos)
+            {
+                <!-- Scenario 3 - Archived Cat Profile, Has Photos - No Delete Allowed -->
+                <div class="card shadow-sm border-0 bg-white rounded-4 border-start border-info border-5">
+                    <div class="card-body p-5 text-center">
+                        <div class="mb-4">
+                            <i class="bi bi-shield-lock text-info" style="font-size: 4rem; opacity: 0.5;"></i>
+                        </div>
+                        <h3 class="fw-bold">Защитен архив</h3>
+                        <p class="lead">Профилът на <strong>@Model.Name</strong> не може да бъде изтрит перманентно.</p>
+                        <div class="alert alert-info border-0 shadow-sm my-4">
+                            Това коте има ценни спомени в семейния албум. За да запазим целостта на календара, окончателното изтриване е забранено.
+                        </div>
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary px-5 rounded-pill shadow">Обратно към спомените</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Scenario 4 - Archived Cat, No Photos - Delete Allowed -->
+                <div class="card shadow-sm border-0 bg-light rounded-4 border-start border-danger border-5">
+                    <div class="card-body p-5 text-center">
+                        <div class="alert alert-danger py-4 shadow-sm">
+                            <h4 class="alert-heading fw-bold text-uppercase">Окончателно изтриване ⚠️</h4>
+                            <p class="mb-0 fs-5">Профилът на <strong>@Model.Name</strong> няма свързани снимки и може да бъде премахнат завинаги.</p>
+                        </div>
+
+                        <form asp-action="Delete" method="post" class="mt-4">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                                <button type="submit" class="btn btn-danger btn-lg px-5 shadow">Изтрий завинаги</button>
+                                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-lg px-5">Отказ</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+
         </div>
     </div>
 </div>

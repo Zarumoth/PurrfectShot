@@ -13,6 +13,7 @@
             <li class="breadcrumb-item active" aria-current="page">Снимка</li>
         </ol>
     </nav>
+
     <div class="card shadow-lg border-0 overflow-hidden rounded-4">
         <div class="row g-0">
 
@@ -25,43 +26,60 @@
             <div class="col-md-4 d-flex flex-column bg-white">
                 <div class="card-body p-4">
 
-                    <!-- Edit/Delete Buttons -->
+                    <!-- Actions -->
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div>
                             <h2 class="fw-bold text-primary mb-1">@Model.CatName</h2>
                             <span class="badge rounded-pill" style="background-color: #e7f1ff; color: #0d6efd;">@Model.CatBreed</span>
                         </div>
-                        <div class="d-flex align-items-center gap-1">
 
-                            @if (Model.IsMainPhoto)
+                        <div class="d-flex align-items-center gap-1">
+                            @if (Model.IsActive)
                             {
-                                <!-- Profile Picture True -->
-                                <div class="text-success p-1" title="Това е профилната снимка">
-                                    <i class="bi bi-check-square-fill fs-4"></i>
-                                </div>
+                                @if (Model.IsMainPhoto)
+                                {
+                                    <div class="text-success p-1" title="Това е профилната снимка">
+                                        <i class="bi bi-check-square-fill fs-4"></i>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <form asp-action="SetProfilePicture" asp-route-id="@Model.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-link text-muted p-1 action-icon-link" title="Задай като профилна">
+                                            <i class="bi bi-person-bounding-box fs-4"></i>
+                                        </button>
+                                    </form>
+                                }
+
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-link text-muted p-1 action-icon-link" title="Редактирай">
+                                    <i class="bi bi-pencil-square fs-4"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-link text-danger p-1 action-icon-link" title="Изтрий">
+                                    <i class="bi bi-trash fs-4"></i>
+                                </a>
                             }
                             else
                             {
-                                <!-- Make Profile Picture -->
-                                <form asp-action="SetProfilePicture" asp-route-id="@Model.Id" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-link text-muted p-1 action-icon-link" title="Задай като профилна">
-                                        <i class="bi bi-person-bounding-box fs-4"></i>
-                                    </button>
-                                </form>
+                                <span class="text-muted p-1" title="Профилът е архивиран - промените са забранени">
+                                    <i class="bi bi-archive fs-4"></i>
+                                </span>
                             }
-
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-link text-muted p-1 action-icon-link" title="Редактирай">
-                                <i class="bi bi-pencil-square fs-4"></i>
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-link text-danger p-1 action-icon-link" title="Изтрий">
-                                <i class="bi bi-trash fs-4"></i>
-                            </a>
                         </div>
                     </div>
 
-                    <!-- Cat Description -->
+                    <!-- Status message if archived -->
+                    @if (!Model.IsActive)
+                    {
+                        <div class="alert alert-secondary py-2 px-3 border-0 rounded-3 mb-4">
+                            <small class="fst-italic">
+                                <i class="bi bi-info-circle me-1"></i> Тази снимка е част от архивен профил.
+                            </small>
+                        </div>
+                    }
+
+                    <!-- Photo Caption -->
                     <div class="mb-4">
-                        <p class="card-text fs-5 fst-italic text-secondary">@Model.Caption</p>
+                        <p class="card-text fs-5 fst-italic text-secondary">"@Model.Caption"</p>
                         <p class="text-muted" style="font-size: 0.8rem;">Качена на: @Model.UploadedOn</p>
                     </div>
 
@@ -82,13 +100,13 @@
                         <small class="text-muted">(@Model.VotesCount гласа)</small>
                     </div>
 
-                    <!-- Vote/Rating Section -->
+                    <!-- Vote Section -->
                     <div class="card bg-light border-0 mb-4">
                         <div class="card-body p-3">
                             <form asp-action="Vote" method="post">
                                 <input type="hidden" name="PhotoId" value="@Model.Id" />
                                 <div class="mb-2">
-                                    <select name="Stars" class="form-select form-select-sm">
+                                    <select name="Stars" class="form-select form-select-sm shadow-sm border-0">
                                         <option value="5">⭐⭐⭐⭐⭐ Супер-Мяу!</option>
                                         <option value="4">⭐⭐⭐⭐ Браво-Мяу</option>
                                         <option value="3">⭐⭐⭐ Бива-Мяу</option>
@@ -97,9 +115,9 @@
                                     </select>
                                 </div>
                                 <div class="mb-2">
-                                    <input type="text" name="VoterName" class="form-control form-control-sm" placeholder="Твоето име" required minlength="2" />
+                                    <input type="text" name="VoterName" class="form-control form-control-sm shadow-sm border-0" placeholder="Твоето име" required minlength="2" />
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-sm w-100 shadow-sm">Гласувай!</button>
+                                <button type="submit" class="btn btn-primary btn-sm w-100 shadow-sm fw-bold">Гласувай!</button>
                             </form>
                         </div>
                     </div>
@@ -113,7 +131,7 @@
                             </a>
                             <a asp-controller="Cats" asp-action="Details" asp-route-id="@Model.CatId"
                                class="text-muted small text-decoration-none hover-link">
-                                <i class="bi bi-collection me-1"></i> Всички снимки на @Model.CatName
+                                <i class="bi bi-collection me-1"></i> Още снимки на @Model.CatName
                             </a>
                         </div>
                     </div>
