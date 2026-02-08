@@ -82,7 +82,8 @@ namespace PurrfectShot.Web.Services
                 VotesCount = photo.Votes.Count,
                 Month = photo.DateUploaded.Month,
                 Year = photo.DateUploaded.Year,
-                MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month)
+                MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month),
+                IsMainPhoto = photo.Id == photo.Cat.MainPhotoId
             };
         }
 

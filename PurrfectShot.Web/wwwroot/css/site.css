@@ -149,3 +149,17 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
+/* Used for Photo Details */
+
+.badge i {
+    vertical-align: middle;
+}
+
+.action-icon-link i {
+    transition: all 0.2s ease;
+}
+
+.action-icon-link:hover i {
+    transform: scale(1.2);
+}
