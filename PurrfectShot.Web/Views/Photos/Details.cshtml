@@ -72,6 +72,16 @@
 
                                 <button type="submit" class="btn btn-primary w-100">Гласувай! 🗳️</button>
                             </form>
+
+                            <!-- Return to Cat Profile/Gallery -->
+                            <a asp-controller="Cats"
+                               asp-action="Details"
+                               asp-route-id="@Model.CatId"
+                               class="btn btn-outline-primary w-100 mt-3 shadow-sm">
+                                Виж още снимки за @Model.CatName
+                            </a>
+
+                            <!-- Return to Month Gallery -->
                             <a asp-controller="Calendar"
                                asp-action="Month"
                                asp-route-year="@Model.Year"
