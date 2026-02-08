@@ -8,6 +8,21 @@ namespace PurrfectShot.Web.Controllers
     public class CatsController(ICatService catService, IPhotoService photoService) : Controller
     {
 
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var featuredCats = await catService.GetFeaturedCatsAsync();
+                ViewData["Title"] = "Нашите котки";
+                return View(featuredCats);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Възникна грешка при зареждането на котките. Моля, опитайте отново по-късно.";
+                return RedirectToAction(nameof(Index), "Home");
+            }
+        }
+
         [HttpGet]
         public IActionResult Add()
         {
