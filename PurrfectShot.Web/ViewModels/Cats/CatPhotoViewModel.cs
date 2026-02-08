@@ -2,7 +2,7 @@
 {
     public class CatPhotoViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string ImageUrl { get; set; } = null!;
         public double Rating { get; set; }
 

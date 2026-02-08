@@ -2,7 +2,7 @@
 {
     public class PhotoDeleteViewModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public int CatId { get; set; }
 

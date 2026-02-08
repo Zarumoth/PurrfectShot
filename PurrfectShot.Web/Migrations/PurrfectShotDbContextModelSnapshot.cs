@@ -44,8 +44,8 @@ namespace PurrfectShot.Web.Migrations
                         .HasColumnType("bit")
                         .HasComment("Indicates if the cat is still an active member of the household gallery.");
 
-                    b.Property<int?>("MainPhotoId")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("MainPhotoId")
+                        .HasColumnType("uniqueidentifier")
                         .HasComment("The ID of the photo selected as the main profile picture for the cat.");
 
                     b.Property<string>("Name")
@@ -96,11 +96,9 @@ namespace PurrfectShot.Web.Migrations
 
             modelBuilder.Entity("PurrfectShot.Web.Models.Photo", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Caption")
                         .IsRequired()
@@ -129,7 +127,7 @@ namespace PurrfectShot.Web.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 101,
+                            Id = new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"),
                             Caption = "Ами ако никога не мърдна от тук?",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -137,7 +135,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 102,
+                            Id = new Guid("7592715c-1d9a-4848-8c4d-2194fe0f477c"),
                             Caption = "Слийпи блем",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 3, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -145,7 +143,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 103,
+                            Id = new Guid("bb536fa6-7323-42ac-99d3-971e1e9587ae"),
                             Caption = "Лордът на слънчевите бани",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 1, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -153,7 +151,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 104,
+                            Id = new Guid("f86bfb53-eb39-4770-94f5-35a4710d037f"),
                             Caption = "Гледаме си от пенхауса",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -161,7 +159,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 105,
+                            Id = new Guid("ffdb1b39-5ee0-471b-b666-f88e210ec99c"),
                             Caption = "Заспал блем в котешкото легло",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -169,7 +167,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 106,
+                            Id = new Guid("7ed1f628-46ce-4fb8-9295-d93e976f0116"),
                             Caption = "Отново... спим",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -177,7 +175,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 107,
+                            Id = new Guid("256e3cf7-f9ec-4f14-8361-e2e6fd2ce0e4"),
                             Caption = "Морти и неговата кашоно-къща",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -185,7 +183,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 108,
+                            Id = new Guid("769bd5cb-e50b-46b5-875c-51ace4382828"),
                             Caption = "Дай *прозявка* пет",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -193,7 +191,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 201,
+                            Id = new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"),
                             Caption = "Когато си най-сладката писанка на света",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -201,7 +199,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 202,
+                            Id = new Guid("4b7702ad-a3f7-4169-8e82-ebe4865b8953"),
                             Caption = "Размисли над живота от новото си легло",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -209,7 +207,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 203,
+                            Id = new Guid("3f1d8d99-c8e4-4768-8f0c-caac648ad543"),
                             Caption = "..или просто прозявка",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -217,7 +215,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 204,
+                            Id = new Guid("80377db9-ed3a-4013-b325-64651c2a4b6c"),
                             Caption = "В пастта на акулата",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -225,7 +223,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 205,
+                            Id = new Guid("7db14ae0-d116-41ee-82db-a5d7abceee2a"),
                             Caption = "Две котки, една перална",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 7, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -233,7 +231,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 206,
+                            Id = new Guid("861ea7f6-af4e-4b67-96ff-61c6abe2fa0d"),
                             Caption = "Не само щраусите могат така",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -241,7 +239,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 207,
+                            Id = new Guid("864f6ad7-4eba-4848-83ed-a7eec7fe15e6"),
                             Caption = "А ти какво гледаш?",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -249,7 +247,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 208,
+                            Id = new Guid("2332efed-2870-427f-aefd-dbfd8bb14043"),
                             Caption = "Лейди Фрайни, върху трупът на лисицата",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -257,7 +255,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 209,
+                            Id = new Guid("dbf3cd30-3b4b-483d-80ff-ef12a3eead94"),
                             Caption = "Тунелни истории",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -265,7 +263,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 301,
+                            Id = new Guid("42174d8b-9db8-4098-9f38-371005220780"),
                             Caption = "Венти - най-бързият селфи-майстор",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -273,7 +271,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 302,
+                            Id = new Guid("89bae15d-1c8e-4299-80ff-9c14578ab6ee"),
                             Caption = "Ето така се мият котешките лапи",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -281,7 +279,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 303,
+                            Id = new Guid("b3dff3d3-0115-4ac5-9cd9-192c5f059109"),
                             Caption = "Снейк кат",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -289,7 +287,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 304,
+                            Id = new Guid("0aca87fc-58b9-483b-b80e-74a811811372"),
                             Caption = "Диванът не е достатъчно голям",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -297,7 +295,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 305,
+                            Id = new Guid("3360a037-aa1d-4bf5-b04b-da6afac92599"),
                             Caption = "Vent do you want?",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 12, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -305,7 +303,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 306,
+                            Id = new Guid("be283f19-0b3c-4adb-b235-e4b64d247db4"),
                             Caption = "Най-добре е върху лапата на папа",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -313,7 +311,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 307,
+                            Id = new Guid("ac07d5d6-c099-45e9-b725-f09ad314e9d3"),
                             Caption = "Малко блем и карти",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -321,7 +319,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 308,
+                            Id = new Guid("38058665-8726-41fa-be91-41de9acd0f72"),
                             Caption = "Не, всъщност, ето така се мият котешки лапи",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -329,7 +327,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 309,
+                            Id = new Guid("7f2e351c-6c8e-4261-ae66-b29bded5298d"),
                             Caption = "It's just me and my cat bed",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -337,7 +335,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 310,
+                            Id = new Guid("5e14f8a8-6bd3-41d1-aca1-0d8f052d9241"),
                             Caption = "Венти, йога-котка",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 11, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -345,7 +343,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 401,
+                            Id = new Guid("9940e6f5-8edd-4e94-ad94-89579118a578"),
                             Caption = "Хъни-Бъни и нейната аура на сладост",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -353,7 +351,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 402,
+                            Id = new Guid("b79cb330-da37-4a09-8eaf-bfde8951051f"),
                             Caption = "Заспали и завити с на мама дрехите",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 11, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -361,7 +359,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 403,
+                            Id = new Guid("f62689fd-0798-4eb7-a0de-d9dc98f9b1fd"),
                             Caption = "Когато се миеш на трона",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -369,7 +367,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 404,
+                            Id = new Guid("dcf0db9d-886f-40b1-9078-09cb80973b3a"),
                             Caption = "Дебнейки от стола",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -377,7 +375,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 405,
+                            Id = new Guid("0c74aadc-266b-47cd-9c56-995b73324753"),
                             Caption = "Honey Bunny means business",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -385,7 +383,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 406,
+                            Id = new Guid("fb6ca040-2d9c-4793-9d75-17fb6cca6ae4"),
                             Caption = "Облизваме се на стола на папа",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 3, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -393,7 +391,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 407,
+                            Id = new Guid("59392be0-f7de-4bcd-84b2-99f19a341503"),
                             Caption = "Папа, защо батко ме мие?",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -401,7 +399,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 408,
+                            Id = new Guid("3c164cdb-459f-4c9b-947d-60dc957085fe"),
                             Caption = "*музика от Цар Лъв*",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -409,7 +407,7 @@ namespace PurrfectShot.Web.Migrations
                         },
                         new
                         {
-                            Id = 409,
+                            Id = new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"),
                             Caption = "Знам, че той ме гледа",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -425,8 +423,8 @@ namespace PurrfectShot.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("PhotoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Stars")
                         .HasColumnType("int");

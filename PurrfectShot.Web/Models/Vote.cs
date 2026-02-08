@@ -18,7 +18,7 @@
         public string VoterName { get; set; } = null!;
 
         [Required]
-        public int PhotoId { get; set; }
+        public Guid PhotoId { get; set; }
 
         public virtual Photo Photo { get; set; } = null!;
     }

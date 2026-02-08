@@ -7,7 +7,7 @@
     public class Photo
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public DateTime DateUploaded { get; set; }
 

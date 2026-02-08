@@ -56,7 +56,7 @@ namespace PurrfectShot.Web.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(int photoId)
+        public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId)
         {
             var photo = await _dbContext
                 .Photos
@@ -87,10 +87,10 @@ namespace PurrfectShot.Web.Services
             };
         }
 
-        public async Task SetProfilePicture(int photoId)
+        public async Task SetProfilePicture(Guid photoId)
         {
 
-            if (photoId <= 0)
+            if (photoId == Guid.Empty)
                 throw new ArgumentException("Invalid photo ID.");
 
             var photo = await _dbContext
@@ -197,7 +197,7 @@ namespace PurrfectShot.Web.Services
                 .ToListAsync();
         }
 
-        public async Task<PhotoEditInputModel?> GetPhotoForEditAsync(int photoId)
+        public async Task<PhotoEditInputModel?> GetPhotoForEditAsync(Guid photoId)
         {
             return await _dbContext.Photos
                 .AsNoTracking()
@@ -225,7 +225,7 @@ namespace PurrfectShot.Web.Services
             }
         }
 
-        public async Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(int id)
+        public async Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(Guid id)
         {
             return await _dbContext.Photos
                 .AsNoTracking()
@@ -240,7 +240,7 @@ namespace PurrfectShot.Web.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<int> DeletePhotoAsync(int id, string webRootPath)
+        public async Task<int> DeletePhotoAsync(Guid id, string webRootPath)
         {
             var photo = await _dbContext.Photos.FindAsync(id);
 

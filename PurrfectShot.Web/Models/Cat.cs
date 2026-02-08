@@ -26,7 +26,7 @@
         public bool IsActive { get; set; } = true;
 
         [Comment("The ID of the photo selected as the main profile picture for the cat.")]
-        public int? MainPhotoId { get; set; }
+        public Guid? MainPhotoId { get; set; }
 
         public virtual Photo? MainPhoto { get; set; }
 

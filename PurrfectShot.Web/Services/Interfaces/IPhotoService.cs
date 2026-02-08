@@ -9,9 +9,9 @@ namespace PurrfectShot.Web.Services.Interfaces
     {
         Task UploadPhotoAsync(PhotoInputModel model, string wwwrootPath);
 
-        Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(int photoId);
+        Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId);
 
-        Task SetProfilePicture(int photoId);
+        Task SetProfilePicture(Guid photoId);
 
         Task<(int totalPhotos, int totalVotes)> GetGlobalStatisticsAsync();
 
@@ -23,12 +23,12 @@ namespace PurrfectShot.Web.Services.Interfaces
 
         Task<List<PhotoCardViewModel>> GetPhotosByMonthAsync(int year, int month);
 
-        Task<PhotoEditInputModel?> GetPhotoForEditAsync(int photoId);
+        Task<PhotoEditInputModel?> GetPhotoForEditAsync(Guid photoId);
 
         Task UpdatePhotoAsync(PhotoEditInputModel model);
 
-        Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(int id);
+        Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(Guid id);
 
-        Task<int> DeletePhotoAsync(int id, string webRootPath);
+        Task<int> DeletePhotoAsync(Guid id, string webRootPath);
     }
 }

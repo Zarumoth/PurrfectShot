@@ -70,9 +70,9 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            if (id <= 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             try
@@ -118,9 +118,9 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetProfilePicture(int id)
+        public async Task<IActionResult> SetProfilePicture(Guid id)
         {
-            if (id <= 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             try
@@ -138,9 +138,9 @@ namespace PurrfectShot.Web.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            if (id <= 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             try
@@ -187,9 +187,9 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            if (id <= 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             try
@@ -214,9 +214,9 @@ namespace PurrfectShot.Web.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (id <= 0)
+            if (id == Guid.Empty)
                 return BadRequest();
 
             try

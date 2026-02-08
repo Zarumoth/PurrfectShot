@@ -6,7 +6,7 @@ namespace PurrfectShot.Web.ViewModels.Votes
     public class VoteInputModel
     {
         [Required]
-        public int PhotoId { get; set; }
+        public Guid PhotoId { get; set; }
 
         [Required]
         [Range(MinStarVoteValue, MaxStarVoteValue)]

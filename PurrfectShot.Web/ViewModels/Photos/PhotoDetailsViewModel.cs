@@ -4,7 +4,7 @@
     {
         //Picture Info
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string ImageUrl { get; set; } = null!;
         public string Caption { get; set; } = null!;
         public string UploadedOn { get; set; } = null!;
