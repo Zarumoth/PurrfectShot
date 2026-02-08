@@ -10,6 +10,11 @@
         public string UploadedOn { get; set; } = null!;
 
 
+        //Calendar Info (used for routing)
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public string MonthName { get; set; } = null!;
+
         //Cat Info
 
         public int CatId { get; set; }

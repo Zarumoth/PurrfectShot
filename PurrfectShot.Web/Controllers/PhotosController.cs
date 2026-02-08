@@ -9,13 +9,18 @@ namespace PurrfectShot.Web.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> Upload()
+        public async Task<IActionResult> Upload(int? catId)
         {
             ViewData["Title"] = "Качи нова снимка";
             var model = new PhotoInputModel();
 
             try
             {
+                if (catId.HasValue && catId > 0)
+                {
+                    model.CatId = catId.Value;
+                }
+
                 model.Cats = await catService.GetAllCatsForSelectAsync();
 
                 return View(model);

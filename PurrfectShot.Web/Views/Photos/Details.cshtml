@@ -72,6 +72,13 @@
 
                                 <button type="submit" class="btn btn-primary w-100">Гласувай! 🗳️</button>
                             </form>
+                            <a asp-controller="Calendar"
+                               asp-action="Month"
+                               asp-route-year="@Model.Year"
+                               asp-route-month="@Model.Month"
+                               class="btn btn-outline-secondary w-100 mt-2 shadow-sm">
+                                Към @Model.MonthName @Model.Year
+                            </a>
                             <div class="text-center">
                                 <form asp-action="SetProfilePicture" asp-route-id="@Model.Id" method="post">
                                     <button type="submit" class="btn btn-outline-success btn-sm w-100 shadow-sm">

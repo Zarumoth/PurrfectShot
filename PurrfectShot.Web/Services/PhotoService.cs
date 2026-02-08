@@ -79,7 +79,10 @@ namespace PurrfectShot.Web.Services
                 CatName = photo.Cat.Name,
                 CatBreed = photo.Cat.Breed,
                 Rating = photo.Votes.Any() ? photo.Votes.Average(v => v.Stars) : 0.0,
-                VotesCount = photo.Votes.Count
+                VotesCount = photo.Votes.Count,
+                Month = photo.DateUploaded.Month,
+                Year = photo.DateUploaded.Year,
+                MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month)
             };
         }
 
