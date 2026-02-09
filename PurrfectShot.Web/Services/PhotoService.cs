@@ -168,6 +168,22 @@ namespace PurrfectShot.Web.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> RemovePhotoVoteAsync(Guid photoId, string voterName)
+        {
+            var existingVote = await _dbContext.Votes
+                .FirstOrDefaultAsync(v => v.PhotoId == photoId && v.VoterName == voterName);
+
+            if (existingVote == null)
+            {
+                return false;
+            }
+
+            _dbContext.Votes.Remove(existingVote);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync()
         {
 

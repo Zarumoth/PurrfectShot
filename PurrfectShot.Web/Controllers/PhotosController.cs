@@ -116,6 +116,37 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Unvote(Guid photoId, string voterName)
+        {
+            if (photoId == Guid.Empty || string.IsNullOrWhiteSpace(voterName))
+            {
+                TempData["Error"] = "Моля, въведете име, за да премахнете гласа си.";
+                return RedirectToAction(nameof(Details), new { id = photoId });
+            }
+
+            try
+            {
+                bool isRemoved = await photoService.RemovePhotoVoteAsync(photoId, voterName);
+
+                if (isRemoved)
+                {
+                    TempData["Success"] = "Гласът ти беше премахнат! ❌";
+                }
+                else
+                {
+                    // Ако потребителят е сбъркал името си
+                    TempData["Error"] = $"Не намерихме глас от '{voterName}' за тази снимка.";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Възникна грешка при премахването на гласа.";
+            }
+
+            return RedirectToAction(nameof(Details), new { id = photoId });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> SetProfilePicture(Guid id)
         {
             if (id == Guid.Empty)

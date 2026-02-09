@@ -19,6 +19,8 @@ namespace PurrfectShot.Web.Services.Interfaces
 
         Task VoteForPhotoAsync(VoteInputModel model);
 
+        Task<bool> RemovePhotoVoteAsync(Guid photoId, string voterName);
+
         Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync();
 
         Task<List<PhotoCardViewModel>> GetPhotosByMonthAsync(int year, int month);
