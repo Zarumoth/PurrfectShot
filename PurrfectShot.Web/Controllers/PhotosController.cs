@@ -99,9 +99,7 @@ namespace PurrfectShot.Web.Controllers
         public async Task<IActionResult> Vote(VoteInputModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return RedirectToAction(nameof(Details), new { id = model.PhotoId });
-            }
 
             try
             {

@@ -146,14 +146,25 @@ namespace PurrfectShot.Web.Services
         //> To think if we want to track vote timestamps (is this even useful?)
         public async Task VoteForPhotoAsync(VoteInputModel model)
         {
-            var vote = new Models.Vote
-            {
-                PhotoId = model.PhotoId,
-                Stars = model.Stars,
-                VoterName = model.VoterName,
-            };
+            var existingVote = await _dbContext.Votes
+                .FirstOrDefaultAsync(v => v.PhotoId == model.PhotoId && v.VoterName == model.VoterName);
 
-            await _dbContext.Votes.AddAsync(vote);
+            if (existingVote != null)
+            {
+                existingVote.Stars = model.Stars;
+            }
+            else
+            {
+                var newVote = new Models.Vote
+                {
+                    PhotoId = model.PhotoId,
+                    Stars = model.Stars,
+                    VoterName = model.VoterName,
+                };
+
+            await _dbContext.Votes.AddAsync(newVote);
+            }
+
             await _dbContext.SaveChangesAsync();
         }
 
