@@ -1,14 +1,60 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Политика за поверителност";
 }
-<h1>@ViewData["Title"]</h1>
 
-<!-- Breadcrumb Navigation -->
-<nav aria-label="breadcrumb" class="mt-3">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
-        <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
-    </ol>
-</nav>
+<div class="container mt-3">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+        </ol>
+    </nav>
 
-<p>Use this page to detail your site's privacy policy.</p>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-9">
+            <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5 bg-light">
+                <h1 class="text-primary fw-bold mb-4"><i class="bi bi-shield-lock-fill me-2"></i> @ViewData["Title"]</h1>
+
+                <p class="lead">Вашата поверителност (и тази на котките) е важна за нас.</p>
+                <hr class="my-4">
+
+                <section class="mb-4">
+                    <h4 class="fw-bold text-dark">1. Какви данни събираме?</h4>
+                    <p>Събираме само информацията, която ни предоставяте доброволно, надаваме се със съгласието и на котките:</p>
+                    <ul>
+                        <li>Имена на котки, породи и техни снимки.</li>
+                        <li>Вашето име (при гласуване), за да знаем кой е фен на даден кадър.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-4">
+                    <h4 class="fw-bold text-dark">2. Как използваме информацията?</h4>
+                    <p>Данните се използват единствено за:</p>
+                    <ul>
+                        <li>Визуализиране на семейния котешки архив.</li>
+                        <li>Генериране на класация за годишния календар.</li>
+                        <li>Предизвикване на усмивки у останалите членове на семейството.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-4">
+                    <h4 class="fw-bold text-dark">3. Бисквитки (Cookies)</h4>
+                    <p>Използваме само най-необходимите технически "бисквитки" за работата на сайта. Те не съдържат котешка трева, но помагат на приложението да работи гладко.</p>
+                </section>
+
+                <section class="mb-4">
+                    <h4 class="fw-bold text-dark">4. Права на котките</h4>
+                    <p>Всяка котка има право да изглежда добре на снимките си. Ако дадена котка не харесва своята снимка, тя може да изиска от стопанина си да я редактира или изтрие чрез административния панел.</p>
+                </section>
+
+                <div class="mt-5 p-3 bg-white rounded-3 border-start border-primary border-4">
+                    <p class="mb-0 small text-muted">
+                        Последна актуализация: @DateTime.Now.ToString("dd.MM.yyyy") г. <br>
+                        С използването на <strong>Purrfect Shot</strong>, вие се съгласявате да бъдете мъркащо добри един към друг.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
