@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PurrfectShot.Data;
+using PurrfectShot.Data.Models;
 using PurrfectShot.Services.Data;
 using PurrfectShot.Services.Data.Interfaces;
 
@@ -12,7 +13,7 @@ namespace PurrfectShot.Web
             var builder = WebApplication.CreateBuilder(args);
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            
+
             builder.Services.AddDbContext<PurrfectShotDbContext>(opt =>
             {
                 opt
@@ -21,8 +22,19 @@ namespace PurrfectShot.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
             builder.Services.AddScoped<ICatService, CatService>();
             builder.Services.AddScoped<IPhotoService, PhotoService>();
+
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false; // ?? ??-????? ???????
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            })
+            .AddEntityFrameworkStores<PurrfectShotDbContext>();
 
             var app = builder.Build();
 
@@ -39,7 +51,9 @@ namespace PurrfectShot.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",

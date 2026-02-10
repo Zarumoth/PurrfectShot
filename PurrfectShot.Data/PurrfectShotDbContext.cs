@@ -1,12 +1,15 @@
 ﻿namespace PurrfectShot.Data
 {
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using PurrfectShot.Data.Models;
 
-    public class PurrfectShotDbContext : DbContext
+
+    public class PurrfectShotDbContext : IdentityDbContext<ApplicationUser>
     {
-        public PurrfectShotDbContext(DbContextOptions<PurrfectShotDbContext> dbContextOptions)
-            : base(dbContextOptions)
+        public PurrfectShotDbContext(DbContextOptions<PurrfectShotDbContext> options)
+            : base(options)
         {
         }
 
@@ -18,9 +21,16 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PurrfectShotDbContext).Assembly);
-
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityRole>().ToTable("Roles");
+            modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UsersRoles");
+            modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UsersClaims");
+            modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UsersLogins");
+            modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RolesClaims");
+            modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UsersTokens");
+
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(PurrfectShotDbContext).Assembly);
         }
     }
 }
