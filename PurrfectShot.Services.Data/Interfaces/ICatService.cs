@@ -1,7 +1,6 @@
 ﻿using PurrfectShot.Web.ViewModels.Cats;
-using PurrfectShot.Web.ViewModels.Photos;
 
-namespace PurrfectShot.Web.Services.Interfaces
+namespace PurrfectShot.Services.Data.Interfaces
 {
     public interface ICatService
     {

@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PurrfectShot.Web.Data;
-using PurrfectShot.Web.Models;
-using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Data;
+using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Calendar;
-using PurrfectShot.Web.ViewModels.Cats;
+using PurrfectShot.Data.Models;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 using System.Globalization;
-using static PurrfectShot.Web.Common.EntityValidation;
 
-namespace PurrfectShot.Web.Services
+namespace PurrfectShot.Services.Data
 {
     public class PhotoService : IPhotoService
     {
@@ -45,7 +43,7 @@ namespace PurrfectShot.Web.Services
             }
 
             //Create a new Photo entity and save it (the path) to the database
-            var photo = new Models.Photo
+            var photo = new Photo
             {
                 CatId = model.CatId,
                 Caption = model.Caption,
@@ -155,7 +153,7 @@ namespace PurrfectShot.Web.Services
             }
             else
             {
-                var newVote = new Models.Vote
+                var newVote = new Vote
                 {
                     PhotoId = model.PhotoId,
                     Stars = model.Stars,

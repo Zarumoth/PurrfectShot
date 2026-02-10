@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PurrfectShot.Web.Data;
-using PurrfectShot.Web.Models;
-using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Data;
+using PurrfectShot.Data.Models;
+using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Cats;
-using PurrfectShot.Web.ViewModels.Photos;
 
-namespace PurrfectShot.Web.Services
+namespace PurrfectShot.Services.Data
 {
     public class CatService : ICatService
     {

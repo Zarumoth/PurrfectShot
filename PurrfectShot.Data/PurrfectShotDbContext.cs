@@ -1,7 +1,7 @@
-﻿namespace PurrfectShot.Web.Data
+﻿namespace PurrfectShot.Data
 {
     using Microsoft.EntityFrameworkCore;
-    using PurrfectShot.Web.Models;
+    using PurrfectShot.Data.Models;
 
     public class PurrfectShotDbContext : DbContext
     {

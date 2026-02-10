@@ -1,4 +1,4 @@
-﻿namespace PurrfectShot.Web.Models
+﻿namespace PurrfectShot.Data.Models
 {
     using Microsoft.EntityFrameworkCore;
     using System.ComponentModel.DataAnnotations;

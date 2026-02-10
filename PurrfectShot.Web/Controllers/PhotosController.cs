@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 

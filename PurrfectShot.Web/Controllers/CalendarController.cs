@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Services.Data.Interfaces;
 using System.Globalization;
 
 namespace PurrfectShot.Web.Controllers

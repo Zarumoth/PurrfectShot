@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PurrfectShot.Web.Models;
+using PurrfectShot.Data.Models;
 
-namespace PurrfectShot.Web.Data.Configuration
+namespace PurrfectShot.Data.Configuration
 
 {
     public class VoteConfiguration

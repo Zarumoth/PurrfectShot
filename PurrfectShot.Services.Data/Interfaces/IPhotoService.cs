@@ -3,7 +3,7 @@ using PurrfectShot.Web.ViewModels.Cats;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 
-namespace PurrfectShot.Web.Services.Interfaces
+namespace PurrfectShot.Services.Data.Interfaces
 {
     public interface IPhotoService
     {

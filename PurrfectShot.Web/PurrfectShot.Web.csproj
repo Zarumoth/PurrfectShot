@@ -23,4 +23,9 @@
     <Folder Include="wwwroot\images\uploads\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PurrfectShot.Services.Data\PurrfectShot.Services.Data.csproj" />
+    <ProjectReference Include="..\PurrfectShot.Web.ViewModels\PurrfectShot.Web.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

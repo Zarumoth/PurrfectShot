@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using PurrfectShot.Web.Data;
-using PurrfectShot.Web.Services;
-using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Data;
+using PurrfectShot.Services.Data;
+using PurrfectShot.Services.Data.Interfaces;
 
 namespace PurrfectShot.Web
 {

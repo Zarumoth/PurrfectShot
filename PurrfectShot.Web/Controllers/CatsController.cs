@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PurrfectShot.Web.Services;
-using PurrfectShot.Web.Services.Interfaces;
+using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Cats;
 
 namespace PurrfectShot.Web.Controllers

@@ -1,6 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
-using PurrfectShot.Web.Services;
-using PurrfectShot.Web.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels;
 using PurrfectShot.Web.ViewModels.Home;
 using System.Diagnostics;
@@ -12,7 +11,7 @@ namespace PurrfectShot.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewData["Title"] = "??????";
+            ViewData["Title"] = "Начало";
 
             try
             {
@@ -37,7 +36,7 @@ namespace PurrfectShot.Web.Controllers
         }
         public IActionResult Privacy()
         {
-            ViewData["Title"] = "???????? ?? ?????????????";
+            ViewData["Title"] = "Политика за поверителност";
             return View();
         }
 
