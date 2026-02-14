@@ -34,5 +34,7 @@ namespace PurrfectShot.Services.Data.Interfaces
         Task<int> DeletePhotoAsync(Guid id, string webRootPath);
 
         Task<bool> ToggleFavoriteAsync(Guid photoId, string userId);
+
+        Task<IEnumerable<PhotoCardViewModel>> GetFavoritePhotosByUserIdAsync(string userId);
     }
 }

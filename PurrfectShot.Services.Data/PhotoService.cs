@@ -330,6 +330,21 @@ namespace PurrfectShot.Services.Data
             }
         }
 
+        public async Task<IEnumerable<PhotoCardViewModel>> GetFavoritePhotosByUserIdAsync(string userId)
+        {
+            return await _dbContext.UserFavoritePhotos
+                .Where(f => f.UserId == userId)
+                .Select(f => new PhotoCardViewModel
+                {
+                    Id = f.Photo.Id,
+                    FilePath = f.Photo.FilePath,
+                    CatName = f.Photo.Cat.Name,
+                    DateUploaded = f.Photo.DateUploaded,
+                    Rating = f.Photo.Votes.Any() ? f.Photo.Votes.Average(v => v.Stars) : 0.0
+                })
+                .OrderByDescending(p => p.DateUploaded)
+                .ToListAsync();
+        }
 
         //Helper: Used for BG-Month Upper Starting Letter
         private string ToTitleCase(string input)
