@@ -19,6 +19,8 @@
 
         public virtual DbSet<Vote> Votes { get; set; } = null!;
 
+        public virtual DbSet<UserFavoritePhoto> UserFavoritePhotos { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

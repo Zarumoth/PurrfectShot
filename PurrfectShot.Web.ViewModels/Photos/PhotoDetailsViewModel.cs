@@ -9,6 +9,7 @@
         public string Caption { get; set; } = null!;
         public string UploadedOn { get; set; } = null!;
         public bool IsMainPhoto { get; set; }
+        public bool IsFavorite { get; set; }
 
 
         //Calendar Info (used for routing)
@@ -28,5 +29,6 @@
 
         public double Rating { get; set; }
         public int VotesCount { get; set; }
+
     }
 }

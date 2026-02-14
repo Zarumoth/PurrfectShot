@@ -55,12 +55,15 @@ namespace PurrfectShot.Services.Data
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId)
+        public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId, string? userId)
         {
+
             var photo = await _dbContext
                 .Photos
                 .Include(p => p.Cat)
                 .Include(p => p.Votes)
+                .Include(p => p.UserFavoritePhotos)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(p => p.Id == photoId);
 
             if (photo == null)
@@ -85,13 +88,14 @@ namespace PurrfectShot.Services.Data
                 CatId = photo.Cat.Id,
                 CatName = photo.Cat.Name,
                 CatBreed = photo.Cat.Breed,
+                IsActive = photo.Cat.IsActive,
+                IsMainPhoto = photo.Id == photo.Cat.MainPhotoId,
                 Rating = photo.Votes.Any() ? photo.Votes.Average(v => v.Stars) : 0.0,
                 VotesCount = photo.Votes.Count,
                 Month = photo.DateUploaded.Month,
                 Year = photo.DateUploaded.Year,
                 MonthName = ToTitleCase(bgCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month)),
-                IsMainPhoto = photo.Id == photo.Cat.MainPhotoId,
-                IsActive = photo.Cat.IsActive
+                IsFavorite = userId != null && photo.UserFavoritePhotos.Any(fp => fp.UserId == userId)
             };
         }
 
@@ -301,6 +305,31 @@ namespace PurrfectShot.Services.Data
 
             return catId;
         }
+
+        public async Task<bool> ToggleFavoriteAsync(Guid photoId, string userId)
+        {
+
+            var favorite = await _dbContext.UserFavoritePhotos
+                .FirstOrDefaultAsync(f => f.PhotoId == photoId && f.UserId == userId);
+
+            if (favorite != null)
+            {
+                _dbContext.UserFavoritePhotos.Remove(favorite);
+                await _dbContext.SaveChangesAsync();
+                return false;
+            }
+            else
+            {
+                await _dbContext.UserFavoritePhotos.AddAsync(new UserFavoritePhoto
+                {
+                    PhotoId = photoId,
+                    UserId = userId
+                });
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+        }
+
 
         //Helper: Used for BG-Month Upper Starting Letter
         private string ToTitleCase(string input)

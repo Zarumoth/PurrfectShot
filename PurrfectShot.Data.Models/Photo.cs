@@ -34,5 +34,9 @@
         [Comment("Collection of star ratings received for this specific photo.")]
         public virtual ICollection<Vote> Votes { get; set; }
             = new HashSet<Vote>();
+
+        [Comment("Collection of user favorites that include this photo.")]
+        public virtual ICollection<UserFavoritePhoto> UserFavoritePhotos { get; set; }
+            = new HashSet<UserFavoritePhoto>();
     }
 }

@@ -9,7 +9,7 @@ namespace PurrfectShot.Services.Data.Interfaces
     {
         Task UploadPhotoAsync(PhotoInputModel model, string wwwrootPath);
 
-        Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId);
+        Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId, string? userId);
 
         Task SetProfilePicture(Guid photoId);
 
@@ -32,5 +32,7 @@ namespace PurrfectShot.Services.Data.Interfaces
         Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(Guid id);
 
         Task<int> DeletePhotoAsync(Guid id, string webRootPath);
+
+        Task<bool> ToggleFavoriteAsync(Guid photoId, string userId);
     }
 }

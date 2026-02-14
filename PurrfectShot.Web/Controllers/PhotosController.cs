@@ -77,9 +77,11 @@ namespace PurrfectShot.Web.Controllers
             if (id == Guid.Empty)
                 return BadRequest();
 
+            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             try
             {
-                var photoDetails = await photoService.GetPhotoDetailsAsync(id);
+                var photoDetails = await photoService.GetPhotoDetailsAsync(id, userId);
 
                 if (photoDetails == null)
                 {
@@ -264,6 +266,31 @@ namespace PurrfectShot.Web.Controllers
                 TempData["Error"] = "Възникна системна грешка при изтриване.";
                 return RedirectToAction(nameof(Index), "Home");
             }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Favorite(Guid id)
+        {
+            if (id == Guid.Empty)
+                return BadRequest();
+
+            try
+            {
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                bool isNowFavorite = await photoService.ToggleFavoriteAsync(id, userId);
+
+                if (isNowFavorite)
+                    TempData["Success"] = "Добавено в Любими! ❤️";
+                else
+                    TempData["Info"] = "Премахнато от Любими.";
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Възникна грешка.";
+            }
+
+            return RedirectToAction(nameof(Details), new { id = id });
         }
     }
 }
