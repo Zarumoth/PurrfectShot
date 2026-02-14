@@ -12,9 +12,9 @@ namespace PurrfectShot.Web.ViewModels.Votes
         [Range(MinStarVoteValue, MaxStarVoteValue)]
         public int Stars { get; set; }
 
-        //TO-DO: When user authentication is added, pull VoterName from the user/account details
-        [Required(ErrorMessage = "И хората си имат име, кажи си")]
-        [StringLength(VoterNameMaxLength, MinimumLength = VoterNameMinLength)]
-        public string VoterName { get; set; } = null!;
+        //Identity Implemented, data is taken from the user profile
+        //[Required(ErrorMessage = "И хората си имат име, кажи си")]
+        //[StringLength(VoterNameMaxLength, MinimumLength = VoterNameMinLength)]
+        //public string VoterName { get; set; } = null!;
     }
 }

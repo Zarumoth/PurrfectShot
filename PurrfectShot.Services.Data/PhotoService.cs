@@ -105,7 +105,7 @@ namespace PurrfectShot.Services.Data
                 .Photos
                 .FindAsync(photoId);
 
-            if (photo == null) 
+            if (photo == null)
                 throw new InvalidOperationException("Photo not found.");
 
             var cat = await _dbContext
@@ -139,28 +139,27 @@ namespace PurrfectShot.Services.Data
                 .CountAsync(p => p.CatId == catId);
         }
 
-        //Notes:
-        //> We don't have a vote limit implemented (no user accounts)
-        //> To think if we want to track vote timestamps (is this even useful?)
-        public async Task VoteForPhotoAsync(VoteInputModel model)
+        public async Task VoteForPhotoAsync(VoteInputModel model, string userId, string userName)
         {
             var existingVote = await _dbContext.Votes
-                .FirstOrDefaultAsync(v => v.PhotoId == model.PhotoId && v.VoterName == model.VoterName);
+                .FirstOrDefaultAsync(v => v.PhotoId == model.PhotoId && v.UserId == userId);
 
             if (existingVote != null)
             {
                 existingVote.Stars = model.Stars;
+                existingVote.VoterName = userName;
             }
             else
             {
                 var newVote = new Vote
                 {
                     PhotoId = model.PhotoId,
-                    Stars = model.Stars,
-                    VoterName = model.VoterName,
+                    UserId = userId,
+                    VoterName = userName,
+                    Stars = model.Stars
                 };
 
-            await _dbContext.Votes.AddAsync(newVote);
+                await _dbContext.Votes.AddAsync(newVote);
             }
 
             await _dbContext.SaveChangesAsync();

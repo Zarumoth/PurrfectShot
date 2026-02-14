@@ -74,7 +74,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("RolesClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +99,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("UsersClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -123,7 +123,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("UsersLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -138,7 +138,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("UsersRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -228,15 +228,15 @@ namespace PurrfectShot.Data.Migrations
                         {
                             Id = "38058665-8726-41fa-be91-41de9acd0f72",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bd1ecfbf-f78f-4e11-ab0f-c81e0f98eefe",
+                            ConcurrencyStamp = "2732508c-2754-4372-8c1a-74bf753ce019",
                             Email = "admin@purrfect.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@PURRFECT.COM",
                             NormalizedUserName = "ADMIN@PURRFECT.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAPeL5r6/fHzsfRuuIDvTJAg/Kd/l4D7O7S+EEg212q5soQE8jLIQAIEXXPnqcjafQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKZhyatLgzuyt99I6A4UXRwlS2mnxTGwmt9xSQtyt8bAenSyVu9i5+d+ZjZK83jDRA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5e788208-bdf9-472d-8af8-65aad32392e3",
+                            SecurityStamp = "d656430a-27ae-485e-9c2b-bd230d89c5c3",
                             TwoFactorEnabled = false,
                             UserName = "admin@purrfect.com"
                         });
@@ -677,15 +677,21 @@ namespace PurrfectShot.Data.Migrations
                         .HasColumnType("int")
                         .HasComment("The number of stars awarded (from 1 to 5).");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Foreign key referencing the person who voted photo.");
+
                     b.Property<string>("VoterName")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasComment("The name of the user who cast the vote.");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PhotoId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Votes", t =>
                         {
@@ -698,6 +704,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1000,
                             PhotoId = new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Птеротатко"
                         },
                         new
@@ -705,6 +712,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1001,
                             PhotoId = new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"),
                             Stars = 4,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Трицерабобс"
                         },
                         new
@@ -712,6 +720,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1002,
                             PhotoId = new Guid("7592715c-1d9a-4848-8c4d-2194fe0f477c"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Термаминатор"
                         },
                         new
@@ -719,6 +728,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1003,
                             PhotoId = new Guid("bb536fa6-7323-42ac-99d3-971e1e9587ae"),
                             Stars = 3,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Птеротатко"
                         },
                         new
@@ -726,6 +736,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1004,
                             PhotoId = new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Трицерабобс"
                         },
                         new
@@ -733,6 +744,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1005,
                             PhotoId = new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Птеротатко"
                         },
                         new
@@ -740,6 +752,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1006,
                             PhotoId = new Guid("7db14ae0-d116-41ee-82db-a5d7abceee2a"),
                             Stars = 4,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Термаминатор"
                         },
                         new
@@ -747,6 +760,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1007,
                             PhotoId = new Guid("42174d8b-9db8-4098-9f38-371005220780"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Трицерабобс"
                         },
                         new
@@ -754,6 +768,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1008,
                             PhotoId = new Guid("38058665-8726-41fa-be91-41de9acd0f72"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Птеротатко"
                         },
                         new
@@ -761,6 +776,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1009,
                             PhotoId = new Guid("38058665-8726-41fa-be91-41de9acd0f72"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Термаминатор"
                         },
                         new
@@ -768,6 +784,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1010,
                             PhotoId = new Guid("9940e6f5-8edd-4e94-ad94-89579118a578"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Термаминатор"
                         },
                         new
@@ -775,6 +792,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1011,
                             PhotoId = new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"),
                             Stars = 4,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Трицерабобс"
                         },
                         new
@@ -782,6 +800,7 @@ namespace PurrfectShot.Data.Migrations
                             Id = 1012,
                             PhotoId = new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"),
                             Stars = 5,
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
                             VoterName = "Птеротатко"
                         });
                 });
@@ -795,7 +814,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("PurrfectShot.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -804,7 +823,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.HasOne("PurrfectShot.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -813,7 +832,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
@@ -828,7 +847,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("PurrfectShot.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -873,12 +892,22 @@ namespace PurrfectShot.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PurrfectShot.Data.Models.ApplicationUser", "Voter")
+                        .WithMany("Votes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Photo");
+
+                    b.Navigation("Voter");
                 });
 
             modelBuilder.Entity("PurrfectShot.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("OwnedCats");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("PurrfectShot.Data.Models.Cat", b =>

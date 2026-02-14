@@ -17,9 +17,15 @@
         public int Stars { get; set; }
 
         [Required]
-        [MaxLength(VoterNameMaxLength)]
         [Comment("The name of the user who cast the vote.")]
         public string VoterName { get; set; } = null!;
+
+        [Required]
+        [Comment("Foreign key referencing the person who voted photo.")]
+        public string UserId { get; set; } = null!;
+
+        [Comment("Navigation property to the user who cast the vote.")]
+        public virtual ApplicationUser Voter { get; set; } = null!;
 
         [Required]
         [Comment("Foreign key referencing the rated photo.")]

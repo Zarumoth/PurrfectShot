@@ -212,7 +212,8 @@ namespace PurrfectShot.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false, comment: "Unique identifier for the vote entry.")
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Stars = table.Column<int>(type: "int", nullable: false, comment: "The number of stars awarded (from 1 to 5)."),
-                    VoterName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, comment: "The name of the user who cast the vote."),
+                    VoterName = table.Column<string>(type: "nvarchar(max)", nullable: false, comment: "The name of the user who cast the vote."),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false, comment: "Foreign key referencing the person who voted photo."),
                     PhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, comment: "Foreign key referencing the rated photo.")
                 },
                 constraints: table =>
@@ -224,13 +225,19 @@ namespace PurrfectShot.Data.Migrations
                         principalTable: "Photos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Votes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 },
                 comment: "Represents a single rating given to a photo.");
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "38058665-8726-41fa-be91-41de9acd0f72", 0, "bd1ecfbf-f78f-4e11-ab0f-c81e0f98eefe", "admin@purrfect.com", true, false, null, "ADMIN@PURRFECT.COM", "ADMIN@PURRFECT.COM", "AQAAAAIAAYagAAAAEAPeL5r6/fHzsfRuuIDvTJAg/Kd/l4D7O7S+EEg212q5soQE8jLIQAIEXXPnqcjafQ==", null, false, "5e788208-bdf9-472d-8af8-65aad32392e3", false, "admin@purrfect.com" });
+                values: new object[] { "38058665-8726-41fa-be91-41de9acd0f72", 0, "2732508c-2754-4372-8c1a-74bf753ce019", "admin@purrfect.com", true, false, null, "ADMIN@PURRFECT.COM", "ADMIN@PURRFECT.COM", "AQAAAAIAAYagAAAAEKZhyatLgzuyt99I6A4UXRwlS2mnxTGwmt9xSQtyt8bAenSyVu9i5+d+ZjZK83jDRA==", null, false, "d656430a-27ae-485e-9c2b-bd230d89c5c3", false, "admin@purrfect.com" });
 
             migrationBuilder.InsertData(
                 table: "Cats",
@@ -288,22 +295,22 @@ namespace PurrfectShot.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Votes",
-                columns: new[] { "Id", "PhotoId", "Stars", "VoterName" },
+                columns: new[] { "Id", "PhotoId", "Stars", "UserId", "VoterName" },
                 values: new object[,]
                 {
-                    { 1000, new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"), 5, "Птеротатко" },
-                    { 1001, new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"), 4, "Трицерабобс" },
-                    { 1002, new Guid("7592715c-1d9a-4848-8c4d-2194fe0f477c"), 5, "Термаминатор" },
-                    { 1003, new Guid("bb536fa6-7323-42ac-99d3-971e1e9587ae"), 3, "Птеротатко" },
-                    { 1004, new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"), 5, "Трицерабобс" },
-                    { 1005, new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"), 5, "Птеротатко" },
-                    { 1006, new Guid("7db14ae0-d116-41ee-82db-a5d7abceee2a"), 4, "Термаминатор" },
-                    { 1007, new Guid("42174d8b-9db8-4098-9f38-371005220780"), 5, "Трицерабобс" },
-                    { 1008, new Guid("38058665-8726-41fa-be91-41de9acd0f72"), 5, "Птеротатко" },
-                    { 1009, new Guid("38058665-8726-41fa-be91-41de9acd0f72"), 5, "Термаминатор" },
-                    { 1010, new Guid("9940e6f5-8edd-4e94-ad94-89579118a578"), 5, "Термаминатор" },
-                    { 1011, new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"), 4, "Трицерабобс" },
-                    { 1012, new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"), 5, "Птеротатко" }
+                    { 1000, new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Птеротатко" },
+                    { 1001, new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"), 4, "38058665-8726-41fa-be91-41de9acd0f72", "Трицерабобс" },
+                    { 1002, new Guid("7592715c-1d9a-4848-8c4d-2194fe0f477c"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Термаминатор" },
+                    { 1003, new Guid("bb536fa6-7323-42ac-99d3-971e1e9587ae"), 3, "38058665-8726-41fa-be91-41de9acd0f72", "Птеротатко" },
+                    { 1004, new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Трицерабобс" },
+                    { 1005, new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Птеротатко" },
+                    { 1006, new Guid("7db14ae0-d116-41ee-82db-a5d7abceee2a"), 4, "38058665-8726-41fa-be91-41de9acd0f72", "Термаминатор" },
+                    { 1007, new Guid("42174d8b-9db8-4098-9f38-371005220780"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Трицерабобс" },
+                    { 1008, new Guid("38058665-8726-41fa-be91-41de9acd0f72"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Птеротатко" },
+                    { 1009, new Guid("38058665-8726-41fa-be91-41de9acd0f72"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Термаминатор" },
+                    { 1010, new Guid("9940e6f5-8edd-4e94-ad94-89579118a578"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Термаминатор" },
+                    { 1011, new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"), 4, "38058665-8726-41fa-be91-41de9acd0f72", "Трицерабобс" },
+                    { 1012, new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"), 5, "38058665-8726-41fa-be91-41de9acd0f72", "Птеротатко" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -369,6 +376,11 @@ namespace PurrfectShot.Data.Migrations
                 name: "IX_Votes_PhotoId",
                 table: "Votes",
                 column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Votes_UserId",
+                table: "Votes",
+                column: "UserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Cats_Photos_MainPhotoId",

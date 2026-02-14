@@ -17,7 +17,7 @@ namespace PurrfectShot.Services.Data.Interfaces
 
         Task<int> GetPhotoCountByCatIdAsync(int catId);
 
-        Task VoteForPhotoAsync(VoteInputModel model);
+        Task VoteForPhotoAsync(VoteInputModel model, string userId, string userName);
 
         Task<bool> RemovePhotoVoteAsync(Guid photoId, string voterName);
 

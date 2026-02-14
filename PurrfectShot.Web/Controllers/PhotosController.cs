@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
+using System.Security.Claims;
 
 namespace PurrfectShot.Web.Controllers
 {
@@ -95,48 +97,46 @@ namespace PurrfectShot.Web.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Vote(VoteInputModel model)
         {
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            string userName = User.Identity?.Name ?? "Котконимен";
+
             if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Невалидни данни при гласуване.";
                 return RedirectToAction(nameof(Details), new { id = model.PhotoId });
+            }
 
             try
             {
-                await photoService.VoteForPhotoAsync(model);
+                await photoService.VoteForPhotoAsync(model, userId, userName);
 
-                TempData["Success"] = "Гласът ти беше приет!";
-                return RedirectToAction(nameof(Details), new { id = model.PhotoId });
+                TempData["Success"] = "Гласът ти беше записан!";
             }
             catch (Exception)
             {
-                TempData["Error"] = "Гласът не беше записан успешно.";
-                return RedirectToAction(nameof(Details), new { id = model.PhotoId });
+                TempData["Error"] = "Възникна грешка при записа.";
             }
+
+                return RedirectToAction(nameof(Details), new { id = model.PhotoId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Unvote(Guid photoId, string voterName)
+        public async Task<IActionResult> Unvote(Guid photoId)
         {
-            if (photoId == Guid.Empty || string.IsNullOrWhiteSpace(voterName))
-            {
-                TempData["Error"] = "Моля, въведете име, за да премахнете гласа си.";
-                return RedirectToAction(nameof(Details), new { id = photoId });
-            }
+
+            string userName = User.Identity!.Name!;
 
             try
             {
-                bool isRemoved = await photoService.RemovePhotoVoteAsync(photoId, voterName);
+                bool isRemoved = await photoService.RemovePhotoVoteAsync(photoId, userName);
 
-                if (isRemoved)
-                {
-                    TempData["Success"] = "Гласът ти беше премахнат! ❌";
-                }
-                else
-                {
-                    // Ако потребителят е сбъркал името си
-                    TempData["Error"] = $"Не намерихме глас от '{voterName}' за тази снимка.";
-                }
+                if (isRemoved) TempData["Success"] = "Гласът ти беше премахнат!";
+                else TempData["Error"] = "Не открихме твой глас за тази снимка.";
             }
             catch (Exception)
             {

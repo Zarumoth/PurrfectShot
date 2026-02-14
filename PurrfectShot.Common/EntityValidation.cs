@@ -23,8 +23,8 @@
         {
             public const int MinStarVoteValue = 1;
             public const int MaxStarVoteValue = 5;
-            public const int VoterNameMinLength = 2;
-            public const int VoterNameMaxLength = 50;
+            public const int VoterNameMinLength = 2;   //Not used after implementing user authentication, but left for potential future use if we want to allow guest voting
+            public const int VoterNameMaxLength = 50;  //Not used after implementing user authentication, but left for potential future use if we want to allow guest voting
         }
     }
 }
