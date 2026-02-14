@@ -3,6 +3,7 @@ using PurrfectShot.Data;
 using PurrfectShot.Data.Models;
 using PurrfectShot.Services.Data;
 using PurrfectShot.Services.Data.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace PurrfectShot.Web
 {
