@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PurrfectShot.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialIdentitySetup : Migration
+    public partial class InitialFullSetup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -168,11 +168,18 @@ namespace PurrfectShot.Data.Migrations
                     Breed = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false, comment: "The specific breed of the cat."),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false, comment: "A short biography or description of the cat's personality."),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, comment: "Flag indicating if the cat is active or archived (soft-deleted)."),
-                    MainPhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true, comment: "The unique identifier of the photo chosen as the cat's profile picture.")
+                    MainPhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true, comment: "The unique identifier of the photo chosen as the cat's profile picture."),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true, comment: "The ID of the user who is the owner/publisher of this cat profile.")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cats_Users_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 },
                 comment: "Represents a cat housemate in the system.");
 
@@ -221,14 +228,19 @@ namespace PurrfectShot.Data.Migrations
                 comment: "Represents a single rating given to a photo.");
 
             migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "38058665-8726-41fa-be91-41de9acd0f72", 0, "bd1ecfbf-f78f-4e11-ab0f-c81e0f98eefe", "admin@purrfect.com", true, false, null, "ADMIN@PURRFECT.COM", "ADMIN@PURRFECT.COM", "AQAAAAIAAYagAAAAEAPeL5r6/fHzsfRuuIDvTJAg/Kd/l4D7O7S+EEg212q5soQE8jLIQAIEXXPnqcjafQ==", null, false, "5e788208-bdf9-472d-8af8-65aad32392e3", false, "admin@purrfect.com" });
+
+            migrationBuilder.InsertData(
                 table: "Cats",
-                columns: new[] { "Id", "Breed", "Description", "IsActive", "MainPhotoId", "Name" },
+                columns: new[] { "Id", "Breed", "Description", "IsActive", "MainPhotoId", "Name", "OwnerId" },
                 values: new object[,]
                 {
-                    { 1, "Tuxedo Cat", "Сладък, мил и добричък. Най-добрият котко-татко", true, null, "Сър Мортимър" },
-                    { 2, "Европейска Късокосместа", "Най-сладката рижа маца. Най-лесно определена като котка с характер", true, null, "Лейди Фрайни" },
-                    { 3, "Египетска Мау", "Отговаря на името си, най-бързият скокльо-котарак. Обича да води дълги и пълноценни разговори", true, null, "Венти" },
-                    { 4, "Европейска Късокосместа", "Най-малкото ни вече не-бебе коте, модел Морти. Позната като Хъни-Бъни", true, null, "Хъни-Бъни" }
+                    { 1, "Tuxedo Cat", "Негово Величество Сър Мортимър е не просто котарак, а стълбът на домашното спокойствие. Като истински джентълмен в смокинг, той е най-смелият пазител на семейните ценности и законен наследник на всички меки възглавници. Неговата суперсила е мъдростта, с която умиротворява всяка ситуация и надзирава реда в кралството.", true, null, "Сър Мортимър", "38058665-8726-41fa-be91-41de9acd0f72" },
+                    { 2, "Европейска Късокосместа", "Огнената дама на дома. Фрайни е перфектната комбинация от рижа сладост и желязна воля. Тя е върховният „граничен контрол“ и главен наложител на реда с лапа. Галенето е привилегия, която трябва да заслужите, а нейният характер е доказателство, че в това малко тяло живее истинска кралица.", true, null, "Лейди Фрайни", "38058665-8726-41fa-be91-41de9acd0f72" },
+                    { 3, "Египетска Мау", "Венти е олицетворение на скоростта и енергията. С дух на древен египетски атлет и суперсили, придобити от радиоактивен тигър, той е най-бързият скокльо в семейството. Винаги готов за пълноценен разговор, той не просто мяука, а чуролика и споделя своите философски размисли за света.", true, null, "Венти", "38058665-8726-41fa-be91-41de9acd0f72" },
+                    { 4, "Европейска Късокосместа", "Нашето малко бижу и „модел Морти 2.0“. Хъни-Бъни е неуморим изследовател на нови територии и скрити ъгълчета. Под зоркия поглед на своите трима ментори, тя ежедневно усвоява тайните на котешкото майсторство, превръщайки се в ултимативната комбинация от чар, игривост и приключения.", true, null, "Хъни-Бъни", "38058665-8726-41fa-be91-41de9acd0f72" }
                 });
 
             migrationBuilder.InsertData(
@@ -274,10 +286,35 @@ namespace PurrfectShot.Data.Migrations
                     { new Guid("ffdb1b39-5ee0-471b-b666-f88e210ec99c"), "Заспал блем в котешкото легло", 1, new DateTime(2026, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "/images/seed/SirMortiPhoto_5.jpg" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Votes",
+                columns: new[] { "Id", "PhotoId", "Stars", "VoterName" },
+                values: new object[,]
+                {
+                    { 1000, new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"), 5, "Птеротатко" },
+                    { 1001, new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"), 4, "Трицерабобс" },
+                    { 1002, new Guid("7592715c-1d9a-4848-8c4d-2194fe0f477c"), 5, "Термаминатор" },
+                    { 1003, new Guid("bb536fa6-7323-42ac-99d3-971e1e9587ae"), 3, "Птеротатко" },
+                    { 1004, new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"), 5, "Трицерабобс" },
+                    { 1005, new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"), 5, "Птеротатко" },
+                    { 1006, new Guid("7db14ae0-d116-41ee-82db-a5d7abceee2a"), 4, "Термаминатор" },
+                    { 1007, new Guid("42174d8b-9db8-4098-9f38-371005220780"), 5, "Трицерабобс" },
+                    { 1008, new Guid("38058665-8726-41fa-be91-41de9acd0f72"), 5, "Птеротатко" },
+                    { 1009, new Guid("38058665-8726-41fa-be91-41de9acd0f72"), 5, "Термаминатор" },
+                    { 1010, new Guid("9940e6f5-8edd-4e94-ad94-89579118a578"), 5, "Термаминатор" },
+                    { 1011, new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"), 4, "Трицерабобс" },
+                    { 1012, new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"), 5, "Птеротатко" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Cats_MainPhotoId",
                 table: "Cats",
                 column: "MainPhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cats_OwnerId",
+                table: "Cats",
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_CatId",
@@ -371,13 +408,13 @@ namespace PurrfectShot.Data.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Cats");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

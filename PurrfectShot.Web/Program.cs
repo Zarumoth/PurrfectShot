@@ -13,7 +13,8 @@ namespace PurrfectShot.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<PurrfectShotDbContext>(opt =>
             {
@@ -29,11 +30,11 @@ namespace PurrfectShot.Web
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = false; // ?? ??-????? ???????
-                options.Password.RequireDigit = false;
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
             })
             .AddEntityFrameworkStores<PurrfectShotDbContext>();
 

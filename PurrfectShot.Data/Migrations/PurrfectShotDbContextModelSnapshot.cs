@@ -74,7 +74,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("RolesClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +99,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("UsersClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -123,7 +123,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("UsersLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -138,7 +138,7 @@ namespace PurrfectShot.Data.Migrations
                     b.ToTable("UsersRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -222,6 +222,24 @@ namespace PurrfectShot.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "38058665-8726-41fa-be91-41de9acd0f72",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bd1ecfbf-f78f-4e11-ab0f-c81e0f98eefe",
+                            Email = "admin@purrfect.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@PURRFECT.COM",
+                            NormalizedUserName = "ADMIN@PURRFECT.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAPeL5r6/fHzsfRuuIDvTJAg/Kd/l4D7O7S+EEg212q5soQE8jLIQAIEXXPnqcjafQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5e788208-bdf9-472d-8af8-65aad32392e3",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@purrfect.com"
+                        });
                 });
 
             modelBuilder.Entity("PurrfectShot.Data.Models.Cat", b =>
@@ -259,9 +277,15 @@ namespace PurrfectShot.Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasComment("The name of the cat.");
 
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("The ID of the user who is the owner/publisher of this cat profile.");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MainPhotoId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Cats", t =>
                         {
@@ -273,33 +297,37 @@ namespace PurrfectShot.Data.Migrations
                         {
                             Id = 1,
                             Breed = "Tuxedo Cat",
-                            Description = "Сладък, мил и добричък. Най-добрият котко-татко",
+                            Description = "Негово Величество Сър Мортимър е не просто котарак, а стълбът на домашното спокойствие. Като истински джентълмен в смокинг, той е най-смелият пазител на семейните ценности и законен наследник на всички меки възглавници. Неговата суперсила е мъдростта, с която умиротворява всяка ситуация и надзирава реда в кралството.",
                             IsActive = true,
-                            Name = "Сър Мортимър"
+                            Name = "Сър Мортимър",
+                            OwnerId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
                             Id = 2,
                             Breed = "Европейска Късокосместа",
-                            Description = "Най-сладката рижа маца. Най-лесно определена като котка с характер",
+                            Description = "Огнената дама на дома. Фрайни е перфектната комбинация от рижа сладост и желязна воля. Тя е върховният „граничен контрол“ и главен наложител на реда с лапа. Галенето е привилегия, която трябва да заслужите, а нейният характер е доказателство, че в това малко тяло живее истинска кралица.",
                             IsActive = true,
-                            Name = "Лейди Фрайни"
+                            Name = "Лейди Фрайни",
+                            OwnerId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
                             Id = 3,
                             Breed = "Египетска Мау",
-                            Description = "Отговаря на името си, най-бързият скокльо-котарак. Обича да води дълги и пълноценни разговори",
+                            Description = "Венти е олицетворение на скоростта и енергията. С дух на древен египетски атлет и суперсили, придобити от радиоактивен тигър, той е най-бързият скокльо в семейството. Винаги готов за пълноценен разговор, той не просто мяука, а чуролика и споделя своите философски размисли за света.",
                             IsActive = true,
-                            Name = "Венти"
+                            Name = "Венти",
+                            OwnerId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
                             Id = 4,
                             Breed = "Европейска Късокосместа",
-                            Description = "Най-малкото ни вече не-бебе коте, модел Морти. Позната като Хъни-Бъни",
+                            Description = "Нашето малко бижу и „модел Морти 2.0“. Хъни-Бъни е неуморим изследовател на нови територии и скрити ъгълчета. Под зоркия поглед на своите трима ментори, тя ежедневно усвоява тайните на котешкото майсторство, превръщайки се в ултимативната комбинация от чар, игривост и приключения.",
                             IsActive = true,
-                            Name = "Хъни-Бъни"
+                            Name = "Хъни-Бъни",
+                            OwnerId = "38058665-8726-41fa-be91-41de9acd0f72"
                         });
                 });
 
@@ -663,6 +691,99 @@ namespace PurrfectShot.Data.Migrations
                         {
                             t.HasComment("Represents a single rating given to a photo.");
                         });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1000,
+                            PhotoId = new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"),
+                            Stars = 5,
+                            VoterName = "Птеротатко"
+                        },
+                        new
+                        {
+                            Id = 1001,
+                            PhotoId = new Guid("f1085f28-5def-45a8-9f6b-64287e8c5413"),
+                            Stars = 4,
+                            VoterName = "Трицерабобс"
+                        },
+                        new
+                        {
+                            Id = 1002,
+                            PhotoId = new Guid("7592715c-1d9a-4848-8c4d-2194fe0f477c"),
+                            Stars = 5,
+                            VoterName = "Термаминатор"
+                        },
+                        new
+                        {
+                            Id = 1003,
+                            PhotoId = new Guid("bb536fa6-7323-42ac-99d3-971e1e9587ae"),
+                            Stars = 3,
+                            VoterName = "Птеротатко"
+                        },
+                        new
+                        {
+                            Id = 1004,
+                            PhotoId = new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"),
+                            Stars = 5,
+                            VoterName = "Трицерабобс"
+                        },
+                        new
+                        {
+                            Id = 1005,
+                            PhotoId = new Guid("40c09f56-f0c0-46e1-9c48-461458c3bbb0"),
+                            Stars = 5,
+                            VoterName = "Птеротатко"
+                        },
+                        new
+                        {
+                            Id = 1006,
+                            PhotoId = new Guid("7db14ae0-d116-41ee-82db-a5d7abceee2a"),
+                            Stars = 4,
+                            VoterName = "Термаминатор"
+                        },
+                        new
+                        {
+                            Id = 1007,
+                            PhotoId = new Guid("42174d8b-9db8-4098-9f38-371005220780"),
+                            Stars = 5,
+                            VoterName = "Трицерабобс"
+                        },
+                        new
+                        {
+                            Id = 1008,
+                            PhotoId = new Guid("38058665-8726-41fa-be91-41de9acd0f72"),
+                            Stars = 5,
+                            VoterName = "Птеротатко"
+                        },
+                        new
+                        {
+                            Id = 1009,
+                            PhotoId = new Guid("38058665-8726-41fa-be91-41de9acd0f72"),
+                            Stars = 5,
+                            VoterName = "Термаминатор"
+                        },
+                        new
+                        {
+                            Id = 1010,
+                            PhotoId = new Guid("9940e6f5-8edd-4e94-ad94-89579118a578"),
+                            Stars = 5,
+                            VoterName = "Термаминатор"
+                        },
+                        new
+                        {
+                            Id = 1011,
+                            PhotoId = new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"),
+                            Stars = 4,
+                            VoterName = "Трицерабобс"
+                        },
+                        new
+                        {
+                            Id = 1012,
+                            PhotoId = new Guid("0b0ede57-0b57-4ba2-abac-bb9468aca00c"),
+                            Stars = 5,
+                            VoterName = "Птеротатко"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -674,7 +795,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
                 {
                     b.HasOne("PurrfectShot.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -683,7 +804,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
                 {
                     b.HasOne("PurrfectShot.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -692,7 +813,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
@@ -707,7 +828,7 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
                 {
                     b.HasOne("PurrfectShot.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -723,7 +844,14 @@ namespace PurrfectShot.Data.Migrations
                         .HasForeignKey("MainPhotoId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("PurrfectShot.Data.Models.ApplicationUser", "Owner")
+                        .WithMany("OwnedCats")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("MainPhoto");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("PurrfectShot.Data.Models.Photo", b =>
@@ -746,6 +874,11 @@ namespace PurrfectShot.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Photo");
+                });
+
+            modelBuilder.Entity("PurrfectShot.Data.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("OwnedCats");
                 });
 
             modelBuilder.Entity("PurrfectShot.Data.Models.Cat", b =>

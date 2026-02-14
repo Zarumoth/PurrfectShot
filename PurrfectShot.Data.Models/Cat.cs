@@ -2,6 +2,7 @@
 {
     using Microsoft.EntityFrameworkCore;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using static PurrfectShot.Web.Common.EntityValidation.Cat;
 
     [Comment("Represents a cat housemate in the system.")]
@@ -38,5 +39,11 @@
         [Comment("Collection of all photos associated with this cat.")]
         public virtual ICollection<Photo> Photos { get; set; }
             = new HashSet<Photo>();
+
+        [Comment("The ID of the user who is the owner/publisher of this cat profile.")]
+        public string? OwnerId { get; set; }
+
+        [Comment("Foreign key referencing the owner.")]
+        public virtual ApplicationUser? Owner { get; set; }
     }
 }

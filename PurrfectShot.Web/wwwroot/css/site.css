@@ -163,3 +163,18 @@ body {
 .action-icon-link:hover i {
     transform: scale(1.2);
 }
+
+/* Used to try and ensure aligned position for the Navbar items*/
+
+.navbar-nav .nav-item,
+.navbar-nav .nav-link,
+#logoutForm button {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+#logout:focus {
+    outline: none;
+    box-shadow: none;
+}
