@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurrfectShot.Services.Data.Interfaces;
 using System.Globalization;
 
 namespace PurrfectShot.Web.Controllers
 {
+    [AllowAnonymous]
     public class CalendarController(IPhotoService photoService) : Controller
     {
 

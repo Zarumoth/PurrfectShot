@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels;
 using PurrfectShot.Web.ViewModels.Home;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 
 namespace PurrfectShot.Web.Controllers
 {
+    [AllowAnonymous]
     public class HomeController (ICatService catService, IPhotoService photoService) : Controller
     {
 

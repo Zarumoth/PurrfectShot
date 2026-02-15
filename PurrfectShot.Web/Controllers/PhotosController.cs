@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace PurrfectShot.Web.Controllers
 {
+    [Authorize]
     public class PhotosController(IPhotoService photoService, ICatService catService, IWebHostEnvironment webHostEnvironment) : Controller
     {
 
@@ -73,6 +74,7 @@ namespace PurrfectShot.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -101,7 +103,6 @@ namespace PurrfectShot.Web.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Vote(VoteInputModel model)
         {
@@ -271,7 +272,6 @@ namespace PurrfectShot.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Favorite(Guid id)
         {
             if (id == Guid.Empty)

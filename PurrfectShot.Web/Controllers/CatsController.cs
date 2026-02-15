@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Cats;
 
 namespace PurrfectShot.Web.Controllers
 {
+    [Authorize]
     public class CatsController(ICatService catService, IPhotoService photoService) : Controller
     {
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             try
@@ -63,6 +65,7 @@ namespace PurrfectShot.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             if (id <= 0)
