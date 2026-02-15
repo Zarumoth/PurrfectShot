@@ -22,8 +22,6 @@
             <!-- Left Side - Picture & Heart -->
             <div class="col-md-8 bg-dark d-flex align-items-center justify-content-center position-relative" style="min-height: 500px;">
                 <img src="@Model.ImageUrl" class="img-fluid" style="max-height: 800px; width: 100%; object-fit: contain;" alt="@Model.Caption">
-
-                <!-- СЪРЦЕ (Любими) - Вече е ВЪТРЕ в контейнера на снимката -->
                 <div class="position-absolute top-0 end-0 m-3" style="z-index: 5;">
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
@@ -45,7 +43,6 @@
                 </div>
             </div>
 
-            <!-- ДЯСНА СТРАНА: ИНФО И КОНТРОЛИ -->
             <div class="col-md-4 d-flex flex-column bg-white">
                 <div class="card-body p-4">
 
