@@ -7,7 +7,7 @@ namespace PurrfectShot.Services.Data.Interfaces
 {
     public interface IPhotoService
     {
-        Task UploadPhotoAsync(PhotoInputModel model, string wwwrootPath);
+        Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath);
 
         Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId, string? userId);
 
@@ -36,5 +36,7 @@ namespace PurrfectShot.Services.Data.Interfaces
         Task<bool> ToggleFavoriteAsync(Guid photoId, string userId);
 
         Task<IEnumerable<PhotoCardViewModel>> GetFavoritePhotosByUserIdAsync(string userId);
+
+        Task<IEnumerable<PhotoCardViewModel>> GetPhotosByUserIdAsync(string userId);
     }
 }

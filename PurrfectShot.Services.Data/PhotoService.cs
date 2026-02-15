@@ -18,7 +18,7 @@ namespace PurrfectShot.Services.Data
             _dbContext = dbContext;
         }
 
-        public async Task UploadPhotoAsync(PhotoInputModel model, string wwwrootPath)
+        public async Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath)
         {
             //Generate unique file name + extension
             string fileExtension = Path.GetExtension(model.ImageFile.FileName);
@@ -48,7 +48,8 @@ namespace PurrfectShot.Services.Data
                 CatId = model.CatId,
                 Caption = model.Caption,
                 DateUploaded = DateTime.UtcNow,
-                FilePath = $"/images/uploads/{uniqueFileName}"
+                FilePath = $"/images/uploads/{uniqueFileName}",
+                PublisherId = userId
             };
 
             await _dbContext.Photos.AddAsync(photo);
@@ -341,6 +342,24 @@ namespace PurrfectShot.Services.Data
                     CatName = f.Photo.Cat.Name,
                     DateUploaded = f.Photo.DateUploaded,
                     Rating = f.Photo.Votes.Any() ? f.Photo.Votes.Average(v => v.Stars) : 0.0
+                })
+                .OrderByDescending(p => p.DateUploaded)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PhotoCardViewModel>> GetPhotosByUserIdAsync(string userId)
+        {
+            return await _dbContext
+                .Photos
+                .AsNoTracking()
+                .Where(p => p.PublisherId == userId)
+                .Select(p => new PhotoCardViewModel
+                {
+                    Id = p.Id,
+                    FilePath = p.FilePath,
+                    CatName = p.Cat.Name,
+                    DateUploaded = p.DateUploaded,
+                    Rating = p.Votes.Any() ? p.Votes.Average(v => v.Stars) : 0.0
                 })
                 .OrderByDescending(p => p.DateUploaded)
                 .ToListAsync();

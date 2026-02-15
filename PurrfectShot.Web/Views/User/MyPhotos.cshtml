@@ -1,0 +1,35 @@
+﻿@model IEnumerable<PurrfectShot.Web.ViewModels.Photos.PhotoCardViewModel>
+
+@{
+    ViewData["Title"] = "Моите качвания";
+}
+
+<div class="container mt-3">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Моите снимки</li>
+        </ol>
+    </nav>
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 text-primary fw-bold">📸 Моите качвания</h1>
+        <p class="lead text-muted">Всички моменти, които сте споделили с Прайда.</p>
+        <hr class="w-25 mx-auto" />
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-light text-center shadow-sm p-5 border-0 rounded-4">
+            <h4 class="text-muted mb-3">Още нямате качени снимки 😿</h4>
+            <a asp-controller="Photos" asp-action="Upload" class="btn btn-primary rounded-pill px-4">
+                Качи първата снимка
+            </a>
+        </div>
+    }
+    else
+    {
+        <partial name="_PhotoGridPartial" model="Model" />
+    }
+</div>

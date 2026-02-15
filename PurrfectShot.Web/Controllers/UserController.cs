@@ -7,7 +7,7 @@ using PurrfectShot.Web.ViewModels.Photos;
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class UsersController(IPhotoService photoService) : Controller
+    public class UserController(IPhotoService photoService) : Controller
     {
         public async Task<IActionResult> Favorites()
         {
@@ -26,6 +26,16 @@ namespace PurrfectShot.Web.Controllers
                 TempData["Error"] = "Възникна грешка при зареждането на вашите любими снимки.";
                 return RedirectToAction("Index", "Home");
             }
+        }
+        public async Task<IActionResult> MyPhotos()
+        {
+            ViewData["Title"] = "Моите снимки";
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            var model = await photoService.GetPhotosByUserIdAsync(userId);
+
+            return View(model);
         }
     }
 }

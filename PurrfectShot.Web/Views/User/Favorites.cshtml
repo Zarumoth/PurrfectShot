@@ -3,6 +3,14 @@
 @model IEnumerable<PhotoCardViewModel>
 
 <div class="container mt-4">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb bg-transparent p-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted">Начало</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Моите любими снимки</li>
+        </ol>
+    </nav>
+
     <h1 class="text-primary fw-bold text-center mb-4">Моите любими снимки</h1>
     @if (!Model.Any())
     {

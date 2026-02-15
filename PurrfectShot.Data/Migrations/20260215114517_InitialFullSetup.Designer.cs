@@ -12,7 +12,7 @@ using PurrfectShot.Data;
 namespace PurrfectShot.Data.Migrations
 {
     [DbContext(typeof(PurrfectShotDbContext))]
-    [Migration("20260214162700_InitialFullSetup")]
+    [Migration("20260215114517_InitialFullSetup")]
     partial class InitialFullSetup
     {
         /// <inheritdoc />
@@ -224,22 +224,25 @@ namespace PurrfectShot.Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users", null, t =>
+                        {
+                            t.HasComment("Represents the signed into the application user and their attributes");
+                        });
 
                     b.HasData(
                         new
                         {
                             Id = "38058665-8726-41fa-be91-41de9acd0f72",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2732508c-2754-4372-8c1a-74bf753ce019",
+                            ConcurrencyStamp = "b61accf3-c237-43cc-9a0d-89666577b531",
                             Email = "admin@purrfect.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@PURRFECT.COM",
                             NormalizedUserName = "ADMIN@PURRFECT.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKZhyatLgzuyt99I6A4UXRwlS2mnxTGwmt9xSQtyt8bAenSyVu9i5+d+ZjZK83jDRA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDI3I1Z8bKwa2hXYT7oqUex9KxoB4VeSdAFUH8gsnsZin+xWecG89JYRJkxBV+/I2A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d656430a-27ae-485e-9c2b-bd230d89c5c3",
+                            SecurityStamp = "eecf9be1-0b51-416b-9666-93224aab3a5e",
                             TwoFactorEnabled = false,
                             UserName = "admin@purrfect.com"
                         });
@@ -361,11 +364,18 @@ namespace PurrfectShot.Data.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasComment("The relative server path where the physical image file is stored.");
 
+                    b.Property<string>("PublisherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("Foreign key referencing the photo uploader.");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CatId");
 
                     b.HasIndex("DateUploaded");
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Photos", t =>
                         {
@@ -379,7 +389,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Ами ако никога не мърдна от тук?",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_1.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_1.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -387,7 +398,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Слийпи блем",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 3, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_2.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_2.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -395,7 +407,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Лордът на слънчевите бани",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 1, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_3.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_3.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -403,7 +416,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Гледаме си от пенхауса",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_4.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_4.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -411,7 +425,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Заспал блем в котешкото легло",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_5.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_5.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -419,7 +434,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Отново... спим",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 7, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_6.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_6.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -427,7 +443,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Морти и неговата кашоно-къща",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_7.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_7.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -435,7 +452,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Дай *прозявка* пет",
                             CatId = 1,
                             DateUploaded = new DateTime(2026, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/SirMortiPhoto_8.jpg"
+                            FilePath = "/images/seed/SirMortiPhoto_8.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -443,7 +461,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Когато си най-сладката писанка на света",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_1.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_1.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -451,7 +470,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Размисли над живота от новото си легло",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_2.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_2.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -459,7 +479,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "..или просто прозявка",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_3.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_3.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -467,7 +488,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "В пастта на акулата",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 6, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_4.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_4.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -475,7 +497,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Две котки, една перална",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 7, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_5.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_5.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -483,7 +506,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Не само щраусите могат така",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_6.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_6.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -491,7 +515,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "А ти какво гледаш?",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_7.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_7.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -499,7 +524,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Лейди Фрайни, върху трупът на лисицата",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_8.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_8.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -507,7 +533,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Тунелни истории",
                             CatId = 2,
                             DateUploaded = new DateTime(2026, 8, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/LadyPhrynePhoto_9.jpg"
+                            FilePath = "/images/seed/LadyPhrynePhoto_9.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -515,7 +542,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Венти - най-бързият селфи-майстор",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_1.jpg"
+                            FilePath = "/images/seed/VentiPhoto_1.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -523,7 +551,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Ето така се мият котешките лапи",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_2.jpg"
+                            FilePath = "/images/seed/VentiPhoto_2.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -531,7 +560,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Снейк кат",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 10, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_3.jpg"
+                            FilePath = "/images/seed/VentiPhoto_3.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -539,7 +569,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Диванът не е достатъчно голям",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_4.jpg"
+                            FilePath = "/images/seed/VentiPhoto_4.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -547,7 +578,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Vent do you want?",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 12, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_5.jpg"
+                            FilePath = "/images/seed/VentiPhoto_5.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -555,7 +587,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Най-добре е върху лапата на папа",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_6.jpg"
+                            FilePath = "/images/seed/VentiPhoto_6.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -563,7 +596,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Малко блем и карти",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_7.jpg"
+                            FilePath = "/images/seed/VentiPhoto_7.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -571,7 +605,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Не, всъщност, ето така се мият котешки лапи",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_8.jpg"
+                            FilePath = "/images/seed/VentiPhoto_8.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -579,7 +614,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "It's just me and my cat bed",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_9.jpg"
+                            FilePath = "/images/seed/VentiPhoto_9.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -587,7 +623,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Венти, йога-котка",
                             CatId = 3,
                             DateUploaded = new DateTime(2026, 11, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/VentiPhoto_10.jpg"
+                            FilePath = "/images/seed/VentiPhoto_10.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -595,7 +632,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Хъни-Бъни и нейната аура на сладост",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_1.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_1.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -603,7 +641,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Заспали и завити с на мама дрехите",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 11, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_2.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_2.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -611,7 +650,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Когато се миеш на трона",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_3.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_3.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -619,7 +659,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Дебнейки от стола",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_4.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_4.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -627,7 +668,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Honey Bunny means business",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_5.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_5.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -635,7 +677,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Облизваме се на стола на папа",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 3, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_6.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_6.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -643,7 +686,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Папа, защо батко ме мие?",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_7.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_7.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -651,7 +695,8 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "*музика от Цар Лъв*",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 7, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_8.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_8.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
                         },
                         new
                         {
@@ -659,7 +704,53 @@ namespace PurrfectShot.Data.Migrations
                             Caption = "Знам, че той ме гледа",
                             CatId = 4,
                             DateUploaded = new DateTime(2026, 2, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FilePath = "/images/seed/HoneyBuneyPhoto_9.jpg"
+                            FilePath = "/images/seed/HoneyBuneyPhoto_9.jpg",
+                            PublisherId = "38058665-8726-41fa-be91-41de9acd0f72"
+                        });
+                });
+
+            modelBuilder.Entity("PurrfectShot.Data.Models.UserFavoritePhoto", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("PhotoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "PhotoId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.ToTable("UserFavoritePhotos", t =>
+                        {
+                            t.HasComment("Mapping table for the Many-to-Many relationship between Users and their Favorite Photos.");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
+                            PhotoId = new Guid("f86bfb53-eb39-4770-94f5-35a4710d037f")
+                        },
+                        new
+                        {
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
+                            PhotoId = new Guid("256e3cf7-f9ec-4f14-8361-e2e6fd2ce0e4")
+                        },
+                        new
+                        {
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
+                            PhotoId = new Guid("80377db9-ed3a-4013-b325-64651c2a4b6c")
+                        },
+                        new
+                        {
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
+                            PhotoId = new Guid("89bae15d-1c8e-4299-80ff-9c14578ab6ee")
+                        },
+                        new
+                        {
+                            UserId = "38058665-8726-41fa-be91-41de9acd0f72",
+                            PhotoId = new Guid("b79cb330-da37-4a09-8eaf-bfde8951051f")
                         });
                 });
 
@@ -884,7 +975,34 @@ namespace PurrfectShot.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PurrfectShot.Data.Models.ApplicationUser", "Publisher")
+                        .WithMany("UploadedPhotos")
+                        .HasForeignKey("PublisherId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Cat");
+
+                    b.Navigation("Publisher");
+                });
+
+            modelBuilder.Entity("PurrfectShot.Data.Models.UserFavoritePhoto", b =>
+                {
+                    b.HasOne("PurrfectShot.Data.Models.Photo", "Photo")
+                        .WithMany("UserFavoritePhotos")
+                        .HasForeignKey("PhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PurrfectShot.Data.Models.ApplicationUser", "User")
+                        .WithMany("FavoritePhotos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Photo");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PurrfectShot.Data.Models.Vote", b =>
@@ -908,7 +1026,11 @@ namespace PurrfectShot.Data.Migrations
 
             modelBuilder.Entity("PurrfectShot.Data.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("FavoritePhotos");
+
                     b.Navigation("OwnedCats");
+
+                    b.Navigation("UploadedPhotos");
 
                     b.Navigation("Votes");
                 });
@@ -920,6 +1042,8 @@ namespace PurrfectShot.Data.Migrations
 
             modelBuilder.Entity("PurrfectShot.Data.Models.Photo", b =>
                 {
+                    b.Navigation("UserFavoritePhotos");
+
                     b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618

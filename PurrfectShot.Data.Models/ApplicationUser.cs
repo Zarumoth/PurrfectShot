@@ -14,5 +14,8 @@ namespace PurrfectShot.Data.Models
 
         public virtual ICollection<UserFavoritePhoto> FavoritePhotos { get; set; }
             = new HashSet<UserFavoritePhoto>();
+
+        public virtual ICollection<Photo> UploadedPhotos { get; set; }
+            = new HashSet<Photo>();
     }
 }

@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PurrfectShot.Data;
 using PurrfectShot.Data.Models;
 using PurrfectShot.Services.Data;
 using PurrfectShot.Services.Data.Interfaces;
-using Microsoft.AspNetCore.Identity;
+using PurrfectShot.Web.Infrastructure;
 
 namespace PurrfectShot.Web
 {
@@ -36,7 +37,8 @@ namespace PurrfectShot.Web
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
             })
-            .AddEntityFrameworkStores<PurrfectShotDbContext>();
+            .AddEntityFrameworkStores<PurrfectShotDbContext>()
+            .AddErrorDescriber<LocalizedIdentityErrorDescriber>();
 
             var app = builder.Build();
 

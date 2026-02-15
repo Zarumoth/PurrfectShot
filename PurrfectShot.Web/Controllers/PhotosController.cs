@@ -54,10 +54,12 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
             try
             {
                 string wwwrootPath = webHostEnvironment.WebRootPath;
-                await photoService.UploadPhotoAsync(model, wwwrootPath);
+                await photoService.UploadPhotoAsync(model, userId, wwwrootPath);
 
                 TempData["Success"] = "Снимката беше добавена в албума!";
                 return RedirectToAction(nameof(Index), "Home");
@@ -124,7 +126,7 @@ namespace PurrfectShot.Web.Controllers
                 TempData["Error"] = "Възникна грешка при записа.";
             }
 
-                return RedirectToAction(nameof(Details), new { id = model.PhotoId });
+            return RedirectToAction(nameof(Details), new { id = model.PhotoId });
         }
 
         [HttpPost]

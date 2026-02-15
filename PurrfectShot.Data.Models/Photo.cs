@@ -25,6 +25,13 @@
         public string FilePath { get; set; } = null!;
 
         [Required]
+        [Comment("Foreign key referencing the photo uploader.")]
+        public string PublisherId { get; set; } = null!;
+
+        [Comment("Navigation property to the user who uploaded the photo.")]
+        public virtual ApplicationUser Publisher { get; set; } = null!;
+
+        [Required]
         [Comment("Foreign key referencing the cat shown in the photo.")]
         public int CatId { get; set; }
 

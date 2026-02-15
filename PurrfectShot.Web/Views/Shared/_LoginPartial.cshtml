@@ -6,17 +6,35 @@
 <ul class="navbar-nav align-items-center">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-primary fw-bold" asp-area="Identity" asp-page="/Account/Manage/Index" title="Твоят профил">
-                <i class="bi bi-person-circle"></i> @UserManager.GetUserName(User)
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-primary fw-bold d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle me-1"></i> @User.Identity?.Name
             </a>
-        </li>
-        <li class="nav-item me-3">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">
-                    <i class="bi bi-box-arrow-right"></i> Изход
-                </button>
-            </form>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3" aria-labelledby="userDropdown">
+                <li>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                        <i class="bi bi-gear me-2"></i>Настройки
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-controller="User" asp-action="Favorites">
+                        <i class="bi bi-heart-fill text-danger me-2"></i>Любими
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" asp-controller="User" asp-action="MyPhotos">
+                        <i class="bi bi-images text-primary me-2"></i>Моите снимки
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="bi bi-box-arrow-right me-2"></i>Изход
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </li>
     }
     else
