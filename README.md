@@ -2,10 +2,10 @@
 
 > A modern family cat photo archive and monthly ranking system designed to organize and celebrate our feline companions.
 
-![alt text](https://img.shields.io/badge/.NET-8.0-purple)
-![alt text](https://img.shields.io/badge/ASP.NET_Core-8.0-blue)
-![alt text](https://img.shields.io/badge/Architecture-N--Tier-orange)
-![alt text](https://img.shields.io/badge/Database-SQL_Server-red)
+![.NET Version](https://img.shields.io/badge/.NET-8.0-purple)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-8.0-blue)
+![Architecture](https://img.shields.io/badge/Architecture-N--Tier-orange)
+![Database](https://img.shields.io/badge/Database-SQL_Server-red)
 
 ---
 
@@ -28,6 +28,7 @@
 ## 📖 About the Project
 
 *Purrfect Shot* is a specialized web platform built for cat-loving households. It solves the problem of scattered family photos by organizing them into a structured monthly calendar. Users can create detailed profiles for their cats, upload memories, and vote for the "Photo of the Month," which automatically becomes the calendar cover.
+
 
 The application serves as a demonstration of advanced ASP.NET Core concepts, including *N-Tier architecture*, *Secure Identity integration*, and *Custom Data Logic (Soft Delete/Archive)*.
 
@@ -70,7 +71,7 @@ cd PurrfectShot
 ### 2. Restore dependencies
 
 ```bash
-dotnet restore ---> това трябва ли да е тук? <---
+dotnet restore
 ```
 
 ### 3. Apply Database Migration
@@ -119,15 +120,14 @@ PurrfectShot/
 [Security] GUID-based identifiers for photos to prevent ID scraping.
 [Comprehensive Seeding] Ready-to-use data for 4 cats and 36 photos.
 
-## 💻 Usage - TODO!
+## 💻 Usage
 
 ### 🏠 Explore & Navigate
 
 *Home Page*: Check the "Hero" section for global stats and browse the "Pride" section to see all active cat residents.
 *The Band (Cats)*: Visit the full list of cats via the "Бандата" (The Band) link in the navigation.
 
-![alt text](docs/screenshots/home-page.png)
-<!--TODO: Add your screenshot in a docs/screenshots folder -->
+![alt text](docs/screenshots/home-page.jpeg)
 
 ### 🗓️ Monthly Calendar
 
@@ -140,8 +140,8 @@ PurrfectShot/
 *Cat Details*: Click on any cat card to view their bio, breed info, and personal photo album.
 *Photo Details*: Click on any photo to see it in full size. Here you can see the rating, upload date, and navigation buttons.
 
+![alt text](docs/screenshots/profile-details.png)
 ![alt text](docs/screenshots/photo-details.png)
-<!--TODO: Add your screenshot in a docs/screenshots folder -->
 
 ### 🗳️ Interaction (Login Required)
 
@@ -169,7 +169,7 @@ To test administrative features, use the seeded account:
 
 ---
 
-## 🗄️ Database Setup - TODO! - add the option for SQL Server in the file, default vs other? + update below description
+## 🗄️ Database Setup
 
 The project uses **Entity Framework Core** with a Code-First approach and *Fluent API* for all relationships.
 
@@ -185,11 +185,9 @@ Connection string is configured in `appsettings.json`:
 ```json
 "ConnectionStrings": {
   "DefaultConnection": "Server=localhost,1433;Database=PurrfectShotDb;User
-  Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;MultipleActiveResultSets=true"
+  Id=sa;Password=SoftUniTestDb1423!;TrustServerCertificate=True;MultipleActiveResultSets=true"
 }
 ```
-
-(Make sure to replace *YourStrong!Passw0rd* with the actual password you set for your Docker container).
 
 *Option 2: Local SQL Express*
 If you prefer a local installation, update the connection string to:
@@ -201,27 +199,13 @@ If you prefer a local installation, update the connection string to:
 }
 ```
 
-*⚡ Applying Migrations*
-
-Once the database connection is set, apply the existing migrations and seed data using the Package Manager Console:
-
-1. Select *PurrfectShot.Data* as the Default project.
-2. Run the command:
-
-```Powershell
-Update-Database -StartupProject PurrfectShot.Web
-```
-
-This command will create the database schema and automatically seed the Users, Cats, Photos, and Votes.
-
 ---
 
-## ⚙️ Configuration - Update after the above is done
+## ⚙️ Configuration
 
-The application uses standard *.NET* configuration. No additional API keys are required for local development.
-*appsettings.json* structure:
+The application uses standard `.NET` configuration. No additional API keys are required for local development.
 
-Key settings in `appsettings.json`:
+`appsettings.json` structure:
 
 ```json
 {
@@ -237,8 +221,6 @@ Key settings in `appsettings.json`:
   "AllowedHosts": "*"
 }
 ```
-
-> ⚠️ **Never commit sensitive data** (passwords, API keys) to source control. Use `appsettings.Development.json` or environment variables for local secrets.
 
 ---
 
@@ -257,8 +239,6 @@ Contributions are welcome! To contribute:
 ## 📄 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
-<!--TODO: Add license to project -->
 
 ---
 
