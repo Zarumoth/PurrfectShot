@@ -140,8 +140,8 @@ PurrfectShot/
 *Cat Details*: Click on any cat card to view their bio, breed info, and personal photo album.
 *Photo Details*: Click on any photo to see it in full size. Here you can see the rating, upload date, and navigation buttons.
 
-![alt text](docs/screenshots/profile-details.png)
-![alt text](docs/screenshots/photo-details.png)
+![alt text](docs/screenshots/profile-details.jpeg)
+![alt text](docs/screenshots/photo-details.jpeg)
 
 ### 🗳️ Interaction (Login Required)
 

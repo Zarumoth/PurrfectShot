@@ -63,7 +63,8 @@ namespace PurrfectShot.Web.Controllers
                 await photoService.UploadPhotoAsync(model, userId, wwwrootPath);
 
                 TempData["Success"] = "Снимката беше добавена в албума!";
-                return RedirectToAction(nameof(Index), "Home");
+                return RedirectToAction(nameof(Details), "Cats", new { id = model.CatId });
+                //return RedirectToAction(nameof(Index), "Home");
             }
             catch (Exception)
             {
