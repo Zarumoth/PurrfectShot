@@ -1,0 +1,30 @@
+services:
+  # Service 1: Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: purrfect-db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=21ZcQ4X>z$w5@7y7!
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  # Service 2: Application
+  webapp:
+    image: purrfect-shot-web
+    container_name: purrfect-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PurrfectShotDb;User Id=sa;Password=21ZcQ4X>z$w5@7y7!;TrustServerCertificate=True;MultipleActiveResultSets=true
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - sqlserver
+
+volumes:
+  sql_data:

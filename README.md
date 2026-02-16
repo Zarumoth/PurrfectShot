@@ -76,7 +76,11 @@ dotnet restore
 
 ### 3. Apply Database Migration
 
-Open the **Package Manager Console** in Visual Studio, set the Default Project to **PurrfectShot.Data** and run:
+As long as the AppSettings file is setup, the database migration is applied automatically.
+
+Alternatively, you can do it manually.  
+Open the **Package Manager Console** in Visual Studio, set the Default Project to **PurrfectShot.Data** and run
+
 
 ```bash
 Update-Database -StartupProject PurrfectShot.Web
@@ -198,6 +202,7 @@ If you prefer a local installation, update the connection string to:
 ```
 
 **Note**: You can aso use your desired [SQL Connection](https://www.connectionstrings.com/sql-server/)
+- Just make sure ensure you Apply database migrations
 
 ---
 
