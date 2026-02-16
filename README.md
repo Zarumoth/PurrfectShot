@@ -6,6 +6,7 @@
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-8.0-blue)
 ![Architecture](https://img.shields.io/badge/Architecture-N--Tier-orange)
 ![Database](https://img.shields.io/badge/Database-SQL_Server-red)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
@@ -27,7 +28,7 @@
 
 ## 📖 About the Project
 
-*Purrfect Shot* is a specialized web platform built for cat-loving households. It solves the problem of scattered family photos by organizing them into a structured monthly calendar. Users can create detailed profiles for their cats, upload memories, and vote for the "Photo of the Month," which automatically becomes the calendar cover.
+**Purrfect Shot** is a specialized web platform built for cat-loving households. It solves the problem of scattered family photos by organizing them into a structured monthly calendar. Users can create detailed profiles for their cats, upload memories, and vote for the "Photo of the Month", which automatically becomes the calendar cover.
 
 The application serves as a demonstration of advanced ASP.NET Core concepts, including *N-Tier architecture*, *Secure Identity integration*, and *Custom Data Logic (Soft Delete/Archive)*.
 
@@ -75,7 +76,7 @@ dotnet restore
 
 ### 3. Apply Database Migration
 
-Open the *Package Manager Console* in Visual Studio, set the Default Project to *PurrfectShot.Data* and run:
+Open the **Package Manager Console** in Visual Studio, set the Default Project to **PurrfectShot.Data** and run:
 
 ```bash
 Update-Database -StartupProject PurrfectShot.Web
@@ -85,14 +86,14 @@ This will create the database and seed it with 4 cat profiles, 36 photos, initia
 
 ### 4. Run the application
 
-Press *F5* or select *PurrfectShot.Web* as the startup project and click *Start*.
+Press **F5** or select **PurrfectShot.Web** as the startup project and click **Start**.
 The app will be available at `https://localhost:7194`.
 
 ---
 
 ## 📁 Project Structure
 
-The solution follows a clean 6-layer *N-Tier architecture*:
+The solution follows a clean 6-layer **N-Tier architecture**:
 
 ```
 PurrfectShot/
@@ -109,51 +110,51 @@ PurrfectShot/
 
 ## ✨ Features
 
-[N-Tier Architecture] Complete separation of concerns for scalability.  
-[Identity System] Fully localized (Bulgarian) ASP.NET Core Identity.  
-[Smart Archive] "Soft delete" cat profiles while preserving photo history.  
-[Photo Management] Upload/Delete with physical file cleanup on the server.  
-[Dynamic Calendar] Automatic monthly grouping with Bulgarian localization.  
-[Voting System] Seamless "Upsert" voting logic with "Unvote" capability.  
-[User Favorites] Many-to-Many relationship for personal collections.  
-[Security] GUID-based identifiers for photos to prevent ID scraping.  
-[Comprehensive Seeding] Ready-to-use data for 4 cats and 36 photos.  
+- **N-Tier Architecture** Complete separation of concerns for scalability.  
+- **Identity System** Fully localized (Bulgarian) ASP.NET Core Identity.  
+- **Smart Archive** "Soft delete" cat profiles while preserving photo history.  
+- **Photo Management** Upload/Delete with physical file cleanup on the server.  
+- **Dynamic Calendar** Automatic monthly grouping with Bulgarian localization.  
+- **Voting System** Seamless "Upsert" voting logic with "Unvote" capability.  
+- **User Favorites** Many-to-Many relationship for personal collections.  
+- **Security** GUID-based identifiers for photos to prevent ID scraping.  
+- **Comprehensive Seeding** Ready-to-use data for 4 cats and 36 photos.  
 
 ## 💻 Usage
 
 ### 🏠 Explore & Navigate
 
-- *Home Page*: Check the "Hero" section for global stats and browse the "Pride" section to see all active cat residents.
-- *The Band (Cats)*: Visit the full list of cats via the "Бандата" (The Band) link in the navigation.
+- **Home Page**: Check the "Hero" section for global stats and browse the "Pride" section to see all active cat residents.
+- **The Band (Cats)**: Visit the full list of cats via the "Бандата" (The Band) link in the navigation.
 
 ![alt text](docs/screenshots/home-page.jpeg)
 
 ### 🗓️ Monthly Calendar
 
-- Navigate to *Calendar*.
+- Navigate to **Calendar**.
 - Browse the archive by month/year covers.
 - Click on a specific month to view the full gallery of uploaded photos, sorted by rating.
 
 ### 🐈 Profiles & Photos
 
-- *Cat Details*: Click on any cat card to view their bio, breed info, and personal photo album.
-- *Photo Details*: Click on any photo to see it in full size. Here you can see the rating, upload date, and navigation buttons.
+- **Cat Details**: Click on any cat card to view their bio, breed info, and personal photo album.
+- **Photo Details**: Click on any photo to see it in full size. Here you can see the rating, upload date, and navigation buttons.
 
 ![alt text](docs/screenshots/profile-details.jpeg)
 ![alt text](docs/screenshots/photo-details.jpeg)
 
 ### 🗳️ Interaction (Login Required)
 
-- *Register/Login*: Create an account to unlock interactive features.
-- *Vote*: Rate photos from 1 to 5 stars. You can change your vote anytime (Seamless Upsert).
-- *Favorites*: Click the Heart icon ❤️ on a photo to add it to your personal "Favorites" collection.
-- *My Photos*: View all photos uploaded by you in your personal dashboard.
+- **Register/Login**: Create an account to unlock interactive features.
+- **Vote**: Rate photos from 1 to 5 stars. You can change your vote anytime (Seamless Upsert).
+- **Favorites**: Click the Heart icon ❤️ on a photo to add it to your personal "Favorites" collection.
+- **My Photos**: View all photos uploaded by you in your personal dashboard.
 
 ### ⚙️ Management (CRUD)
 
-- *Add Cat*: Use the "Add Cat" button to introduce a new member to the household.
-- *Upload Photo*: Upload new memories via the "Upload" button. You can assign the photo to a specific cat.
-- *Edit/Delete*:
+- **Add Cat**: Use the "Add Cat" button to introduce a new member to the household.
+- **Upload Photo**: Upload new memories via the "Upload" button. You can assign the photo to a specific cat.
+- **Edit/Delete**:
 	- Manage cat profiles (Edit details or Archive them).
 	- Manage photos (Edit captions or Delete permanently).
 	- Note: Archiving a cat hides it from the main lists but preserves its photos in history.
@@ -161,20 +162,20 @@ PurrfectShot/
 ### 🧪 Test Account Credentials
 
 To test administrative features, use the seeded account:
-- *Email*: admin@purrfect.com
-- *Password*: Admin123!
+- **Email**: admin@purrfect.com
+- **Password**: Admin123!
 
-*Note*: Currently, the system allows all registered users to perform CRUD operations (Family mode).
+**Note**: Currently, the system allows all registered users to perform CRUD operations (Family mode).
 
 ---
 
 ## 🗄️ Database Setup
 
-The project uses **Entity Framework Core** with a Code-First approach and *Fluent API* for all relationships.
-The project is configured to run with *SQL Server in a Docker Container*.
+The project uses **Entity Framework Core** with a Code-First approach and **Fluent API** for all relationships.
+The project is configured to run with **SQL Server in a Docker Container**.
 
-*Option 1: Docker (Recommended)*
-Ensure your Docker container is running and exposed on port *1433*.
+**Option 1: Docker (Recommended)**
+Ensure your Docker container is running and exposed on port **1433**.
 
 The connection string is configured in appsettings.json:
 Connection string is configured in `appsettings.json`:
@@ -186,7 +187,7 @@ Connection string is configured in `appsettings.json`:
 }
 ```
 
-*Option 2: Local SQL Express*
+**Option 2: Local SQL Express**
 If you prefer a local installation, update the connection string to:
 
 ```json
@@ -195,6 +196,8 @@ If you prefer a local installation, update the connection string to:
   (localdb)\\mssqllocaldb;Database=PurrfectShotDb;Trusted_Connection=True;MultipleActiveResultSets=true"
 }
 ```
+
+**Note**: You can aso use your desired [SQL Connection](https://www.connectionstrings.com/sql-server/)
 
 ---
 
@@ -226,9 +229,9 @@ The application uses standard `.NET` configuration. No additional API keys are r
 Contributions are welcome! To contribute:
 
 1. Fork the repository.
-2. Create a new branch: *git checkout -b feature/AmazingFeature*.
-3. Commit your changes: *git commit -m "Add some AmazingFeature"*.
-4. Push to the branch: *git push origin feature/AmazingFeature*.
+2. Create a new branch: `git checkout -b feature/AmazingFeature`
+3. Commit your changes: `git commit -m "Add some AmazingFeature"`
+4. Push to the branch: `git push origin feature/AmazingFeature*`
 5. Open a Pull Request.
 
 ---

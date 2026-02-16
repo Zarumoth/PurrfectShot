@@ -16,7 +16,7 @@ namespace PurrfectShot.Web.ViewModels.Photos
         public IFormFile ImageFile { get; set; } = null!;
 
         [Required(ErrorMessage = "Напиши нещо за снимката!")]
-        [StringLength(CaptionMaxLength, MinimumLength = CaptionMinLength)]
+        [StringLength(CaptionMaxLength, MinimumLength = CaptionMinLength, ErrorMessage = "Описанието трябва да е между {2} и {1} символа.")]
         [Display(Name = "Описание на снимката")]
         public string? Caption { get; set; }
 
