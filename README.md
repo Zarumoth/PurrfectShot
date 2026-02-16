@@ -115,6 +115,8 @@ docker-compose up --build
 
 **Note**: If port 7194 is not available, Visual Studio might assign a different port. Check the browser URL.
 
+---
+
 ## 📁 Project Structure
 
 The solution follows a clean 6-layer **N-Tier architecture**:
@@ -143,6 +145,8 @@ PurrfectShot/
 - **User Favorites** Many-to-Many relationship for personal collections.  
 - **Security** GUID-based identifiers for photos to prevent ID scraping.  
 - **Comprehensive Seeding** Ready-to-use data for 4 cats and 36 photos.  
+
+---
 
 ## 💻 Usage
 
@@ -182,6 +186,8 @@ PurrfectShot/
 	- Manage cat profiles (Edit details or Archive them).
 	- Manage photos (Edit captions or Delete permanently).
 	- Note: Archiving a cat hides it from the main lists but preserves its photos in history.
+
+---
 
 ### 🧪 Test Account Credentials
 
