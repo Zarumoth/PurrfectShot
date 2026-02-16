@@ -12,17 +12,16 @@
 
 ## 📋 Table of Contents
 
-- [About the Project](#about-the-project)
-- [Technologies Used](#technologies-used)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Features](#features)
-- [Usage](#usage)
-- [Database Setup](#database-setup)
-- [Configuration](#configuration)
-- [Contributing](#contributing)
-- [Contact](#contact)
+- [About the Project](#-about-the-project)
+- [Technologies Used](#-technologies-used)
+- [Prerequisites](#-prerequisites)
+- [Getting Started](#-getting-started-plug--play)
+- [Project Structure](#-project-structure)
+- [Features](#-features)
+- [Usage](#-usage)
+- [Test Account Credentials](#-test-account-credentials)
+- [Contributing](#-contributing)
+- [Contact](#-contact)
 
 ---
 
@@ -30,7 +29,7 @@
 
 **Purrfect Shot** is a specialized web platform built for cat-loving households. It solves the problem of scattered family photos by organizing them into a structured monthly calendar. Users can create detailed profiles for their cats, upload memories, and vote for the "Photo of the Month", which automatically becomes the calendar cover.
 
-The application serves as a demonstration of advanced ASP.NET Core concepts, including *N-Tier architecture*, *Secure Identity integration*, and *Custom Data Logic (Soft Delete/Archive)*.
+The application serves as a demonstration of advanced ASP.NET Core concepts, including **N-Tier architecture**, **Secure Identity integration**, and **Custom Data Logic (Soft Delete/Archive)**.
 
 ---
 
@@ -53,47 +52,68 @@ The application serves as a demonstration of advanced ASP.NET Core concepts, inc
 Before running the project, ensure you have the following:
 
 - [.NET SDK 8.0+](https://dotnet.microsoft.com/download)
-- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/)
-- [SQL Server](https://www.microsoft.com/en-us/sql-server) or [Docker Desktop (for SQL Server Container)](https://www.docker.com/products/docker-desktop/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (**Recommended** for the easiest setup))
+- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/) (optional for manual setup)
 - [Git](https://git-scm.com/)
+- [Optional: SQL Server](https://www.microsoft.com/en-us/sql-server) or SQLite (if preferred)
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting Started (Plug & Play)
 
-### 1. Clone the Repository
+This project is configured for **automatic setup**. You don't need to manually run migrations or configure SQL Server if you have Docker.  
+If you still want to manually setup things, refer to *Option B: Visual Studio 2022* outlined below.
+
+### 1. Clone and Run
 
 ```bash
 git clone https://github.com/Zarumoth/PurrfectShot.git
 cd PurrfectShot
 ```
+### 2. Run The application
 
-### 2. Restore dependencies
+You can choose between two methods:
 
-```bash
-dotnet restore
-```
+#### Option A: Docker Compose (Recommended)
 
-### 3. Apply Database Migration
-
-As long as the AppSettings file is setup, the database migration is applied automatically.
-
-Alternatively, you can do it manually.  
-Open the **Package Manager Console** in Visual Studio, set the Default Project to **PurrfectShot.Data** and run
-
+1. Open your terminal in the project root folder.
+2. Run:
 
 ```bash
-Update-Database -StartupProject PurrfectShot.Web
+docker-compose up --build
 ```
 
-This will create the database and seed it with 4 cat profiles, 36 photos, initial votes, and the admin/test user.
+3. Wait for the build to finish and the containers to start.
+4. Open your browser at `http://localhost:8080`
 
-### 4. Run the application
+**Note**: If port 8080 is in use, you can modify `docker-compose.yaml`.
 
-Press **F5** or select **PurrfectShot.Web** as the startup project and click **Start**.
-The app will be available at `https://localhost:7194`.
+#### Option B: Visual Studio 2022
 
----
+1. Open `PurrfectShot.sln` in **Visual Studio 2022**.
+2. Ensure your Docker Desktop is running (or wherever you are running SQL).
+3. Update `appsettings.json` and ensure the connection string matches your Docker/LocalDB setup:
+
+**Example for Docker (Default)**:
+```JSON
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost,1433;Database=PurrfectShotDb;User Id=sa;Password=SoftUniTestDb1423!;TrustServerCertificate=True;MultipleActiveResultSets=true"
+}
+```  
+
+**Example for LocalDB / SQL Express**:
+```JSON
+"ConnectionStrings": {
+  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=PurrfectShotDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+}
+```
+
+4. Press **F5** (Start Debugging).
+	- The app will automatically connect to the SQL Server container.
+	- Database will be created and seeded automatically.
+	- App launches at `https://localhost:7194`.
+
+**Note**: If port 7194 is not available, Visual Studio might assign a different port. Check the browser URL.
 
 ## 📁 Project Structure
 
@@ -131,7 +151,7 @@ PurrfectShot/
 - **Home Page**: Check the "Hero" section for global stats and browse the "Pride" section to see all active cat residents.
 - **The Band (Cats)**: Visit the full list of cats via the "Бандата" (The Band) link in the navigation.
 
-![alt text](docs/screenshots/home-page.jpeg)
+![home-page](docs/screenshots/home-page.jpeg)
 
 ### 🗓️ Monthly Calendar
 
@@ -144,8 +164,8 @@ PurrfectShot/
 - **Cat Details**: Click on any cat card to view their bio, breed info, and personal photo album.
 - **Photo Details**: Click on any photo to see it in full size. Here you can see the rating, upload date, and navigation buttons.
 
-![alt text](docs/screenshots/profile-details.jpeg)
-![alt text](docs/screenshots/photo-details.jpeg)
+![cat-details-page](docs/screenshots/profile-details.jpeg)
+![photo-details-page](docs/screenshots/photo-details.jpeg)
 
 ### 🗳️ Interaction (Login Required)
 
@@ -170,62 +190,6 @@ To test administrative features, use the seeded account:
 - **Password**: Admin123!
 
 **Note**: Currently, the system allows all registered users to perform CRUD operations (Family mode).
-
----
-
-## 🗄️ Database Setup
-
-The project uses **Entity Framework Core** with a Code-First approach and **Fluent API** for all relationships.
-The project is configured to run with **SQL Server in a Docker Container**.
-
-**Option 1: Docker (Recommended)**
-Ensure your Docker container is running and exposed on port **1433**.
-
-The connection string is configured in appsettings.json:
-Connection string is configured in `appsettings.json`:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost,1433;Database=PurrfectShotDb;User
-  Id=sa;Password=SoftUniTestDb1423!;TrustServerCertificate=True;MultipleActiveResultSets=true"
-}
-```
-
-**Option 2: Local SQL Express**
-If you prefer a local installation, update the connection string to:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=
-  (localdb)\\mssqllocaldb;Database=PurrfectShotDb;Trusted_Connection=True;MultipleActiveResultSets=true"
-}
-```
-
-**Note**: You can aso use your desired [SQL Connection](https://www.connectionstrings.com/sql-server/)
-- Just make sure ensure you Apply database migrations
-
----
-
-## ⚙️ Configuration
-
-The application uses standard `.NET` configuration. No additional API keys are required for local development.
-
-`appsettings.json` structure:
-
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "..."
-  },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "AllowedHosts": "*"
-}
-```
 
 ---
 
@@ -256,11 +220,3 @@ Project Link: [https://github.com/Zarumoth/PurrfectShot](https://github.com/Zaru
 ---
 
 *Built as part of the **ASP.NET Fundamentals** course.*
-
-
-
-
-
-
-
-
