@@ -168,5 +168,40 @@ namespace PurrfectShot.Services.Data
                 await _dbContext.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<CatCardViewModel>> GetAllCatsForAdminAsync()
+        {
+            return await _dbContext
+                .Cats
+                .AsNoTracking()
+                .Select(c => new CatCardViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Breed = c.Breed,
+                    PhotoCount = c.Photos.Count,
+                    IsActive = c.IsActive,
+                    ProfileImageUrl = c.MainPhoto != null
+                        ? c.MainPhoto.FilePath
+                        : c.Photos.OrderByDescending(p => p.DateUploaded)
+                            .Select(p => p.FilePath)
+                            .FirstOrDefault()
+                })
+                .ToListAsync();
+
+        }
+
+        public async Task RestoreArchivedCatAsync(int id)
+        {
+            var cat = await _dbContext
+                .Cats
+                .FindAsync(id);
+
+            if (cat != null)
+            {
+                cat.IsActive = true;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
     }
 }

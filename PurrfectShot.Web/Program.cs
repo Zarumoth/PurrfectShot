@@ -37,6 +37,7 @@ namespace PurrfectShot.Web
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<PurrfectShotDbContext>()
             .AddErrorDescriber<LocalizedIdentityErrorDescriber>();
 
@@ -58,6 +59,10 @@ namespace PurrfectShot.Web
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapRazorPages();
+
+            app.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

@@ -23,5 +23,9 @@ namespace PurrfectShot.Services.Data.Interfaces
         Task DeleteCatPermanentlyAsync(int id);
 
         Task ArchiveCatAsync(int id);
+
+        Task<IEnumerable<CatCardViewModel>> GetAllCatsForAdminAsync();
+
+        Task RestoreArchivedCatAsync(int id);
     }
 }

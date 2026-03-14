@@ -6,6 +6,7 @@
         public string Name { get; set; } = null!;
         public string Breed { get; set; } = null!;
         public int PhotoCount { get; set; }
+        public bool IsActive { get; set; }
         public string? ProfileImageUrl { get; set; }
     }
 }
