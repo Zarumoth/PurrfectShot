@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using PurrfectShot.Data.Models;
+    using static PurrfectShot.Web.Common.EntityValidation.SeedConstants;
 
 
     public class PurrfectShotDbContext : IdentityDbContext<ApplicationUser>
@@ -25,12 +26,27 @@
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ApplicationUser>().ToTable("Users");
             modelBuilder.Entity<IdentityRole>().ToTable("Roles");
             modelBuilder.Entity<IdentityUserRole<string>>().ToTable("UsersRoles");
             modelBuilder.Entity<IdentityUserClaim<string>>().ToTable("UsersClaims");
             modelBuilder.Entity<IdentityUserLogin<string>>().ToTable("UsersLogins");
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RolesClaims");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UsersTokens");
+
+            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            {
+                Id = adminRoleId,
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR",
+                ConcurrencyStamp = adminRoleId
+            });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                UserId = adminUserId,
+                RoleId = adminRoleId
+            });
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PurrfectShotDbContext).Assembly);
         }

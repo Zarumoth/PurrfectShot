@@ -26,5 +26,12 @@
             public const int VoterNameMinLength = 2;   //Not used after implementing user authentication, but left for potential future use if we want to allow guest voting
             public const int VoterNameMaxLength = 50;  //Not used after implementing user authentication, but left for potential future use if we want to allow guest voting
         }
+
+        public static class SeedConstants
+        {
+            public const string adminUserId = "38058665-8726-41fa-be91-41de9acd0f72";
+            public const string adminRoleId = "b91f0f0c-99a3-4315-9c87-6cdcc81d1a6e";
+            public const string adminEmail = "admin@purrfect.com";
+        }
     }
 }
