@@ -1,22 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using PurrfectShot.Common;
 using PurrfectShot.Data;
+using PurrfectShot.Data.Models;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Calendar;
-using PurrfectShot.Data.Models;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 using System.Globalization;
+using static PurrfectShot.Common.DateFormatHelpers;
 
 namespace PurrfectShot.Services.Data
 {
-    public class PhotoService : IPhotoService
+    public class PhotoService(PurrfectShotDbContext dbContext, IMapper mapper) : IPhotoService
     {
-        private readonly PurrfectShotDbContext _dbContext;
-
-        public PhotoService(PurrfectShotDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
 
         public async Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath)
         {
@@ -29,9 +27,7 @@ namespace PurrfectShot.Services.Data
 
             //Check if the directory exists and create it if it doesn't
             if (!Directory.Exists(uploadFolderPath))
-            {
                 Directory.CreateDirectory(uploadFolderPath);
-            }
 
             //Define the full path for the new file
             string fullFilePath = Path.Combine(uploadFolderPath, uniqueFileName);
@@ -43,61 +39,39 @@ namespace PurrfectShot.Services.Data
             }
 
             //Create a new Photo entity and save it (the path) to the database
-            var photo = new Photo
-            {
-                CatId = model.CatId,
-                Caption = model.Caption,
-                DateUploaded = DateTime.UtcNow,
-                FilePath = $"/images/uploads/{uniqueFileName}",
-                PublisherId = userId
-            };
+            var photo = mapper.Map<Photo>(model);
 
-            await _dbContext.Photos.AddAsync(photo);
-            await _dbContext.SaveChangesAsync();
+            photo.Id = Guid.NewGuid();
+            photo.DateUploaded = DateTime.UtcNow;
+            photo.FilePath = $"/images/uploads/{uniqueFileName}";
+            photo.PublisherId = userId;
+
+
+            await dbContext.Photos.AddAsync(photo);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId, string? userId)
         {
 
-            var photo = await _dbContext
+            var photo = await dbContext
                 .Photos
                 .Include(p => p.Cat)
                 .Include(p => p.Votes)
-                .Include(p => p.UserFavoritePhotos)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(p => p.Id == photoId);
+                .FirstOrDefaultAsync(p => p.Id == photoId);
 
-            if (photo == null)
+            if (photo == null) return null;
+
+            var model = mapper.Map<PhotoDetailsViewModel>(photo);
+
+            if (userId != null)
             {
-                return null;
+                model.IsFavorite = await dbContext.UserFavoritePhotos
+                    .AnyAsync(f => f.PhotoId == photoId && f.UserId == userId);
             }
 
-            var bgCulture = new CultureInfo("bg-BG");
-
-            var day = photo.DateUploaded.Day;
-            var rawMonth = bgCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month);
-            var year = photo.DateUploaded.Year;
-
-            string formattedDate = $"{day:D2} {ToTitleCase(rawMonth)} {year}";
-
-            return new PhotoDetailsViewModel
-            {
-                Id = photo.Id,
-                ImageUrl = photo.FilePath,
-                Caption = photo.Caption,
-                UploadedOn = formattedDate,
-                CatId = photo.Cat.Id,
-                CatName = photo.Cat.Name,
-                CatBreed = photo.Cat.Breed,
-                IsActive = photo.Cat.IsActive,
-                IsMainPhoto = photo.Id == photo.Cat.MainPhotoId,
-                Rating = photo.Votes.Any() ? photo.Votes.Average(v => v.Stars) : 0.0,
-                VotesCount = photo.Votes.Count,
-                Month = photo.DateUploaded.Month,
-                Year = photo.DateUploaded.Year,
-                MonthName = ToTitleCase(bgCulture.DateTimeFormat.GetMonthName(photo.DateUploaded.Month)),
-                IsFavorite = userId != null && photo.UserFavoritePhotos.Any(fp => fp.UserId == userId)
-            };
+            return model;
         }
 
         public async Task SetProfilePicture(Guid photoId)
@@ -106,14 +80,14 @@ namespace PurrfectShot.Services.Data
             if (photoId == Guid.Empty)
                 throw new ArgumentException("Invalid photo ID.");
 
-            var photo = await _dbContext
+            var photo = await dbContext
                 .Photos
                 .FindAsync(photoId);
 
             if (photo == null)
                 throw new InvalidOperationException("Photo not found.");
 
-            var cat = await _dbContext
+            var cat = await dbContext
                 .Cats
                 .FindAsync(photo.CatId);
 
@@ -121,16 +95,16 @@ namespace PurrfectShot.Services.Data
                 throw new InvalidOperationException("Associated cat not found.");
 
             cat.MainPhotoId = photoId;
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<(int totalPhotos, int totalVotes)> GetGlobalStatisticsAsync()
         {
-            int totalPhotos = await _dbContext
+            int totalPhotos = await dbContext
                 .Photos
                 .CountAsync();
 
-            int totalVotes = await _dbContext
+            int totalVotes = await dbContext
                 .Votes
                 .CountAsync();
 
@@ -139,14 +113,14 @@ namespace PurrfectShot.Services.Data
 
         public async Task<int> GetPhotoCountByCatIdAsync(int catId)
         {
-            return await _dbContext
+            return await dbContext
                 .Photos
                 .CountAsync(p => p.CatId == catId);
         }
 
         public async Task VoteForPhotoAsync(VoteInputModel model, string userId, string userName)
         {
-            var existingVote = await _dbContext.Votes
+            var existingVote = await dbContext.Votes
                 .FirstOrDefaultAsync(v => v.PhotoId == model.PhotoId && v.UserId == userId);
 
             if (existingVote != null)
@@ -156,23 +130,19 @@ namespace PurrfectShot.Services.Data
             }
             else
             {
-                var newVote = new Vote
-                {
-                    PhotoId = model.PhotoId,
-                    UserId = userId,
-                    VoterName = userName,
-                    Stars = model.Stars
-                };
+                var newVote = mapper.Map<Vote>(model);
+                newVote.UserId = userId;
+                newVote.VoterName = userName;
 
-                await _dbContext.Votes.AddAsync(newVote);
+                await dbContext.Votes.AddAsync(newVote);
             }
 
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> RemovePhotoVoteAsync(Guid photoId, string voterName)
         {
-            var existingVote = await _dbContext.Votes
+            var existingVote = await dbContext.Votes
                 .FirstOrDefaultAsync(v => v.PhotoId == photoId && v.VoterName == voterName);
 
             if (existingVote == null)
@@ -180,8 +150,8 @@ namespace PurrfectShot.Services.Data
                 return false;
             }
 
-            _dbContext.Votes.Remove(existingVote);
-            await _dbContext.SaveChangesAsync();
+            dbContext.Votes.Remove(existingVote);
+            await dbContext.SaveChangesAsync();
 
             return true;
         }
@@ -189,7 +159,7 @@ namespace PurrfectShot.Services.Data
         public async Task<IEnumerable<CalendarMonthViewModel>> GetCalendarMonthsAsync()
         {
 
-            var rawData = await _dbContext
+            var rawData = await dbContext
                 .Photos
                 .AsNoTracking()
                 .Select(p => new
@@ -209,7 +179,7 @@ namespace PurrfectShot.Services.Data
                 {
                     Year = g.Key.Year,
                     Month = g.Key.Month,
-                    MonthName = ToTitleCase(bgCulture.DateTimeFormat.GetMonthName(g.Key.Month)),
+                    MonthName = g.Key.Month.ToBulgarianMonthName(),
                     CoverImageUrl = g.OrderByDescending(x => x.Rating).First().FilePath,
                     PhotoCount = g.Count()
                 })
@@ -222,68 +192,47 @@ namespace PurrfectShot.Services.Data
 
         public async Task<List<PhotoCardViewModel>> GetPhotosByMonthAsync(int year, int month)
         {
-            return await _dbContext
+            return await dbContext
                 .Photos
                 .AsNoTracking()
                 .Where(p => p.DateUploaded.Year == year && p.DateUploaded.Month == month)
-                .Select(p => new PhotoCardViewModel
-                {
-                    Id = p.Id,
-                    FilePath = p.FilePath,
-                    CatName = p.Cat.Name,
-                    DateUploaded = p.DateUploaded,
-                    Rating = p.Votes.Any() ? p.Votes.Average(v => v.Stars) : 0.0
-                })
+                .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
                 .OrderByDescending(p => p.Rating)
                 .ToListAsync();
         }
 
         public async Task<PhotoEditInputModel?> GetPhotoForEditAsync(Guid photoId)
         {
-            return await _dbContext.Photos
+            return await dbContext.Photos
                 .AsNoTracking()
                 .Where(p => p.Id == photoId)
-                .Select(p => new PhotoEditInputModel
-                {
-                    Id = p.Id,
-                    ImageUrl = p.FilePath,
-                    Caption = p.Caption,
-                    CatId = p.CatId,
-                    CatName = p.Cat.Name
-
-                })
+                .ProjectTo<PhotoEditInputModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }
 
         public async Task UpdatePhotoAsync(PhotoEditInputModel model)
         {
-            var photo = await _dbContext.Photos.FindAsync(model.Id);
+            var photo = await dbContext.Photos.FindAsync(model.Id);
 
             if (photo != null)
             {
                 photo.Caption = model.Caption;
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
             }
         }
 
         public async Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(Guid id)
         {
-            return await _dbContext.Photos
+            return await dbContext.Photos
                 .AsNoTracking()
                 .Where(p => p.Id == id)
-                .Select(p => new PhotoDeleteViewModel
-                {
-                    Id = p.Id,
-                    CatId = p.CatId,
-                    ImageUrl = p.FilePath,
-                    CatName = p.Cat.Name
-                })
+                .ProjectTo<PhotoDeleteViewModel>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<int> DeletePhotoAsync(Guid id, string webRootPath)
         {
-            var photo = await _dbContext.Photos.FindAsync(id);
+            var photo = await dbContext.Photos.FindAsync(id);
 
             if (photo == null)
             {
@@ -301,8 +250,8 @@ namespace PurrfectShot.Services.Data
             }
 
             //Delete database record
-            _dbContext.Photos.Remove(photo);
-            await _dbContext.SaveChangesAsync();
+            dbContext.Photos.Remove(photo);
+            await dbContext.SaveChangesAsync();
 
             return catId;
         }
@@ -310,67 +259,45 @@ namespace PurrfectShot.Services.Data
         public async Task<bool> ToggleFavoriteAsync(Guid photoId, string userId)
         {
 
-            var favorite = await _dbContext.UserFavoritePhotos
+            var favorite = await dbContext.UserFavoritePhotos
                 .FirstOrDefaultAsync(f => f.PhotoId == photoId && f.UserId == userId);
 
             if (favorite != null)
             {
-                _dbContext.UserFavoritePhotos.Remove(favorite);
-                await _dbContext.SaveChangesAsync();
+                dbContext.UserFavoritePhotos.Remove(favorite);
+                await dbContext.SaveChangesAsync();
                 return false;
             }
             else
             {
-                await _dbContext.UserFavoritePhotos.AddAsync(new UserFavoritePhoto
+                await dbContext.UserFavoritePhotos.AddAsync(new UserFavoritePhoto
                 {
                     PhotoId = photoId,
                     UserId = userId
                 });
-                await _dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();
                 return true;
             }
         }
 
         public async Task<IEnumerable<PhotoCardViewModel>> GetFavoritePhotosByUserIdAsync(string userId)
         {
-            return await _dbContext.UserFavoritePhotos
+            return await dbContext.UserFavoritePhotos
                 .Where(f => f.UserId == userId)
-                .Select(f => new PhotoCardViewModel
-                {
-                    Id = f.Photo.Id,
-                    FilePath = f.Photo.FilePath,
-                    CatName = f.Photo.Cat.Name,
-                    DateUploaded = f.Photo.DateUploaded,
-                    Rating = f.Photo.Votes.Any() ? f.Photo.Votes.Average(v => v.Stars) : 0.0
-                })
+                .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
                 .OrderByDescending(p => p.DateUploaded)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<PhotoCardViewModel>> GetPhotosByUserIdAsync(string userId)
         {
-            return await _dbContext
+            return await dbContext
                 .Photos
                 .AsNoTracking()
                 .Where(p => p.PublisherId == userId)
-                .Select(p => new PhotoCardViewModel
-                {
-                    Id = p.Id,
-                    FilePath = p.FilePath,
-                    CatName = p.Cat.Name,
-                    DateUploaded = p.DateUploaded,
-                    Rating = p.Votes.Any() ? p.Votes.Average(v => v.Stars) : 0.0
-                })
+                .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
                 .OrderByDescending(p => p.DateUploaded)
                 .ToListAsync();
-        }
-
-        //Helper: Used for BG-Month Upper Starting Letter
-        private string ToTitleCase(string input)
-        {
-            if (string.IsNullOrEmpty(input)) return input;
-
-            return char.ToUpper(input[0]) + input.Substring(1);
         }
     }
 }

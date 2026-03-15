@@ -23,6 +23,7 @@ namespace PurrfectShot.Web
             builder.Services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<CatProfile>();
+                cfg.AddProfile<PhotoProfile>();
             });
 
             builder.Services.AddDbContext<PurrfectShotDbContext>(opt =>
