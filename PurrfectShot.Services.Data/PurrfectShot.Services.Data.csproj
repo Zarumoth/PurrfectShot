@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PurrfectShot.Data.Models\PurrfectShot.Data.Models.csproj" />
     <ProjectReference Include="..\PurrfectShot.Data\PurrfectShot.Data.csproj" />
     <ProjectReference Include="..\PurrfectShot.Web.ViewModels\PurrfectShot.Web.ViewModels.csproj" />

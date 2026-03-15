@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36717.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurrfectShot.Web", "PurrfectShot.Web\PurrfectShot.Web.csproj", "{3A87569A-6656-4C86-AD22-8C8679910623}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1DE98E28-2DFF-472D-B7A4-4FA3E2B83ECA} = {1DE98E28-2DFF-472D-B7A4-4FA3E2B83ECA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurrfectShot.Common", "PurrfectShot.Common\PurrfectShot.Common.csproj", "{A5EFA72B-44EE-41F8-B838-5A7705C5E8B1}"
 EndProject

@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using PurrfectShot.Data;
 using PurrfectShot.Data.Models;
 using PurrfectShot.Services.Data;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.Infrastructure;
+using PurrfectShot.Web.Infrastructure.Profiles;
+using AutoMapper;
 
 namespace PurrfectShot.Web
 {
@@ -16,6 +19,11 @@ namespace PurrfectShot.Web
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<CatProfile>();
+            });
 
             builder.Services.AddDbContext<PurrfectShotDbContext>(opt =>
             {
