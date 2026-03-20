@@ -31,11 +31,19 @@ namespace PurrfectShot.Web.Controllers
         {
             ViewData["Title"] = "Моите снимки";
 
-            string userId = GetUserId();
+            try
+            {
+                string userId = GetUserId();
 
-            var model = await photoService.GetPhotosByUserIdAsync(userId);
+                var model = await photoService.GetPhotosByUserIdAsync(userId);
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Възникна грешка при зареждането на вашите снимки.";
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }
