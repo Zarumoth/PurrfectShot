@@ -8,6 +8,7 @@ using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.Infrastructure;
 using PurrfectShot.Web.Infrastructure.Profiles;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PurrfectShot.Web
 {
@@ -33,7 +34,12 @@ namespace PurrfectShot.Web
             });
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
+
+
             builder.Services.AddRazorPages();
             builder.Services.AddScoped<ICatService, CatService>();
             builder.Services.AddScoped<IPhotoService, PhotoService>();
