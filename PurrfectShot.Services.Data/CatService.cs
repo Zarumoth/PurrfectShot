@@ -52,6 +52,7 @@ namespace PurrfectShot.Services.Data
         public async Task<CatDetailsViewModel?> GetCatDetailsAsync(int id)
         {
             return await dbContext.Cats
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .ProjectTo<CatDetailsViewModel>(mapper.ConfigurationProvider)
