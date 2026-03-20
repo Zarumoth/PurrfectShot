@@ -17,6 +17,8 @@
             public const int CaptionMinLength = 10;
             public const int CaptionMaxLength = 1000;
             public const int FilePathMaxLength = 500;
+            public static readonly string[] AllowedExtensions = { ".jpg", ".jpeg", ".png" };
+            public const int MaxFileSize = 10 * 1024 * 1024; // 10 MB
         }
 
         public static class Vote

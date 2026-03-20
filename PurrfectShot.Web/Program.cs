@@ -1,4 +1,8 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PurrfectShot.Data;
@@ -7,8 +11,6 @@ using PurrfectShot.Services.Data;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.Infrastructure;
 using PurrfectShot.Web.Infrastructure.Profiles;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 
 namespace PurrfectShot.Web
 {
@@ -20,6 +22,16 @@ namespace PurrfectShot.Web
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder.Services.Configure<KestrelServerOptions>(options =>
+            {
+                options.Limits.MaxRequestBodySize = 150 * 1024 * 1024;
+            });
+
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 150 * 1024 * 1024;
+            });
 
             builder.Services.AddAutoMapper(cfg =>
             {
@@ -61,7 +73,7 @@ namespace PurrfectShot.Web
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                //app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
             else
             {
@@ -69,6 +81,8 @@ namespace PurrfectShot.Web
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -66,6 +66,13 @@ namespace PurrfectShot.Web.Controllers
                 return RedirectToAction(nameof(Details), "Cats", new { id = model.CatId });
                 //return RedirectToAction(nameof(Index), "Home");
             }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(nameof(model.ImageFile), ex.Message);
+
+                model.Cats = await catService.GetAllCatsForSelectAsync();
+                return View(model);
+            }
             catch (Exception)
             {
                 ModelState.AddModelError(string.Empty, "Грешка при качване на снимката. Опитайте пак.");

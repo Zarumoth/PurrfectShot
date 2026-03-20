@@ -10,14 +10,13 @@ namespace PurrfectShot.Web.Controllers
         public IActionResult HttpCodeHandler(int statusCode)
         {
             if (statusCode == 404)
-            {
                 return View("NotFound");
-            }
+
+            if (statusCode == 400)
+                return View("BadRequest");
 
             if (statusCode == 403)
-            {
                 return View("AccessDenied");
-            }
 
             return View("Error");
         }

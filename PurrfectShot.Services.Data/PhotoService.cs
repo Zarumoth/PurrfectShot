@@ -10,6 +10,7 @@ using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
 using System.Globalization;
 using static PurrfectShot.Common.DateFormatHelpers;
+using static PurrfectShot.Web.Common.EntityValidation.Photo;
 
 namespace PurrfectShot.Services.Data
 {
@@ -19,7 +20,16 @@ namespace PurrfectShot.Services.Data
         public async Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath)
         {
             //Generate unique file name + extension
-            string fileExtension = Path.GetExtension(model.ImageFile.FileName);
+            string fileExtension = Path.GetExtension(model.ImageFile.FileName).ToLower();
+            if (!AllowedExtensions.Contains(fileExtension))
+            {
+                throw new InvalidOperationException("Невалиден формат на файла! Позволени са само .jpg, .jpeg и .png.");
+            }
+            var fileSize = model.ImageFile.Length;
+            if (fileSize > MaxFileSize)
+            {
+                throw new InvalidOperationException("Снимката е твърде голяма. Максималният размер е 10MB.");
+            }
             string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
 
             //Define the path to wwroot/images/uploads
