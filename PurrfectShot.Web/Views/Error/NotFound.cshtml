@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Мяу? Страницата изчезна";
+}
+
+<div class="container text-center mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <img src="~/images/Cat_Error_404.png" alt="Котка, търсеща обект - 404" class="img-fluid mb-4" style="max-width: 300px;">
+            <div class="display-1 fw-bold text-primary mb-4">404</div>
+            <div class="mb-4">
+                <i class="bi bi-search text-muted" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="fw-bold">Мяу? Тук няма нищо.</h2>
+            <p class="lead text-muted">
+                Изглежда тази страница е била изядена от котките или никога не е съществувала.
+                Може би търсиш нещо друго?
+            </p>
+            <hr class="my-4 w-25 mx-auto">
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-5 shadow">
+                    Към началната страница
+                </a>
+                <a asp-controller="Calendar" asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
+                    Към Календара
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
