@@ -22,7 +22,6 @@ namespace PurrfectShot.Services.Data
         {
             return await dbContext.Cats
                 .AsNoTracking()
-                .Where(c => c.IsActive)
                 .ProjectTo<CatSelectViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -46,7 +45,6 @@ namespace PurrfectShot.Services.Data
             return await dbContext
                 .Cats
                 .AsNoTracking()
-                .Where(c => c.IsActive)
                 .ProjectTo<CatCardViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -113,6 +111,7 @@ namespace PurrfectShot.Services.Data
         {
             return await dbContext
                 .Cats
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .ProjectTo<CatCardViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();

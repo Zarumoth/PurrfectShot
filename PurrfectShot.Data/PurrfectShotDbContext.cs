@@ -25,6 +25,7 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Cat>().HasQueryFilter(c => c.IsActive);
 
             modelBuilder.Entity<ApplicationUser>().ToTable("Users");
             modelBuilder.Entity<IdentityRole>().ToTable("Roles");
