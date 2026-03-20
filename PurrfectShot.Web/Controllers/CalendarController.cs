@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PurrfectShot.Common;
 using PurrfectShot.Services.Data.Interfaces;
 using System.Globalization;
 
 namespace PurrfectShot.Web.Controllers
 {
     [AllowAnonymous]
-    public class CalendarController(IPhotoService photoService) : BaseController
+    public class CalendarController(IPhotoService photoService, ILogger<CalendarController> logger) : BaseController
     {
 
         public async Task<IActionResult> Index()
@@ -19,8 +20,10 @@ namespace PurrfectShot.Web.Controllers
                 TempData["Info"] = "Изберете месец, за да видите снимките, качени през този период.";
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error loading calendar index.");
+
                 TempData["Error"] = "Грешка при зареждане на календара. Моля, опитайте отново.";
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -34,20 +37,19 @@ namespace PurrfectShot.Web.Controllers
                 return BadRequest();
             }
 
-            var bgCulture = new CultureInfo("bg-BG");
-
             try
             {
                 var photos = await photoService.GetPhotosByMonthAsync(year, month);
-                var monthName = bgCulture.DateTimeFormat.GetMonthName(month);
-                monthName = char.ToUpper(monthName[0]) + monthName.Substring(1);
+                var monthName = month.ToBulgarianMonthName();
 
                 ViewData["Title"] = $"{monthName} {year}";
 
                 return View(photos);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error loading month gallery for {Month}/{Year}", month, year);
+
                 TempData["Error"] = "Грешка при извличане на снимките за избрания месец.";
                 return RedirectToAction(nameof(Index));
             }

@@ -7,7 +7,7 @@ using PurrfectShot.Web.ViewModels.Photos;
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class UserController(IPhotoService photoService) : BaseController
+    public class UserController(IPhotoService photoService, ILogger<UserController> logger) : BaseController
     {
         public async Task<IActionResult> Favorites()
         {
@@ -21,8 +21,10 @@ namespace PurrfectShot.Web.Controllers
 
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error loading favorites for user {UserId}", GetUserId());
+
                 TempData["Error"] = "Възникна грешка при зареждането на вашите любими снимки.";
                 return RedirectToAction("Index", "Home");
             }
@@ -39,8 +41,10 @@ namespace PurrfectShot.Web.Controllers
 
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error loading uploaded photos for user {UserId}", GetUserId());
+
                 TempData["Error"] = "Възникна грешка при зареждането на вашите снимки.";
                 return RedirectToAction("Index", "Home");
             }

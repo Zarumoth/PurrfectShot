@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace PurrfectShot.Web.Controllers
 {
     [AllowAnonymous]
-    public class HomeController (ICatService catService, IPhotoService photoService) : BaseController
+    public class HomeController (ICatService catService, IPhotoService photoService, ILogger<HomeController> logger) : BaseController
     {
 
         public async Task<IActionResult> Index()
@@ -18,6 +18,7 @@ namespace PurrfectShot.Web.Controllers
             try
             {
                 var (photos, votes) = await photoService.GetGlobalStatisticsAsync();
+                var featuredCats = await catService.GetFeaturedCatsAsync();
 
                 var model = new HomeIndexViewModel
                 {
@@ -28,12 +29,11 @@ namespace PurrfectShot.Web.Controllers
 
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return View(new HomeIndexViewModel
-                {
-                    FeaturedCats = await catService.GetFeaturedCatsAsync()
-                });
+                logger.LogError(ex, "Critical error on Home Page Index.");
+
+                return View(new HomeIndexViewModel());
             }
         }
         public IActionResult Privacy()

@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Photos;
 using PurrfectShot.Web.ViewModels.Votes;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class PhotosController(IPhotoService photoService, ICatService catService, IWebHostEnvironment webHostEnvironment) : BaseController
+    public class PhotosController(IPhotoService photoService, ICatService catService, IWebHostEnvironment webHostEnvironment, ILogger<PhotosController> logger) : BaseController
     {
 
         [HttpGet]
@@ -28,8 +29,9 @@ namespace PurrfectShot.Web.Controllers
 
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error loading cat list for photo upload.");
                 TempData["Error"] = "Грешка при зареждане на списъка с котки.";
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -73,8 +75,10 @@ namespace PurrfectShot.Web.Controllers
                 model.Cats = await catService.GetAllCatsForSelectAsync();
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Unexpected error occurred during photo upload for CatId: {CatId}", model.CatId);
+
                 ModelState.AddModelError(string.Empty, "Грешка при качване на снимката. Опитайте пак.");
                 ViewData["Title"] = "Качи нова снимка";
                 model.Cats = await catService.GetAllCatsForSelectAsync();
@@ -104,8 +108,9 @@ namespace PurrfectShot.Web.Controllers
                 ViewData["Title"] = $"Снимка на {photoDetails.CatName}";
                 return View(photoDetails);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error retrieving details for photo {PhotoId}", id);
                 TempData["Error"] = "Грешка при зареждане на детайлите.";
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -130,8 +135,10 @@ namespace PurrfectShot.Web.Controllers
 
                 TempData["Success"] = "Гласът ти беше записан!";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error casting vote for photo {PhotoId} by user {UserId}", model.PhotoId, userId);
+
                 TempData["Error"] = "Възникна грешка при записа.";
             }
 
@@ -151,8 +158,10 @@ namespace PurrfectShot.Web.Controllers
                 if (isRemoved) TempData["Success"] = "Гласът ти беше премахнат!";
                 else TempData["Error"] = "Не открихме твой глас за тази снимка.";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error removing vote for photo {PhotoId} by user {UserName}", photoId, userName);
+
                 TempData["Error"] = "Възникна грешка при премахването на гласа.";
             }
 
@@ -170,8 +179,9 @@ namespace PurrfectShot.Web.Controllers
                 await photoService.SetProfilePicture(id);
                 TempData["Success"] = "Профилната снимка е променена!";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error setting profile picture for photo {PhotoId}", id);
                 TempData["Error"] = "Грешка при задаване на профилна снимка.";
             }
 
@@ -198,8 +208,10 @@ namespace PurrfectShot.Web.Controllers
                 ViewData["Title"] = "Редактиране на описанието";
                 return View(photoToEdit);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error loading photo edit view for {PhotoId}", id);
+
                 TempData["Error"] = "Грешка при зареждане на редактора.";
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -221,8 +233,10 @@ namespace PurrfectShot.Web.Controllers
                 TempData["Success"] = "Описанието беше обновено!";
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error updating photo {PhotoId}", model.Id);
+
                 TempData["Error"] = "Грешка при актуализиране на снимката.";
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
@@ -272,8 +286,10 @@ namespace PurrfectShot.Web.Controllers
                 TempData["Success"] = "Снимката е изтрита успешно.";
                 return RedirectToAction(nameof(Details), "Cats", new { id = catId });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error deleting photo {PhotoId}", id);
+
                 TempData["Error"] = "Възникна системна грешка при изтриване.";
                 return RedirectToAction(nameof(Index), "Home");
             }
@@ -285,9 +301,10 @@ namespace PurrfectShot.Web.Controllers
             if (id == Guid.Empty)
                 return BadRequest();
 
+            string userId = GetUserId();
+
             try
             {
-                string userId = GetUserId();
                 bool isNowFavorite = await photoService.ToggleFavoriteAsync(id, userId);
 
                 if (isNowFavorite)
@@ -295,8 +312,10 @@ namespace PurrfectShot.Web.Controllers
                 else
                     TempData["Info"] = "Премахнато от Любими.";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error toggling favorite for photo {PhotoId} and user {UserId}", id, userId);
+
                 TempData["Error"] = "Възникна грешка.";
             }
 
