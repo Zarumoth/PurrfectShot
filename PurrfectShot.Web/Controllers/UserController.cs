@@ -7,7 +7,7 @@ using PurrfectShot.Web.ViewModels.Photos;
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class UserController(IPhotoService photoService) : Controller
+    public class UserController(IPhotoService photoService) : BaseController
     {
         public async Task<IActionResult> Favorites()
         {
@@ -15,7 +15,7 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
-                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                string userId = GetUserId();
 
                 var model = await photoService.GetFavoritePhotosByUserIdAsync(userId);
 
@@ -31,7 +31,7 @@ namespace PurrfectShot.Web.Controllers
         {
             ViewData["Title"] = "Моите снимки";
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            string userId = GetUserId();
 
             var model = await photoService.GetPhotosByUserIdAsync(userId);
 

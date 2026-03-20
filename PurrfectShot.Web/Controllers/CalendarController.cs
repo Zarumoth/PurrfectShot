@@ -6,7 +6,7 @@ using System.Globalization;
 namespace PurrfectShot.Web.Controllers
 {
     [AllowAnonymous]
-    public class CalendarController(IPhotoService photoService) : Controller
+    public class CalendarController(IPhotoService photoService) : BaseController
     {
 
         public async Task<IActionResult> Index()

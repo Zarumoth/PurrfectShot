@@ -6,7 +6,7 @@ using PurrfectShot.Web.ViewModels.Cats;
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class CatsController(ICatService catService, IPhotoService photoService) : Controller
+    public class CatsController(ICatService catService, IPhotoService photoService) : BaseController
     {
         [AllowAnonymous]
         public async Task<IActionResult> Index()

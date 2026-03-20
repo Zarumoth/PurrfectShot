@@ -8,7 +8,7 @@ using System.Security.Claims;
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class PhotosController(IPhotoService photoService, ICatService catService, IWebHostEnvironment webHostEnvironment) : Controller
+    public class PhotosController(IPhotoService photoService, ICatService catService, IWebHostEnvironment webHostEnvironment) : BaseController
     {
 
         [HttpGet]
@@ -55,7 +55,7 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            string userId = GetUserId();
 
             try
             {
@@ -82,7 +82,7 @@ namespace PurrfectShot.Web.Controllers
             if (id == Guid.Empty)
                 return BadRequest();
 
-            string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = GetUserId();
 
             try
             {
@@ -108,8 +108,8 @@ namespace PurrfectShot.Web.Controllers
         public async Task<IActionResult> Vote(VoteInputModel model)
         {
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-            string userName = User.Identity?.Name ?? "Котконимен";
+            string userId = GetUserId();
+            string userName = GetUserName();
 
             if (!ModelState.IsValid)
             {
@@ -135,7 +135,7 @@ namespace PurrfectShot.Web.Controllers
         public async Task<IActionResult> Unvote(Guid photoId)
         {
 
-            string userName = User.Identity!.Name!;
+            string userName = GetUserName();
 
             try
             {
@@ -280,7 +280,7 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
-                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                string userId = GetUserId();
                 bool isNowFavorite = await photoService.ToggleFavoriteAsync(id, userId);
 
                 if (isNowFavorite)

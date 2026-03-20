@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace PurrfectShot.Web.Controllers
 {
     [AllowAnonymous]
-    public class HomeController (ICatService catService, IPhotoService photoService) : Controller
+    public class HomeController (ICatService catService, IPhotoService photoService) : BaseController
     {
 
         public async Task<IActionResult> Index()
