@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PurrfectShot.Common;
 using PurrfectShot.Data;
 using PurrfectShot.Data.Models;
@@ -14,7 +15,7 @@ using static PurrfectShot.Web.Common.EntityValidation.Photo;
 
 namespace PurrfectShot.Services.Data
 {
-    public class PhotoService(PurrfectShotDbContext dbContext, IMapper mapper) : IPhotoService
+    public class PhotoService(PurrfectShotDbContext dbContext, IMapper mapper, ILogger<PhotoService> logger) : IPhotoService
     {
 
         public async Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath)
@@ -59,6 +60,8 @@ namespace PurrfectShot.Services.Data
 
             await dbContext.Photos.AddAsync(photo);
             await dbContext.SaveChangesAsync();
+
+            logger.LogInformation("User {UserId} successfully uploaded photo {PhotoId} for Cat {CatId}", userId, photo.Id, photo.CatId);
         }
 
         public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId, string? userId)
@@ -224,8 +227,10 @@ namespace PurrfectShot.Services.Data
 
             if (photo != null)
             {
-                photo.Caption = model.Caption;
+                mapper.Map(model, photo);
                 await dbContext.SaveChangesAsync();
+
+                logger.LogInformation("Photo {PhotoId} was updated.", model.Id);
             }
         }
 
@@ -252,9 +257,17 @@ namespace PurrfectShot.Services.Data
             //Delete physical file
             string fullFilePath = Path.Combine(webRootPath, photo.FilePath.TrimStart('/'));
 
-            if (File.Exists(fullFilePath))
+            try
             {
-                File.Delete(fullFilePath);
+                if (File.Exists(fullFilePath))
+                {
+                    File.Delete(fullFilePath);
+                    logger.LogInformation("Physical file deleted: {Path}", fullFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Could not delete physical file at {Path}. Manual cleanup might be needed.", fullFilePath);
             }
 
             //Delete database record
