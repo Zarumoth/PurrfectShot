@@ -6,7 +6,7 @@ namespace PurrfectShot.Services.Data.Interfaces
     {
         Task<IEnumerable<CatSelectViewModel>> GetAllCatsForSelectAsync();
 
-        Task<int> AddCatAsync(CatInputModel model);
+        Task<int> AddCatAsync(CatInputModel model, string userId);
 
         Task<bool> ExistsByIdAsync(int id);
 

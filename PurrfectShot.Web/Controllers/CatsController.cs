@@ -56,7 +56,8 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
-                int catId = await catService.AddCatAsync(model);
+                var userId = GetUserId();
+                int catId = await catService.AddCatAsync(model, userId);
 
                 TempData["Success"] = $"Котката {model.Name} беше добавена успешно!";
                 return RedirectToAction(nameof(Details), new { id = catId });
