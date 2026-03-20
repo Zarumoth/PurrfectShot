@@ -171,8 +171,6 @@ namespace PurrfectShot.Services.Data
                 })
                 .ToListAsync();
 
-            var bgCulture = new CultureInfo("bg-BG");
-
             var calendarMonths = rawData
                 .GroupBy(p => new { p.Year, p.Month })
                 .Select(g => new CalendarMonthViewModel
