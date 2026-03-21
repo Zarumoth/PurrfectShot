@@ -1,0 +1,27 @@
+﻿@model PurrfectShot.Web.ViewModels.Admin.UserEditInputModel
+@{
+    ViewData["Title"] = "Добави нов потребител";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-body p-5">
+                <h2 class="fw-bold text-success mb-4 text-center">@ViewData["Title"]</h2>
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-3">
+                        <input name="email" class="form-control" placeholder="Email" required />
+                        <label>Имейл адрес</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input name="password" type="password" class="form-control" placeholder="Password" required />
+                        <label>Парола</label>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill">Създай</button>
+                    <a asp-action="Index" asp-controller="Dashboard" class="btn btn-link w-100 mt-2 text-muted">Отказ</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

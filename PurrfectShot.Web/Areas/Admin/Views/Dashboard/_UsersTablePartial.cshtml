@@ -37,6 +37,17 @@
                                     <!option value="@role" @(user.Role == role ? "selected" : "")>@role</!option>
                                 }
                             </select>
+
+                            <a asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-warning border-0">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            <form asp-action="DeleteUser" asp-route-userId="@user.Id" method="post"
+                                  onsubmit="return confirm('СИГУРНИ ЛИ СТЕ? Това ще изтрие потребителя и всички негови връзки!');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger border-0">
+                                    <i class="bi bi-person-x-fill"></i>
+                                </button>
+                            </form>
                             <div class="spinner-border spinner-border-sm text-primary d-none" id="spinner-@user.Id" role="status"></div>
                         </div>
                     </td>

@@ -10,6 +10,9 @@ namespace PurrfectShot.Web.Infrastructure.Profiles
         {
             CreateMap<ApplicationUser, UserListViewModel>()
                 .ForMember(d => d.Role, opt => opt.Ignore());
+
+            CreateMap<ApplicationUser, UserEditInputModel>().ReverseMap();
         }
+
     }
 }

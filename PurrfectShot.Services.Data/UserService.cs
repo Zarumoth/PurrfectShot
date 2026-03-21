@@ -61,5 +61,52 @@ namespace PurrfectShot.Services.Data
 
             return result.Succeeded;
         }
+
+        public async Task<IdentityResult> CreateUserAsync(string email, string password)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true
+            };
+
+            logger.LogInformation("New user {Email} created by Admin.", email);
+
+            return await userManager.CreateAsync(user, password);
+        }
+
+        public async Task<UserEditInputModel?> GetUserForEditAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            return user == null ? null : mapper.Map<UserEditInputModel>(user);
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(UserEditInputModel model)
+        {
+            var user = await userManager.FindByIdAsync(model.Id);
+            if (user == null) return IdentityResult.Failed();
+
+            mapper.Map(model, user);
+
+            user.NormalizedEmail = model.Email.ToUpper();
+            user.NormalizedUserName = model.UserName.ToUpper();
+
+            logger.LogInformation("User {UserId} updated.", model.Id);
+
+            return await userManager.UpdateAsync(user);
+        }
+
+        public async Task<bool> DeleteUserAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            var result = await userManager.DeleteAsync(user);
+
+            logger.LogCritical("User {UserId} was DELETED from the system.", userId);
+
+            return result.Succeeded;
+        }
     }
 }
