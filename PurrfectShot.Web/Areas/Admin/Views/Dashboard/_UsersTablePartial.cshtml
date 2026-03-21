@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PurrfectShot.Web.ViewModels.Admin.UserListViewModel>
+@{
+    var allRoles = ViewBag.AllRoles as IEnumerable<string>;
+}
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th class="ps-4">Потребител</th>
+                <th>Имейл адрес</th>
+                <th class="text-center">Права (Роля)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td class="ps-4">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm fw-bold"
+                                 style="width: 40px; height: 40px;">
+                                @user.UserName[0].ToString().ToUpper()
+                            </div>
+                            <span class="fw-bold text-dark">@user.UserName</span>
+                        </div>
+                    </td>
+                    <td><span class="text-muted">@user.Email</span></td>
+                    <td class="text-center" style="width: 280px;">
+                        <div class="d-flex align-items-center justify-content-center gap-2">
+                            <select class="form-select form-select-sm rounded-pill border-primary shadow-sm"
+                                    style="width: 180px;"
+                                    data-user-id="@user.Id"
+                                    onchange="updateUserRole(this)">
+                                @foreach (var role in allRoles!)
+                                {
+                                    <!option value="@role" @(user.Role == role ? "selected" : "")>@role</!option>
+                                }
+                            </select>
+                            <div class="spinner-border spinner-border-sm text-primary d-none" id="spinner-@user.Id" role="status"></div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

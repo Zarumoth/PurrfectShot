@@ -321,5 +321,14 @@ namespace PurrfectShot.Services.Data
                 .OrderByDescending(p => p.DateUploaded)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<PhotoCardViewModel>> GetAllPhotosForAdminAsync()
+        {
+            return await dbContext.Photos
+                .AsNoTracking()
+                .OrderByDescending(p => p.DateUploaded)
+                .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
     }
 }

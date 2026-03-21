@@ -18,7 +18,7 @@ namespace PurrfectShot.Data.Configuration
                 Id = adminUserId,
                 UserName = "admin@purrfect.com",
                 NormalizedUserName = "ADMIN@PURRFECT.COM",
-                Email = adminUserId,
+                Email = adminEmail,
                 NormalizedEmail = "ADMIN@PURRFECT.COM",
                 EmailConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString()

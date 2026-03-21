@@ -10,12 +10,15 @@
             <a class="nav-link dropdown-toggle text-primary fw-bold d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person-circle me-1"></i> @User.Identity?.Name
             </a>
-            <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3" aria-labelledby="userDropdown">
-                <li>
-                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-                        <i class="bi bi-gear me-2"></i>Настройки
-                    </a>
-                </li>
+            <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                @if (User.IsInRole("Administrator"))
+                {
+                    <li><h6 class="dropdown-header">Управление</h6></li>
+                    <li><a class="dropdown-item text-danger fw-bold" asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-cpu-fill me-2"></i>Админ Панел</a></li>
+                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index"><i class="bi bi-people me-2"></i>Потребители</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                }
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Настройки</a></li>
                 <li>
                     <a class="dropdown-item" asp-controller="User" asp-action="Favorites">
                         <i class="bi bi-heart-fill text-danger me-2"></i>Любими
@@ -34,16 +37,15 @@
                         </button>
                     </form>
                 </li>
-            </ul>
         </li>
     }
     else
     {
-        <li class="nav-item me-2">
-            <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
-        </li>
-        <li class="nav-item me-3">
-            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" id="login" asp-area="Identity" asp-page="/Account/Login">Вход</a>
-        </li>
+    <li class="nav-item me-2">
+        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+    </li>
+    <li class="nav-item me-3">
+        <a class="btn btn-outline-primary btn-sm rounded-pill px-3" id="login" asp-area="Identity" asp-page="/Account/Login">Вход</a>
+    </li>
     }
 </ul>

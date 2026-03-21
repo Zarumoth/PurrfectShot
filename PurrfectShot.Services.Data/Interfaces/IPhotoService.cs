@@ -38,5 +38,7 @@ namespace PurrfectShot.Services.Data.Interfaces
         Task<IEnumerable<PhotoCardViewModel>> GetFavoritePhotosByUserIdAsync(string userId);
 
         Task<IEnumerable<PhotoCardViewModel>> GetPhotosByUserIdAsync(string userId);
+
+        Task<IEnumerable<PhotoCardViewModel>> GetAllPhotosForAdminAsync();
     }
 }

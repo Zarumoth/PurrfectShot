@@ -1,0 +1,66 @@
+﻿@model IEnumerable<PurrfectShot.Web.ViewModels.Cats.CatCardViewModel>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th class="ps-4">ID</th>
+                <th>Котка</th>
+                <th>Порода</th>
+                <th class="text-center">Албум</th>
+                <th class="text-center">Статус</th>
+                <th class="text-end pe-4">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cat in Model)
+            {
+                <tr id="cat-row-@cat.Id">
+                    <td class="ps-4 text-muted small">#@cat.Id</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="@(cat.ProfileImageUrl ?? "/images/Default_Cat_Image.png")"
+                                 class="rounded-circle me-3 shadow-sm"
+                                 style="width: 45px; height: 45px; object-fit: cover;" />
+                            <span class="fw-bold">@cat.Name</span>
+                        </div>
+                    </td>
+                    <td><span class="text-muted">@cat.Breed</span></td>
+                    <td class="text-center">
+                        <span class="badge bg-light text-dark border shadow-sm">📸 @cat.PhotoCount</span>
+                    </td>
+                    <td class="text-center">
+                        <span id="status-badge-@cat.Id" class="badge @(cat.IsActive ? "bg-success" : "bg-warning text-dark") rounded-pill px-3">
+                            @(cat.IsActive ? "Активна" : "Архивирана")
+                        </span>
+                    </td>
+                    <td class="text-end pe-4">
+                        <div class="btn-group">
+                            <a asp-area="" asp-controller="Cats" asp-action="Details" asp-route-id="@cat.Id"
+                               class="btn btn-sm btn-outline-primary" title="Виж профил">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-area="" asp-controller="Cats" asp-action="Edit" asp-route-id="@cat.Id"
+                               class="btn btn-sm btn-outline-warning" title="Редактирай">
+                                <i class="bi bi-pencil"></i></a>
+                            @if (!cat.IsActive)
+                            {
+                                <form asp-area="Admin" asp-controller="Dashboard" asp-action="Restore" asp-route-id="@cat.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-success" title="Възстанови">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </form>
+                            }
+                            <form asp-area="Admin" asp-controller="Dashboard" asp-action="DeletePermanently" asp-route-id="@cat.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('СИГУРНИ ЛИ СТЕ? Това ще изтрие котката и всичките ѝ снимки ЗАВИНАГИ!');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Изтрий завинаги">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

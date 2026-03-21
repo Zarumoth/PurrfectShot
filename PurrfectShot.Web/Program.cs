@@ -37,6 +37,7 @@ namespace PurrfectShot.Web
             {
                 cfg.AddProfile<CatProfile>();
                 cfg.AddProfile<PhotoProfile>();
+                cfg.AddProfile<AdminProfile>();
             });
 
             builder.Services.AddDbContext<PurrfectShotDbContext>(opt =>

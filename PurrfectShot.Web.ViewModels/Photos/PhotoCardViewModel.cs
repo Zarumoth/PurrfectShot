@@ -5,6 +5,7 @@
         public Guid Id { get; set; }
         public string FilePath { get; set; } = null!;
         public string CatName { get; set; } = null!;
+        public string? Caption { get; set; }
         public DateTime DateUploaded { get; set; }
         public double Rating { get; set; }
 

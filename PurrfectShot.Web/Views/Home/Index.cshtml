@@ -5,6 +5,14 @@
     ViewData["Title"] = "Начало";
 }
 
+@if (User.IsInRole("Administrator"))
+{
+    <div class="alert alert-dark border-0 shadow-sm mb-3 rounded-pill d-flex justify-content-between align-items-center px-4">
+        <span class="small"><i class="bi bi-shield-check text-warning me-2"></i> Сте влезли като <strong>Администратор</strong>. Имате пълен достъп до системата.</span>
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-warning rounded-pill px-3 fw-bold">Управление</a>
+    </div>
+}
+
 <!-- Hero Section -->
 <div class="p-5 mb-5 bg-light rounded-4 shadow-sm text-center position-relative overflow-hidden">
     <div class="position-absolute top-0 start-0 p-3 opacity-10 mt-n3 ms-n3">
