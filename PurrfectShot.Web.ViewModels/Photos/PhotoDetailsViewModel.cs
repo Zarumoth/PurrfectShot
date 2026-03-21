@@ -10,6 +10,7 @@
         public string UploadedOn { get; set; } = null!;
         public bool IsMainPhoto { get; set; }
         public bool IsFavorite { get; set; }
+        public string PublisherName { get; set; } = null!;
 
 
         //Calendar Info (used for routing)

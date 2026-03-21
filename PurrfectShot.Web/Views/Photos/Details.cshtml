@@ -100,7 +100,11 @@
                     <!-- Photo Caption -->
                     <div class="mb-4">
                         <p class="card-text fs-5 fst-italic text-secondary">"@Model.Caption"</p>
-                        <p class="text-muted" style="font-size: 0.8rem;">Качена на: @Model.UploadedOn</p>
+                        <div class="text-muted small">
+                            <i class="bi bi-calendar3"></i> @Model.UploadedOn
+                            <span class="mx-2 text-secondary opacity-50">|</span>
+                            <i class="bi bi-person"></i> @Model.PublisherName
+                        </div>
                     </div>
 
                     <!-- Rating Visuals -->
@@ -172,7 +176,7 @@
                         <div class="d-flex flex-column gap-1">
                             <a asp-controller="Calendar" asp-action="Month" asp-route-year="@Model.Year" asp-route-month="@Model.Month"
                                class="text-muted small text-decoration-none hover-link">
-                                <i class="bi bi-calendar3 me-1"></i> Архив за @Model.MonthName @Model.Year
+                                <i class="bi bi-archive me-1"></i> Архив за @Model.MonthName @Model.Year
                             </a>
                             <a asp-controller="Cats" asp-action="Details" asp-route-id="@Model.CatId"
                                class="text-muted small text-decoration-none hover-link">

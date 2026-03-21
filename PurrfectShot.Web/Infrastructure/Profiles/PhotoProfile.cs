@@ -25,6 +25,7 @@ namespace PurrfectShot.Web.Infrastructure.Profiles
                 .ForMember(d => d.CatBreed, opt => opt.MapFrom(s => s.Cat.Breed))
                 .ForMember(d => d.IsActive, opt => opt.MapFrom(s => s.Cat.IsActive))
                 .ForMember(d => d.IsMainPhoto, opt => opt.MapFrom(s => s.Id == s.Cat.MainPhotoId))
+                .ForMember(d => d.PublisherName, opt => opt.MapFrom(s => s.Publisher.UserName))
                 .ForMember(d => d.UploadedOn, opt => opt.MapFrom(s => s.DateUploaded.ToBulgarianDateString()))
                 .ForMember(d => d.Rating, opt => opt.MapFrom(s => s.Votes.Any() ? s.Votes.Average(v => v.Stars) : 0))
                 .ForMember(d => d.VotesCount, opt => opt.MapFrom(s => s.Votes.Count))

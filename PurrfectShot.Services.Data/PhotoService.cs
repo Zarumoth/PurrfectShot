@@ -71,6 +71,7 @@ namespace PurrfectShot.Services.Data
                 .Photos
                 .Include(p => p.Cat)
                 .Include(p => p.Votes)
+                .Include(p => p.Publisher)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == photoId);
 
