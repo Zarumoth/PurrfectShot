@@ -45,16 +45,25 @@ namespace PurrfectShot.Web
                     .UseSqlServer(connectionString);
             });
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CanManageCats", policy =>
+                    policy.RequireRole("Administrator", "FamilyMember"));
+
+                options.AddPolicy("CanUploadPhotos", policy =>
+                    policy.RequireRole("Administrator", "FamilyMember", "Friend"));
+            });
 
             builder.Services.AddRazorPages();
             builder.Services.AddScoped<ICatService, CatService>();
             builder.Services.AddScoped<IPhotoService, PhotoService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {

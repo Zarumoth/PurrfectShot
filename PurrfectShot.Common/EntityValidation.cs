@@ -34,6 +34,9 @@
             public const string adminUserId = "38058665-8726-41fa-be91-41de9acd0f72";
             public const string adminRoleId = "b91f0f0c-99a3-4315-9c87-6cdcc81d1a6e";
             public const string adminEmail = "admin@purrfect.com";
+
+            public const string familyRoleId = "f1a2b3c4-d5e6-7890-1234-56789abcdef0";
+            public const string friendRoleId = "0f1e2d3c-4b5a-6789-0123-456789abcdef";
         }
     }
 }

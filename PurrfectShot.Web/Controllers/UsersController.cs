@@ -7,7 +7,7 @@ using PurrfectShot.Web.ViewModels.Photos;
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class UserController(IPhotoService photoService, ILogger<UserController> logger) : BaseController
+    public class UsersController(IPhotoService photoService, ILogger<UsersController> logger) : BaseController
     {
         public async Task<IActionResult> Favorites()
         {

@@ -35,13 +35,11 @@
             modelBuilder.Entity<IdentityRoleClaim<string>>().ToTable("RolesClaims");
             modelBuilder.Entity<IdentityUserToken<string>>().ToTable("UsersTokens");
 
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-            {
-                Id = adminRoleId,
-                Name = "Administrator",
-                NormalizedName = "ADMINISTRATOR",
-                ConcurrencyStamp = adminRoleId
-            });
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = adminRoleId, Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
+                new IdentityRole { Id = familyRoleId, Name = "FamilyMember", NormalizedName = "FAMILYMEMBER" },
+                new IdentityRole { Id = friendRoleId, Name = "Friend", NormalizedName = "FRIEND" }
+            );
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
