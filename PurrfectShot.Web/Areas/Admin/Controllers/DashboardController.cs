@@ -9,8 +9,10 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
     public class DashboardController(ICatService catService, IUserService userService, IPhotoService photoService, ILogger<DashboardController> logger) : AdminBaseController
     {
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string tab = "cats")
         {
+            ViewBag.ActiveTab = tab;
+
             try
             {
                 var model = new AdminDashboardViewModel
@@ -35,7 +37,8 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Restore(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0)
+                return BadRequest();
 
             try
             {
@@ -48,18 +51,19 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
                 TempData["Error"] = "Възникна грешка при възстановяването на профила.";
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { tab = "cats" });
         }
 
         [HttpPost]
         public async Task<IActionResult> DeletePermanently(int id)
         {
-            if (id <= 0) return BadRequest();
+            if (id <= 0)
+                return BadRequest();
 
             await catService.DeleteCatPermanentlyAsync(id);
             TempData["Success"] = "Котката и всички нейни данни бяха изтрити ЗАВИНАГИ.";
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { tab = "cats" });
         }
 
         [HttpPost]
@@ -88,7 +92,7 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
                 TempData["Error"] = "Възникна системна грешка.";
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { tab = "users" });
         }
     }
 }

@@ -31,7 +31,7 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     TempData["Success"] = $"Потребителят {email} беше създаден успешно!";
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "users" });
                 }
 
                 foreach (var error in result.Errors)
@@ -88,7 +88,7 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     TempData["Success"] = "Потребителят беше обновен успешно!";
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "users" });
                 }
 
                 foreach (var error in result.Errors)
@@ -108,16 +108,16 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(string userId)
+        public async Task<IActionResult> Delete(string id)
         {
-            var userToDelete = await userService.GetUserForDeleteAsync(userId);
+            var userToDelete = await userService.GetUserForDeleteAsync(id);
             if (userToDelete == null)
                 return RedirectToAction("Index", "Dashboard");
 
             if (userToDelete == null)
             {
                 TempData["Error"] = "Потребителят не е намерен.";
-                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "users" });
             }
 
             ViewData["Title"] = "Изтриване на потребител";
@@ -127,30 +127,26 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
-        public async Task<IActionResult> DeleteUser(string userId)
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            if (userId == GetUserId())
+            if (id == GetUserId())
             {
                 TempData["Error"] = "Не може да изтриеш собствения си акаунт!";
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "users" });
             }
 
             try
             {
-                bool success = await userService.DeleteUserAsync(userId);
+                bool success = await userService.DeleteUserAsync(id);
 
                 if (success)
-                {
                     TempData["Success"] = "Потребителят беше премахнат успешно.";
-                }
                 else
-                {
                     TempData["Error"] = "Потребителят не можеше да бъде изтрит.";
-                }
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Critical error deleting user {UserId}", userId);
+                logger.LogError(ex, "Critical error deleting user {UserId}", id);
 
                 TempData["Error"] = "Възникна системна грешка при изтриване.";
             }

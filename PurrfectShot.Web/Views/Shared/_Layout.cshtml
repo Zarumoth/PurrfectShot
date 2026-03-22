@@ -31,7 +31,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i>Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Cats" asp-action="Index">Бандата</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cats" asp-action="Index">Бандата</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Calendar" asp-action="Index">Календар</a>
@@ -44,7 +44,7 @@
                     <partial name="_LoginPartial" />
 
                     <div class="d-flex shadow-sm rounded-pill">
-                        <a class="btn btn-primary rounded-pill px-4" asp-controller="Photos" asp-action="Upload">
+                        <a class="btn btn-primary rounded-pill px-4" asp-area="" asp-controller="Photos" asp-action="Upload">
                             🖼 Качи снимка
                         </a>
                     </div>

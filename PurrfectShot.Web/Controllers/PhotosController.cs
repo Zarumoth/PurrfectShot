@@ -284,6 +284,12 @@ namespace PurrfectShot.Web.Controllers
                     return RedirectToAction(nameof(Index), "Home");
 
                 TempData["Success"] = "Снимката е изтрита успешно.";
+
+                if (User.IsInRole("Administrator"))
+                {
+                    return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "photos" });
+                }
+
                 return RedirectToAction(nameof(Details), "Cats", new { id = catId });
             }
             catch (Exception ex)
@@ -291,7 +297,7 @@ namespace PurrfectShot.Web.Controllers
                 logger.LogError(ex, "Error deleting photo {PhotoId}", id);
 
                 TempData["Error"] = "Възникна системна грешка при изтриване.";
-                return RedirectToAction(nameof(Index), "Home");
+                return RedirectToAction(nameof(Index), "Home", new { area = "" });
             }
         }
 
