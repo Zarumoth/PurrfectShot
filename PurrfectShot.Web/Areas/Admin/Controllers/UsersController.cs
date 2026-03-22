@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using PurrfectShot.Services.Data;
 using PurrfectShot.Services.Data.Interfaces;
 using PurrfectShot.Web.ViewModels.Admin;
@@ -60,14 +61,15 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
                 if (model == null)
                 {
                     TempData["Error"] = "Потребителят не е намерен.";
-                    return RedirectToAction("Index", "Dashboard");
+                    return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "users" });
                 }
                 return View(model);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error loading edit view for user {UserId}", id);
-                return RedirectToAction("Index", "Dashboard");
+
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "users" });
             }
         }
 
@@ -105,12 +107,31 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(string userId)
+        {
+            var userToDelete = await userService.GetUserForDeleteAsync(userId);
+            if (userToDelete == null)
+                return RedirectToAction("Index", "Dashboard");
+
+            if (userToDelete == null)
+            {
+                TempData["Error"] = "Потребителят не е намерен.";
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+            }
+
+            ViewData["Title"] = "Изтриване на потребител";
+
+            return View(userToDelete);
+        }
+
         [HttpPost]
+        [ActionName("Delete")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
             if (userId == GetUserId())
             {
-                TempData["Error"] = "Не можете да изтриете собствения си акаунт!";
+                TempData["Error"] = "Не може да изтриеш собствения си акаунт!";
                 return RedirectToAction("Index", "Dashboard");
             }
 
@@ -124,7 +145,7 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    TempData["Error"] = "Не успяхме да изтрием потребителя.";
+                    TempData["Error"] = "Потребителят не можеше да бъде изтрит.";
                 }
             }
             catch (Exception ex)
@@ -134,7 +155,7 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
                 TempData["Error"] = "Възникна системна грешка при изтриване.";
             }
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "users" });
         }
     }
 }

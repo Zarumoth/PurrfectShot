@@ -17,5 +17,13 @@ namespace PurrfectShot.Web.ViewModels.Admin
 
         [Required(ErrorMessage = "Потребителското име е задължително.")]
         public string UserName { get; set; } = null!;
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Нова парола")]
+        public string? NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Compare(nameof(NewPassword), ErrorMessage = "Паролите не съвпадат.")]
+        public string? ConfirmPassword { get; set; }
     }
 }

@@ -88,13 +88,28 @@ namespace PurrfectShot.Services.Data
             if (user == null) return IdentityResult.Failed();
 
             mapper.Map(model, user);
-
             user.NormalizedEmail = model.Email.ToUpper();
             user.NormalizedUserName = model.UserName.ToUpper();
 
-            logger.LogInformation("User {UserId} updated.", model.Id);
+            if (!string.IsNullOrWhiteSpace(model.NewPassword))
+            {
+                await userManager.RemovePasswordAsync(user);
+                var passwordResult = await userManager.AddPasswordAsync(user, model.NewPassword);
+
+                if (!passwordResult.Succeeded)
+                    return passwordResult;
+            }
+
+            logger.LogInformation("User {UserId} data updated by Admin.", model.Id);
 
             return await userManager.UpdateAsync(user);
+        }
+
+        public async Task<UserListViewModel?> GetUserForDeleteAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            return user == null ? null : mapper.Map<UserListViewModel>(user);
         }
 
         public async Task<bool> DeleteUserAsync(string userId)
