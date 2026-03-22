@@ -23,6 +23,8 @@ namespace PurrfectShot.Services.Data.Interfaces
 
         Task<IdentityResult> UpdateUserAsync(UserEditInputModel model);
 
+        Task<UserListViewModel?> GetUserForDeleteAsync(string userId);
+
         Task<bool> DeleteUserAsync(string userId);
 
     }

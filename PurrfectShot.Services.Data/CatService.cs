@@ -66,6 +66,7 @@ namespace PurrfectShot.Services.Data
         {
             return await dbContext
                 .Cats
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .ProjectTo<CatEditInputModel>(mapper.ConfigurationProvider)
@@ -89,6 +90,7 @@ namespace PurrfectShot.Services.Data
         {
             return await dbContext
                 .Cats
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .Where(c => c.Id == id)
                 .ProjectTo<CatDeleteViewModel>(mapper.ConfigurationProvider)
@@ -132,7 +134,8 @@ namespace PurrfectShot.Services.Data
         {
             var cat = await dbContext
                 .Cats
-                .FindAsync(id);
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (cat != null)
             {
