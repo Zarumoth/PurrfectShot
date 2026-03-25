@@ -43,20 +43,26 @@
                             <a asp-area="" asp-controller="Cats" asp-action="Edit" asp-route-id="@cat.Id"
                                class="btn btn-sm btn-outline-warning" title="Редактирай">
                                 <i class="bi bi-pencil"></i></a>
-                            @if (!cat.IsActive)
+                            @if (cat.IsActive)
+                            {
+                                <form asp-area="Admin" asp-controller="Dashboard" asp-action="Archive" asp-route-id="@cat.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" title="Архивирай профила">
+                                        <i class="bi bi-archive"></i>
+                                    </button>
+                                </form>
+                            }
+                            else
                             {
                                 <form asp-area="Admin" asp-controller="Dashboard" asp-action="Restore" asp-route-id="@cat.Id" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-sm btn-outline-success" title="Възстанови">
+                                    <button type="submit" class="btn btn-sm btn-outline-success" title="Възстанови профила">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                     </button>
                                 </form>
                             }
-                            <form asp-area="Admin" asp-controller="Dashboard" asp-action="DeletePermanently" asp-route-id="@cat.Id" method="post" class="d-inline"
-                                  onsubmit="return confirm('СИГУРНИ ЛИ СТЕ? Това ще изтрие котката и всичките ѝ снимки ЗАВИНАГИ!');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Изтрий завинаги">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
+                            <a asp-area="" asp-controller="Cats" asp-action="Delete" asp-route-id="@cat.Id"
+                               class="btn btn-sm btn-outline-danger" title="Управление на изтриването">
+                                <i class="bi bi-trash"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>

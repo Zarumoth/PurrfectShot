@@ -54,14 +54,34 @@ namespace PurrfectShot.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index), new { tab = "cats" });
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeletePermanently(int id)
-        {
-            if (id <= 0)
-                return BadRequest();
+        //[HttpPost]
+        //public async Task<IActionResult> DeletePermanently(int id)
+        //{
+        //    if (id <= 0)
+        //        return BadRequest();
 
-            await catService.DeleteCatPermanentlyAsync(id);
-            TempData["Success"] = "Котката и всички нейни данни бяха изтрити ЗАВИНАГИ.";
+        //    await catService.DeleteCatPermanentlyAsync(id);
+        //    TempData["Success"] = "Котката и всички нейни данни бяха изтрити ЗАВИНАГИ.";
+
+        //    return RedirectToAction(nameof(Index), new { tab = "cats" });
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> Archive(int id)
+        {
+            if (id <= 0) return BadRequest();
+
+            try
+            {
+                await catService.ArchiveCatAsync(id);
+                TempData["Success"] = "Профилът на котката беше архивиран успешно!";
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Грешка при архивиране на котка с ID: {Id}", id);
+
+                TempData["Error"] = "Възникна грешка при архивирането.";
+            }
 
             return RedirectToAction(nameof(Index), new { tab = "cats" });
         }
