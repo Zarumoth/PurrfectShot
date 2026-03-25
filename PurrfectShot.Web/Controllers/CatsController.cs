@@ -9,13 +9,21 @@ namespace PurrfectShot.Web.Controllers
     public class CatsController(ICatService catService, IPhotoService photoService, ILogger<CatsController> logger) : BaseController
     {
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? search, int page = 1)
         {
+            const int pageSize = 8;
+
             try
             {
-                var featuredCats = await catService.GetFeaturedCatsAsync();
+                var (cats, totalCount) = await catService.GetFeaturedCatsAsync(search, page, pageSize);
+
+                ViewData["CurrentSearch"] = search;
+                ViewData["CurrentPage"] = page;
+                ViewData["TotalPages"] = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+                //var featuredCats = await catService.GetFeaturedCatsAsync();
                 ViewData["Title"] = "Нашите котки";
-                return View(featuredCats);
+                return View(cats);
             }
             catch (Exception ex)
             {

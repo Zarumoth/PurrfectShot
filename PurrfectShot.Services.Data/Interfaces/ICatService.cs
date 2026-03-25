@@ -10,7 +10,7 @@ namespace PurrfectShot.Services.Data.Interfaces
 
         Task<bool> ExistsByIdAsync(int id);
 
-        Task<IEnumerable<CatCardViewModel>> GetFeaturedCatsAsync();
+        Task<(IEnumerable<CatCardViewModel> Cats, int TotalCount)> GetFeaturedCatsAsync(string? searchTerm, int currentPage, int pageSize);
 
         Task<CatDetailsViewModel?> GetCatDetailsAsync(int id);
 

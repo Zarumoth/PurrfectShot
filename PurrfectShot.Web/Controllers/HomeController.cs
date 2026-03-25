@@ -18,14 +18,17 @@ namespace PurrfectShot.Web.Controllers
             try
             {
                 var (photos, votes) = await photoService.GetGlobalStatisticsAsync();
-                var featuredCats = await catService.GetFeaturedCatsAsync();
+                var (cats, totalCount) = await catService.GetFeaturedCatsAsync(null, 1, 12);
+                //var featuredCats = await catService.GetFeaturedCatsAsync();
 
                 var model = new HomeIndexViewModel
                 {
-                    FeaturedCats = await catService.GetFeaturedCatsAsync(),
+                    FeaturedCats = cats,//FeaturedCats = await catService.GetFeaturedCatsAsync(),
                     TotalPhotos = photos,
                     TotalVotes = votes
                 };
+
+                ViewData["ShowViewAll"] = totalCount > 8;
 
                 return View(model);
             }
@@ -36,6 +39,7 @@ namespace PurrfectShot.Web.Controllers
                 return View(new HomeIndexViewModel());
             }
         }
+
         public IActionResult Privacy()
         {
             ViewData["Title"] = "Политика за поверителност";

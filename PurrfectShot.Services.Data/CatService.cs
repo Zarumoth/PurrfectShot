@@ -42,13 +42,30 @@ namespace PurrfectShot.Services.Data
             return cat.Id;
         }
 
-        public async Task<IEnumerable<CatCardViewModel>> GetFeaturedCatsAsync()
+        //TODO: Revert to no pages after Exam
+        public async Task<(IEnumerable<CatCardViewModel> Cats, int TotalCount)> GetFeaturedCatsAsync(string? searchTerm, int currentPage, int pageSize)
         {
-            return await dbContext
-                .Cats
-                .AsNoTracking()
+            var query = dbContext.Cats.AsNoTracking();
+
+            // Filter / Search
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                string normalizedSearch = searchTerm.ToLower();
+                query = query.Where(c => c.Name.ToLower().Contains(normalizedSearch) ||
+                                         c.Breed.ToLower().Contains(normalizedSearch));
+            }
+
+            // 2. Total Count
+            int totalCount = await query.CountAsync();
+
+            // 3. Pagination + Projection
+            var cats = await query
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
                 .ProjectTo<CatCardViewModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
+
+            return (cats, totalCount);
         }
 
         public async Task<CatDetailsViewModel?> GetCatDetailsAsync(int id)

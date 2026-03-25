@@ -79,10 +79,10 @@ body {
     transition: transform 0.2s ease-in-out;
 }
 
-.hover-effect:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
+    .hover-effect:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
 
 .calendar-card {
     transition: all 0.3s ease-in-out;
@@ -177,4 +177,42 @@ body {
 #logout:focus {
     outline: none;
     box-shadow: none;
+}
+
+/* --- Home Page Polish --- */
+
+/* Pride Container */
+#pride-section {
+    background-color: #fcfcfc;
+    padding: 40px 0;
+    border-radius: 30px;
+}
+
+/* Cat Cards Pop */
+.card.hover-effect {
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+/* Photo Effect - Border */
+.card.hover-effect:hover {
+    border-color: #0d6efd !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+/* Mouse Hover Pop-up */
+/*.card.hover-effect:hover {
+    border-color: #0d6efd !important;
+}
+*/
+.card.hover-effect img {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+/* Navbar Buttons Lineup */
+.navbar-nav .nav-link {
+    font-weight: 500;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }

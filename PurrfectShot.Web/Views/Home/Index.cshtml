@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Начало";
+    bool showViewAll = (bool)(ViewData["ShowViewAll"] ?? false);
 }
 
 @if (User.IsInRole("Administrator"))
@@ -26,7 +27,7 @@
     </p>
 
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <a asp-controller="Calendar" asp-action="Index" class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-pill">
+        <a asp-controller="Calendar" asp-action="Index" class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow">
             📅 Виж Календара
         </a>
     </div>
@@ -34,15 +35,20 @@
 
 <!-- Cat Profiles Section -->
 <div class="container mb-5">
-    <div class="row align-items-center mb-4">
-        <div class="col">
-            <h2 class="text-secondary fw-bold border-bottom pb-2">Прайда</h2>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <h2 class="text-secondary fw-bold mb-0">Прайда</h2>
+
+        @if (showViewAll)
+        {
+            <a asp-controller="Cats" asp-action="Index" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                Виж целия Прайд <i class="bi bi-arrow-right-short"></i>
+            </a>
+        }
     </div>
 
     @if (!Model.FeaturedCats.Any())
     {
-        <div class="alert alert-info text-center shadow-sm">
+        <div class="alert alert-info text-center shadow-sm border-0 rounded-4">
             Още няма регистрирани котки. <a asp-controller="Cats" asp-action="Add">Добави първата!</a>
         </div>
     }
