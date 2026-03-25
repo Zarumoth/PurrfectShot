@@ -69,6 +69,7 @@ namespace PurrfectShot.Services.Data
 
             var photo = await dbContext
                 .Photos
+                .IgnoreQueryFilters()
                 .Include(p => p.Cat)
                 .Include(p => p.Votes)
                 .Include(p => p.Publisher)
@@ -101,9 +102,9 @@ namespace PurrfectShot.Services.Data
             if (photo == null)
                 throw new InvalidOperationException("Photo not found.");
 
-            var cat = await dbContext
-                .Cats
-                .FindAsync(photo.CatId);
+            var cat = await dbContext.Cats
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(c => c.Id == photo.CatId);
 
             if (cat == null)
                 throw new InvalidOperationException("Associated cat not found.");
@@ -175,6 +176,7 @@ namespace PurrfectShot.Services.Data
 
             var rawData = await dbContext
                 .Photos
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .Select(p => new
                 {
@@ -206,6 +208,7 @@ namespace PurrfectShot.Services.Data
         {
             return await dbContext
                 .Photos
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .Where(p => p.DateUploaded.Year == year && p.DateUploaded.Month == month)
                 .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
@@ -216,6 +219,7 @@ namespace PurrfectShot.Services.Data
         public async Task<PhotoEditInputModel?> GetPhotoForEditAsync(Guid photoId)
         {
             return await dbContext.Photos
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .Where(p => p.Id == photoId)
                 .ProjectTo<PhotoEditInputModel>(mapper.ConfigurationProvider)
@@ -305,6 +309,7 @@ namespace PurrfectShot.Services.Data
         public async Task<IEnumerable<PhotoCardViewModel>> GetFavoritePhotosByUserIdAsync(string userId)
         {
             return await dbContext.UserFavoritePhotos
+                .IgnoreQueryFilters()
                 .Where(f => f.UserId == userId)
                 .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
                 .OrderByDescending(p => p.DateUploaded)
@@ -315,6 +320,7 @@ namespace PurrfectShot.Services.Data
         {
             return await dbContext
                 .Photos
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .Where(p => p.PublisherId == userId)
                 .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
@@ -325,6 +331,7 @@ namespace PurrfectShot.Services.Data
         public async Task<IEnumerable<PhotoCardViewModel>> GetAllPhotosForAdminAsync()
         {
             return await dbContext.Photos
+                .IgnoreQueryFilters()
                 .AsNoTracking()
                 .OrderByDescending(p => p.DateUploaded)
                 .ProjectTo<PhotoCardViewModel>(mapper.ConfigurationProvider)
