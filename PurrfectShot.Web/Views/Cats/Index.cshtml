@@ -28,7 +28,7 @@
         </ol>
         @if (User.Identity?.IsAuthenticated ?? false)
         {
-            <a asp-action="Add" class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm">
+            <a asp-action="Add" class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm">
                 <i class="bi bi-plus-circle me-1"></i> Добави Котка
             </a>
         }
@@ -56,8 +56,9 @@
 
     @if (!Model.Any())
     {
-        <div class="alert alert-info text-center shadow-sm">
-            Все още няма регистрирани котки. <a asp-controller="Cats" asp-action="Add">Бъди първият, който ще добави коте!</a>
+        <div class="alert alert-info text-center shadow-sm p-5 border-0 rounded-4">
+            <h4 class="text-muted">Все още няма регистрирани котки.</h4>
+            <a asp-controller="Cats" asp-action="Add" class="btn btn-primary rounded-pill px-4 mt-2">Бъди първият, който ще добави коте!</a>
         </div>
     }
     else
