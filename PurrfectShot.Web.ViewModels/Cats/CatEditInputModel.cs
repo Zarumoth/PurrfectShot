@@ -6,5 +6,8 @@ namespace PurrfectShot.Web.ViewModels.Cats
     {
         [Required]
         public int Id { get; set; }
+
+        public string OwnerId { get; set; } = null!;
+
     }
 }

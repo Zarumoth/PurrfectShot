@@ -115,6 +115,11 @@ namespace PurrfectShot.Web.Controllers
                     TempData["Error"] = "Котката, която искате да редактирате, не съществува.";
                     return RedirectToAction(nameof(Index), "Home");
                 }
+                if (catToEdit.OwnerId != GetUserId() && !IsAdmin)
+                {
+                    TempData["Error"] = "Нямате права да редактирате това коте! 🛑";
+                    return RedirectToAction(nameof(Details), new { id = id });
+                }
 
                 ViewData["Title"] = $"Редактиране на {catToEdit.Name}";
                 return View(catToEdit);
@@ -140,6 +145,21 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
+                var existingCat = await catService.GetCatForEditAsync(model.Id);
+
+                if (existingCat == null)
+                {
+                    TempData["Error"] = "Котката не беше намерена.";
+                    return RedirectToAction(nameof(Index), "Home");
+                }
+
+                if (existingCat.OwnerId != GetUserId() && !IsAdmin)
+                {
+                    logger.LogWarning("User {UserId} attempted unauthorized edit of Cat {CatId}", GetUserId(), model.Id);
+
+                    return Forbid();
+                }
+
                 await catService.UpdateCatAsync(model);
 
                 TempData["Success"] = $"Профилът на {model.Name} беше обновен успешно!";
@@ -194,6 +214,17 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
+                var cat = await catService.GetCatForDeleteAsync(id);
+                if (cat == null) return RedirectToAction(nameof(Index), "Home");
+
+                if (cat.OwnerId != GetUserId() && !IsAdmin)
+                {
+                    logger.LogWarning("Unauthorized DELETE attempt by User {UserId} on Cat {CatId}", GetUserId(), id);
+
+                    TempData["Error"] = "Нямате права да триете/архивирате този профил!";
+                    return RedirectToAction(nameof(Details), new { id = id });
+                }
+
                 var hasPhotos = await photoService.GetPhotoCountByCatIdAsync(id) > 0;
 
                 if (hasPhotos)
