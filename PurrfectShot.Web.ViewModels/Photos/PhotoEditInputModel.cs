@@ -17,6 +17,8 @@ namespace PurrfectShot.Web.ViewModels.Photos
         [Required]
         public string ImageUrl { get; set; } = null!;
 
+        public string PublisherId { get; set; } = null!;
+
         [Required(ErrorMessage = "Напиши нещо за снимката!")]
         [StringLength(CaptionMaxLength, MinimumLength = CaptionMinLength, ErrorMessage = "Описанието трябва да е между {2} и {1} символа.")]
         [Display(Name = "Описание на снимката")]

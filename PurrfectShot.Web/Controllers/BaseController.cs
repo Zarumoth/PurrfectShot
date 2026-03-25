@@ -16,5 +16,7 @@ namespace PurrfectShot.Web.Controllers
         }
 
         protected bool IsAdmin => User.IsInRole("Administrator");
+        protected bool IsFamily => User.IsInRole("FamilyMember");
+        protected bool IsFriend => User.IsInRole("Friend");
     }
 }

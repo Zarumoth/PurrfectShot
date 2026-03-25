@@ -176,6 +176,12 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
+                if (!IsFamily && !IsAdmin)
+                {
+                    TempData["Error"] = "Само членове на семейството могат да определят профилна снимка! 🛑";
+                    return RedirectToAction(nameof(Details), new { id = id });
+                }
+
                 await photoService.SetProfilePicture(id);
                 TempData["Success"] = "Профилната снимка е променена!";
             }
@@ -198,6 +204,12 @@ namespace PurrfectShot.Web.Controllers
             try
             {
                 var photoToEdit = await photoService.GetPhotoForEditAsync(id);
+
+                if (photoToEdit?.PublisherId != GetUserId() && !IsAdmin)
+                {
+                    TempData["Error"] = "Можете да редактирате само снимки, които вие сте качили!";
+                    return RedirectToAction(nameof(Details), new { id = id });
+                }
 
                 if (photoToEdit == null)
                 {
@@ -228,6 +240,15 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
+                var photoToEdit = await photoService.GetPhotoForEditAsync(model.Id);
+
+                if (photoToEdit?.PublisherId != GetUserId() && !IsAdmin)
+                {
+                    logger.LogWarning("User {UserId} attempted unauthorized edit of Photo {photoId}", GetUserId(), model.Id);
+
+                    return Forbid();
+                }
+
                 await photoService.UpdatePhotoAsync(model);
 
                 TempData["Success"] = "Описанието беше обновено!";
@@ -258,12 +279,20 @@ namespace PurrfectShot.Web.Controllers
                     return RedirectToAction(nameof(Index), "Home");
                 }
 
+                if (photoToDelete.PublisherId != GetUserId() && !IsAdmin)
+                {
+                    TempData["Error"] = "Нямате права да триете тази снимка! 🛑";
+                    return RedirectToAction(nameof(Details), new { id = id });
+                }
+
                 ViewData["Title"] = "Изтриване на снимка";
                 return View(photoToDelete);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                logger.LogError(ex, "Error loading delete view for photo {PhotoId}", id);
                 TempData["Error"] = "Грешка при зареждане на страницата за изтриване.";
+
                 return RedirectToAction(nameof(Index), "Home");
             }
         }
@@ -277,6 +306,16 @@ namespace PurrfectShot.Web.Controllers
 
             try
             {
+                var photo = await photoService.GetPhotoForDeleteAsync(id);
+                if (photo == null) 
+                    return RedirectToAction(nameof(Index), "Home");
+
+                if (photo.PublisherId != GetUserId() && !IsAdmin)
+                {
+                    logger.LogWarning("User {UserId} attempted unauthorized hard delete of Photo {PhotoId}", GetUserId(), id);
+                    return Forbid();
+                }
+
                 string webRootPath = webHostEnvironment.WebRootPath;
                 int catId = await photoService.DeletePhotoAsync(id, webRootPath);
 
@@ -285,7 +324,7 @@ namespace PurrfectShot.Web.Controllers
 
                 TempData["Success"] = "Снимката е изтрита успешно.";
 
-                if (User.IsInRole("Administrator"))
+                if (IsAdmin)
                 {
                     return RedirectToAction("Index", "Dashboard", new { area = "Admin", tab = "photos" });
                 }

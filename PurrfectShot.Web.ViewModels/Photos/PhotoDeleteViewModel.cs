@@ -9,5 +9,7 @@
         public string ImageUrl { get; set; } = null!;
 
         public string CatName { get; set; } = null!;
+
+        public string PublisherId { get; set; } = null!;
     }
 }
