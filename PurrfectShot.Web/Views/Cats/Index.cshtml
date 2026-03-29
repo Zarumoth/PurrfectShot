@@ -54,11 +54,23 @@
         </div>
     </div>
 
+    <!-- Results Section -->
     @if (!Model.Any())
     {
         <div class="alert alert-info text-center shadow-sm p-5 border-0 rounded-4">
-            <h4 class="text-muted">Все още няма регистрирани котки.</h4>
-            <a asp-controller="Cats" asp-action="Add" class="btn btn-primary rounded-pill px-4 mt-2">Бъди първият, който ще добави коте!</a>
+            @if (!string.IsNullOrEmpty(currentSearch))
+            {
+                <!-- No results (cats) found -->
+                <h4 class="text-muted">Няма намерени котки за "@currentSearch"</h4>
+                <p>Опитайте с друга дума или изчистете филтъра.</p>
+                <a asp-action="Index" class="btn btn-outline-primary rounded-pill px-4 mt-2">Изчисти търсенето</a>
+            }
+            else
+            {
+                <!-- Empty DB scenario -->
+                <h4 class="text-muted">Все още няма регистрирани котки.</h4>
+                <a asp-controller="Cats" asp-action="Add" class="btn btn-primary rounded-pill px-4 mt-2">Бъди първият, който ще добави коте!</a>
+            }
         </div>
     }
     else
@@ -79,7 +91,7 @@
         <nav aria-label="Page navigation" class="mt-5">
             <ul class="pagination justify-content-center shadow-sm">
 
-                <!-- Next -->
+                <!-- Previous -->
                 <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
                     <a class="page-link" asp-action="Index"
                        asp-route-page="@(currentPage - 1)"
@@ -98,7 +110,7 @@
                     </li>
                 }
 
-                <!-- Previous -->
+                <!-- Next -->
                 <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
                     <a class="page-link" asp-action="Index"
                        asp-route-page="@(currentPage + 1)"
