@@ -1,8 +1,11 @@
 ﻿@using PurrfectShot.Web.ViewModels.Cats
+@using System.Security.Claims
 @model CatDetailsViewModel
 
 @{
     ViewData["Title"] = $"Профил на {Model.Name}";
+    string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    bool canManage = currentUserId != null && (Model.OwnerId == currentUserId || User.IsInRole("Administrator"));
 }
 
 <div class="container mt-3">
@@ -13,37 +16,40 @@
             <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
         </ol>
 
-        <div class="btn-group">
-            <!-- Edit Logic - Possible only for Active Profiles -->
-            @if (Model.IsActive)
-            {
-                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">
-                    ✏️ Редактирай
+        <!-- Edit Logic - Possible only for Active Profiles -->
+        @if (canManage)
+        {
+            <div class="btn-group">
+                @if (Model.IsActive)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-secondary">
+                        ✏️ Редактирай
+                    </a>
+                }
+
+                <!-- Archive / Delete Flair - Different button name, just visual -->
+                <a asp-action="Delete" asp-route-id="@Model.Id"
+                   class="btn btn-sm @(Model.IsActive ? "btn-outline-danger" : "btn-outline-info")">
+
+                    @if (Model.IsActive && Model.Photos.Any())
+                    {
+                        <span>📦 Архивирай</span>
+                    }
+                    else if (Model.IsActive && !Model.Photos.Any())
+                    {
+                        <span>🗑️ Изтрий</span>
+                    }
+                    else if (!Model.IsActive && Model.Photos.Any())
+                    {
+                        <span>🛡️ Статус архив</span>
+                    }
+                    else
+                    {
+                        <span>🗑️ Изтрий окончателно</span>
+                    }
                 </a>
-            }
-
-            <!-- Archive / Delete Flair - Different button name, just visual -->
-            <a asp-action="Delete" asp-route-id="@Model.Id"
-               class="btn btn-sm @(Model.IsActive ? "btn-outline-danger" : "btn-outline-info")">
-
-                @if (Model.IsActive && Model.Photos.Any())
-                {
-                    <span>📦 Архивирай</span>
-                }
-                else if (Model.IsActive && !Model.Photos.Any())
-                {
-                    <span>🗑️ Изтрий</span>
-                }
-                else if (!Model.IsActive && Model.Photos.Any())
-                {
-                    <span>🛡️ Статус архив</span>
-                }
-                else
-                {
-                    <span>🗑️ Изтрий окончателно</span>
-                }
-            </a>
-        </div>
+            </div>
+        }
     </nav>
 
     <div class="text-center my-4">
@@ -88,10 +94,13 @@
             <div>
                 <span class="text-muted small me-3">@Model.Photos.Count() снимки</span>
 
-                <a asp-controller="Photos" asp-action="Upload" asp-route-catId="@Model.Id"
-                   class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm">
-                    + Нова снимка
-                </a>
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <a asp-controller="Photos" asp-action="Upload" asp-route-catId="@Model.Id"
+                       class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm">
+                        + Нова снимка
+                    </a>
+                }
             </div>
         </div>
 

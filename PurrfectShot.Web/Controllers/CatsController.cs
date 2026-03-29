@@ -34,6 +34,7 @@ namespace PurrfectShot.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator,FamilyMember")]
         [HttpGet]
         public IActionResult Add()
         {

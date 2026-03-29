@@ -1,9 +1,12 @@
 ﻿@using System.Globalization
 @using PurrfectShot.Web.ViewModels.Photos
+@using System.Security.Claims
 @model PhotoDetailsViewModel
 
 @{
     ViewData["Title"] = $"Снимка на {Model.CatName}";
+    string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    bool canManagePhoto = currentUserId != null && (Model.PublisherId == currentUserId || User.IsInRole("Administrator"));
 }
 
 <div class="container mt-4">
@@ -54,35 +57,38 @@
                         </div>
 
                         <div class="d-flex align-items-center gap-1">
-                            @if (Model.IsActive)
+                            @if (canManagePhoto)
                             {
-                                @if (Model.IsMainPhoto)
+                                @if (Model.IsActive)
                                 {
-                                    <div class="text-success p-1" title="Това е профилната снимка">
-                                        <i class="bi bi-check-square-fill fs-4"></i>
-                                    </div>
+                                    @if (Model.IsMainPhoto)
+                                    {
+                                        <div class="text-success p-1" title="Това е профилната снимка">
+                                            <i class="bi bi-check-square-fill fs-4"></i>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="SetProfilePicture" asp-route-id="@Model.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-link text-muted p-1 action-icon-link" title="Задай като профилна">
+                                                <i class="bi bi-person-bounding-box fs-4"></i>
+                                            </button>
+                                        </form>
+                                    }
+
+                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-link text-muted p-1 action-icon-link" title="Редактирай">
+                                        <i class="bi bi-pencil-square fs-4"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-link text-danger p-1 action-icon-link" title="Изтрий">
+                                        <i class="bi bi-trash fs-4"></i>
+                                    </a>
                                 }
                                 else
                                 {
-                                    <form asp-action="SetProfilePicture" asp-route-id="@Model.Id" method="post" class="d-inline">
-                                        <button type="submit" class="btn btn-link text-muted p-1 action-icon-link" title="Задай като профилна">
-                                            <i class="bi bi-person-bounding-box fs-4"></i>
-                                        </button>
-                                    </form>
+                                    <span class="text-muted p-1" title="Профилът е архивиран - промените са забранени">
+                                        <i class="bi bi-archive fs-4"></i>
+                                    </span>
                                 }
-
-                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-link text-muted p-1 action-icon-link" title="Редактирай">
-                                    <i class="bi bi-pencil-square fs-4"></i>
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-link text-danger p-1 action-icon-link" title="Изтрий">
-                                    <i class="bi bi-trash fs-4"></i>
-                                </a>
-                            }
-                            else
-                            {
-                                <span class="text-muted p-1" title="Профилът е архивиран - промените са забранени">
-                                    <i class="bi bi-archive fs-4"></i>
-                                </span>
                             }
                         </div>
                     </div>
