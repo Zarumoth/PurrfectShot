@@ -7,7 +7,7 @@ namespace PurrfectShot.Services.Data.Interfaces
 {
     public interface IPhotoService
     {
-        Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath);
+        Task UploadPhotoAsync(PhotoInputModel model, string userId);
 
         Task<PhotoDetailsViewModel?> GetPhotoDetailsAsync(Guid photoId, string? userId);
 
@@ -31,7 +31,7 @@ namespace PurrfectShot.Services.Data.Interfaces
 
         Task<PhotoDeleteViewModel?> GetPhotoForDeleteAsync(Guid id);
 
-        Task<int> DeletePhotoAsync(Guid id, string webRootPath);
+        Task<int> DeletePhotoAsync(Guid id);
 
         Task<bool> ToggleFavoriteAsync(Guid photoId, string userId);
 

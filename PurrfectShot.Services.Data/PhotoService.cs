@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.Extensions.Configuration;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrfectShot.Common;
@@ -15,54 +18,111 @@ using static PurrfectShot.Web.Common.EntityValidation.Photo;
 
 namespace PurrfectShot.Services.Data
 {
-    public class PhotoService(PurrfectShotDbContext dbContext, IMapper mapper, ILogger<PhotoService> logger) : IPhotoService
+    public class PhotoService(PurrfectShotDbContext dbContext, IMapper mapper, ILogger<PhotoService> logger, IConfiguration config) : IPhotoService
     {
 
-        public async Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath)
+        public async Task UploadPhotoAsync(PhotoInputModel model, string userId)
         {
-            //Generate unique file name + extension
+            //Validation
             string fileExtension = Path.GetExtension(model.ImageFile.FileName).ToLower();
+
             if (!AllowedExtensions.Contains(fileExtension))
-            {
                 throw new InvalidOperationException("Невалиден формат на файла! Позволени са само .jpg, .jpeg и .png.");
-            }
-            var fileSize = model.ImageFile.Length;
-            if (fileSize > MaxFileSize)
-            {
+
+            if (model.ImageFile.Length > MaxFileSize)
                 throw new InvalidOperationException("Снимката е твърде голяма. Максималният размер е 10MB.");
-            }
-            string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
 
-            //Define the path to wwroot/images/uploads
-            string uploadFolderPath = Path.Combine(wwwrootPath, "images", "uploads");
+            //Cloudinary Setup
+            Account account = new Account(
+                config["Cloudinary:CloudName"],
+                config["Cloudinary:ApiKey"],
+                config["Cloudinary:ApiSecret"]
+            );
 
-            //Check if the directory exists and create it if it doesn't
-            if (!Directory.Exists(uploadFolderPath))
-                Directory.CreateDirectory(uploadFolderPath);
+            Cloudinary cloudinary = new Cloudinary(account);
 
-            //Define the full path for the new file
-            string fullFilePath = Path.Combine(uploadFolderPath, uniqueFileName);
+            string publicUrl = string.Empty;
 
-            //Copy the file to the target location
-            using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
+            //Upload to Cloud
+            using (var stream = model.ImageFile.OpenReadStream())
             {
-                await model.ImageFile.CopyToAsync(fileStream);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(model.ImageFile.FileName, stream),
+                    Folder = "purrfect_shot", // Папка в твоя Cloudinary акаунт
+                    Transformation = new Transformation().Quality("auto").FetchFormat("auto") // Оптимизация!
+                };
+
+                var uploadResult = await cloudinary.UploadAsync(uploadParams);
+
+                if (uploadResult.Error != null)
+                    throw new InvalidOperationException($"Грешка от облака: {uploadResult.Error.Message}");
+
+                publicUrl = uploadResult.SecureUrl.AbsoluteUri;
             }
 
-            //Create a new Photo entity and save it (the path) to the database
+            //Register in DB
             var photo = mapper.Map<Photo>(model);
-
             photo.Id = Guid.NewGuid();
             photo.DateUploaded = DateTime.UtcNow;
-            photo.FilePath = $"/images/uploads/{uniqueFileName}";
+            photo.FilePath = publicUrl; // Photo URL from Cloudinary
             photo.PublisherId = userId;
-
 
             await dbContext.Photos.AddAsync(photo);
             await dbContext.SaveChangesAsync();
 
-            logger.LogInformation("User {UserId} successfully uploaded photo {PhotoId} for Cat {CatId}", userId, photo.Id, photo.CatId);
+            logger.LogInformation("User {UserId} successfully uploaded photo {PhotoId} for Cat {CatId}", photo.PublisherId, photo.Id, photo.CatId);
         }
+
+        //Old Upload Method - kept for reference, might be useful for reverting back to a local file storage approach if needed in the future.
+        //Currently, we are using a cloud storage solution, so this method is not in use.
+        //public async Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath)
+        //{
+
+
+        //    //Generate unique file name + extension
+        //    string fileExtension = Path.GetExtension(model.ImageFile.FileName).ToLower();
+        //    if (!AllowedExtensions.Contains(fileExtension))
+        //    {
+        //        throw new InvalidOperationException("Невалиден формат на файла! Позволени са само .jpg, .jpeg и .png.");
+        //    }
+        //    var fileSize = model.ImageFile.Length;
+        //    if (fileSize > MaxFileSize)
+        //    {
+        //        throw new InvalidOperationException("Снимката е твърде голяма. Максималният размер е 10MB.");
+        //    }
+        //    string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+
+        //    //Define the path to wwroot/images/uploads
+        //    string uploadFolderPath = Path.Combine(wwwrootPath, "images", "uploads");
+
+        //    //Check if the directory exists and create it if it doesn't
+        //    if (!Directory.Exists(uploadFolderPath))
+        //        Directory.CreateDirectory(uploadFolderPath);
+
+        //    //Define the full path for the new file
+        //    string fullFilePath = Path.Combine(uploadFolderPath, uniqueFileName);
+
+        //    //Copy the file to the target location
+        //    using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
+        //    {
+        //        await model.ImageFile.CopyToAsync(fileStream);
+        //    }
+
+        //    //Create a new Photo entity and save it (the path) to the database
+        //    var photo = mapper.Map<Photo>(model);
+
+        //    photo.Id = Guid.NewGuid();
+        //    photo.DateUploaded = DateTime.UtcNow;
+        //    photo.FilePath = $"/images/uploads/{uniqueFileName}";
+        //    photo.PublisherId = userId;
+
+
+        //    await dbContext.Photos.AddAsync(photo);
+        //    await dbContext.SaveChangesAsync();
+
+        //    logger.LogInformation("User {UserId} successfully uploaded photo {PhotoId} for Cat {CatId}", userId, photo.Id, photo.CatId);
+        //}
 
         public async Task<PhotoDetailsViewModel?> GetPhotoDetailsAsync(Guid photoId, string? userId)
         {
@@ -248,31 +308,36 @@ namespace PurrfectShot.Services.Data
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<int> DeletePhotoAsync(Guid id, string webRootPath)
+        public async Task<int> DeletePhotoAsync(Guid id)
         {
             var photo = await dbContext.Photos.FindAsync(id);
 
             if (photo == null)
-            {
                 return 0;
-            }
 
             int catId = photo.CatId;
 
-            //Delete physical file
-            string fullFilePath = Path.Combine(webRootPath, photo.FilePath.TrimStart('/'));
-
+            //Delete from Cloud (Cloudinary)
             try
             {
-                if (File.Exists(fullFilePath))
-                {
-                    File.Delete(fullFilePath);
-                    logger.LogInformation("Physical file deleted: {Path}", fullFilePath);
-                }
+                Account account = new Account(
+                    config["Cloudinary:CloudName"],
+                    config["Cloudinary:ApiKey"],
+                    config["Cloudinary:ApiSecret"]
+                );
+                Cloudinary cloudinary = new Cloudinary(account);
+
+                // Get File name from Cloudinary URL
+                var uri = new Uri(photo.FilePath);
+                var fileName = Path.GetFileNameWithoutExtension(uri.LocalPath);
+                string publicId = $"purrfect_shot/{fileName}";
+
+                await cloudinary.DestroyAsync(new DeletionParams(publicId));
+                logger.LogInformation("The photo {PhotoId} was deleted", id);
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, "Could not delete physical file at {Path}. Manual cleanup might be needed.", fullFilePath);
+                logger.LogWarning(ex, "Could not delete photo {PhotoId} from cloud.", id);
             }
 
             //Delete database record

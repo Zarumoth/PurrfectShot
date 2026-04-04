@@ -9,7 +9,7 @@ using System.Security.Claims;
 namespace PurrfectShot.Web.Controllers
 {
     [Authorize]
-    public class PhotosController(IPhotoService photoService, ICatService catService, IWebHostEnvironment webHostEnvironment, ILogger<PhotosController> logger) : BaseController
+    public class PhotosController(IPhotoService photoService, ICatService catService, ILogger<PhotosController> logger) : BaseController
     {
 
         [HttpGet]
@@ -57,12 +57,11 @@ namespace PurrfectShot.Web.Controllers
                 return View(model);
             }
 
-            string userId = GetUserId();
-
             try
             {
-                string wwwrootPath = webHostEnvironment.WebRootPath;
-                await photoService.UploadPhotoAsync(model, userId, wwwrootPath);
+                string userId = GetUserId();
+
+                await photoService.UploadPhotoAsync(model, userId);
 
                 TempData["Success"] = "Снимката беше добавена в албума!";
                 return RedirectToAction(nameof(Details), "Cats", new { id = model.CatId });
@@ -307,7 +306,7 @@ namespace PurrfectShot.Web.Controllers
             try
             {
                 var photo = await photoService.GetPhotoForDeleteAsync(id);
-                if (photo == null) 
+                if (photo == null)
                     return RedirectToAction(nameof(Index), "Home");
 
                 if (photo.PublisherId != GetUserId() && !IsAdmin)
@@ -316,8 +315,7 @@ namespace PurrfectShot.Web.Controllers
                     return Forbid();
                 }
 
-                string webRootPath = webHostEnvironment.WebRootPath;
-                int catId = await photoService.DeletePhotoAsync(id, webRootPath);
+                int catId = await photoService.DeletePhotoAsync(id);
 
                 if (catId == 0)
                     return RedirectToAction(nameof(Index), "Home");
