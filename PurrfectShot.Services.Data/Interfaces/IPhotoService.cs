@@ -9,7 +9,7 @@ namespace PurrfectShot.Services.Data.Interfaces
     {
         Task UploadPhotoAsync(PhotoInputModel model, string userId, string wwwrootPath);
 
-        Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId, string? userId);
+        Task<PhotoDetailsViewModel?> GetPhotoDetailsAsync(Guid photoId, string? userId);
 
         Task SetProfilePicture(Guid photoId);
 

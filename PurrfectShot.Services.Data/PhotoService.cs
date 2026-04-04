@@ -64,7 +64,7 @@ namespace PurrfectShot.Services.Data
             logger.LogInformation("User {UserId} successfully uploaded photo {PhotoId} for Cat {CatId}", userId, photo.Id, photo.CatId);
         }
 
-        public async Task<PhotoDetailsViewModel> GetPhotoDetailsAsync(Guid photoId, string? userId)
+        public async Task<PhotoDetailsViewModel?> GetPhotoDetailsAsync(Guid photoId, string? userId)
         {
 
             var photo = await dbContext

@@ -18,7 +18,7 @@ namespace PurrfectShot.Services.Data.Interfaces
 
         Task UpdateCatAsync(CatEditInputModel model);
 
-        Task<CatDeleteViewModel> GetCatForDeleteAsync (int id);
+        Task<CatDeleteViewModel?> GetCatForDeleteAsync (int id);
 
         Task DeleteCatPermanentlyAsync(int id);
 
