@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{53
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{7AB69CCB-223C-462A-B45D-36E7816348B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurrfectShot.Tests", "PurrfectShot.Tests\PurrfectShot.Tests.csproj", "{853F2E14-06E4-44B4-89B8-46B0AF855282}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{861C9230-D670-4221-8336-99BA22C849F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{861C9230-D670-4221-8336-99BA22C849F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{861C9230-D670-4221-8336-99BA22C849F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{853F2E14-06E4-44B4-89B8-46B0AF855282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{853F2E14-06E4-44B4-89B8-46B0AF855282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{853F2E14-06E4-44B4-89B8-46B0AF855282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{853F2E14-06E4-44B4-89B8-46B0AF855282}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
