@@ -290,6 +290,7 @@ namespace PurrfectShot.Tests
         }
 
         // Tests Delete functionality: Removes from DB and handles non-existent file gracefully
+        [Fact]
         public async Task DeletePhotoAsync_ShouldRemoveDatabaseRecord()
         {
             // Arrange
