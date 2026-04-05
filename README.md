@@ -8,6 +8,8 @@
 ![Database](https://img.shields.io/badge/Database-SQL_Server-red)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+🚀 Live Demo: http://purrfectshot.tryasp.net/ (http://purrfectshot.tryasp.net/)
+
 ---
 
 ## 📋 Table of Contents
@@ -18,8 +20,9 @@
 - [Getting Started](#-getting-started-plug--play)
 - [Project Structure](#-project-structure)
 - [Features](#-features)
-- [Usage](#-usage)
-- [Test Account Credentials](#-test-account-credentials)
+- [Unit Testing](#unit-testing)
+- [Usage & Credentials](#usage-&-credentials)
+- [License](#license)
 - [Contributing](#-contributing)
 - [Contact](#-contact)
 
@@ -29,7 +32,7 @@
 
 **Purrfect Shot** is a specialized web platform built for cat-loving households. It solves the problem of scattered family photos by organizing them into a structured monthly calendar. Users can create detailed profiles for their cats, upload memories, and vote for the "Photo of the Month", which automatically becomes the calendar cover.
 
-The application serves as a demonstration of advanced ASP.NET Core concepts, including **N-Tier architecture**, **Secure Identity integration**, and **Custom Data Logic (Soft Delete/Archive)**.
+The application serves as a demonstration of advanced ASP.NET Core skills, featuring a **decoupled N-Tier architecture**, **Cloud Integration**, and **Granular Security**.
 
 ---
 
@@ -40,8 +43,10 @@ The application serves as a demonstration of advanced ASP.NET Core concepts, inc
 | ASP.NET Core MVC      | 8.0      | Main Web framework               |
 | Entity Framework Core | 8.0      | ORM / Database access            |
 | SQL Server            | 2022     | Database (running via Docker)    |
+| Cloudinary API	    | - 	   | Resilient Cloud Image Hosting    |
 | ASP.NET Identity	    | 8.0	   | Authentication & Authorization   |
 | Bootstrap             | 5.3      | Frontend styling                 |
+| xUnit / Moq           | -        | Automated Unit Testing           |
 | Razor Pages / Views   | -        | Server-side HTML rendering       |
 | jQuery Validation	    | -	       | Client-side form validation      |
 
@@ -59,36 +64,41 @@ Before running the project, ensure you have the following:
 
 ---
 
-## 🚀 Getting Started (Plug & Play)
+## 🚀 Getting Started (Run the App or Plug & Play)
+
+Choose the fastest way to explore the application:
+
+### Option A: Live Demo (Recommended)
+
+The project is publicly deployed and ready for immediate review. No installation required.
+👉 http://purrfectshot.tryasp.net/
+
+---
+
+### Option B: Docker Compose (Self-Contained)
 
 This project is configured for **automatic setup**. You don't need to manually run migrations or configure SQL Server if you have Docker.  
-If you still want to manually setup things, refer to *Option B: Visual Studio 2022* outlined below.
 
-### 1. Clone and Run
+1. Clone the repository
 
 ```bash
 git clone https://github.com/Zarumoth/PurrfectShot.git
 cd PurrfectShot
 ```
-### 2. Run The application
 
-You can choose between two methods:
-
-#### Option A: Docker Compose (Recommended)
-
-1. Open your terminal in the project root folder.
-2. Run:
+2. Run with one command
 
 ```bash
 docker-compose up --build
 ```
 
-3. Wait for the build to finish and the containers to start.
-4. Open your browser at `http://localhost:8080`
+3. Access: Open http://localhost:8080 in your browser.
 
 **Note**: If port 8080 is in use, you can modify `docker-compose.yaml`.
 
-#### Option B: Visual Studio 2022
+---
+
+#### Option C: Visual Studio 2022
 
 1. Open `PurrfectShot.sln` in **Visual Studio 2022**.
 2. Ensure your Docker Desktop is running (or wherever you are running SQL).
@@ -109,9 +119,9 @@ docker-compose up --build
 ```
 
 4. Press **F5** (Start Debugging).
-	- The app will automatically connect to the SQL Server container.
-	- Database will be created and seeded automatically.
-	- App launches at `https://localhost:7194`.
+- The app will automatically connect to the SQL Server container.
+- Database will be created and seeded automatically.
+- App launches at `https://localhost:7194`.
 
 **Note**: If port 7194 is not available, Visual Studio might assign a different port. Check the browser URL.
 
@@ -119,7 +129,7 @@ docker-compose up --build
 
 ## 📁 Project Structure
 
-The solution follows a clean 6-layer **N-Tier architecture**:
+The solution follows a clean **N-Tier architecture** split across 7 projects
 
 ```
 PurrfectShot/
@@ -130,25 +140,49 @@ PurrfectShot/
 ├── PurrfectShot.Data/             # Data Access (DbContext, Configs, Migrations)
 ├── PurrfectShot.Data.Models/      # Domain Entities (ApplicationUser, Cat, Photo, Vote)
 └── PurrfectShot.Common/           # Shared Constants and Validation helpers
+└── PurrfectShot.Tests/            # Unit tests covering the Business Logic layer using xUnit and Moq
 ```
 
 ---
 
 ## ✨ Features
 
-- **N-Tier Architecture** Complete separation of concerns for scalability.  
-- **Identity System** Fully localized (Bulgarian) ASP.NET Core Identity.  
-- **Smart Archive** "Soft delete" cat profiles while preserving photo history.  
-- **Photo Management** Upload/Delete with physical file cleanup on the server.  
-- **Dynamic Calendar** Automatic monthly grouping with Bulgarian localization.  
-- **Voting System** Seamless "Upsert" voting logic with "Unvote" capability.  
-- **User Favorites** Many-to-Many relationship for personal collections.  
-- **Security** GUID-based identifiers for photos to prevent ID scraping.  
-- **Comprehensive Seeding** Ready-to-use data for 4 cats and 36 photos.  
+- **N-Tier Architecture** Complete separation of concerns for scalability.
+- **Cloud Image Hosting** Full integration with Cloudinary API for permanent storage and CDN-based image optimization.
+- **Granular Authorization** Fine-tuned Role-Based Access Control (Admin, FamilyMember, Friend, Anonymous).
+- **Ownership Security** Backend validation ensures users can only edit or delete their own cats and photos.
+- **Dynamic Calendar** Automatic monthly grouping with localized Bulgarian date formatting and "Photo of the Month" covers.
+- **AJAX Integration** Real-time user role management in the Admin Dashboard.
+- **Smart Archive (Soft Delete)** Global query filters hide archived profiles while preserving historical calendar data.
+- **Seamless Voting** Seamless "Upsert" voting logic with "Unvote" capability.
+- **User Favorites** Many-to-Many relationship for personal collections.
+- **Search & Pagination:** Efficient server-side data filtering and paginated views for large collections.
+- **Data Protection** GUID-based identifiers for photos to prevent ID scraping.
+- **Custom Error Handling** Dedicated `ErrorController` handling 404, 400, and 500 status codes with tailored views.
+- **Robust Logging** Integrated `ILogger` across all controllers and services for tracking exceptions and critical actions.
+- **Comprehensive Seeding** Ready-to-use data for 4 cats and 36 photos.
 
 ---
 
-## 💻 Usage
+## 🧪 Unit Testing
+
+The project ensures reliability with a comprehensive test suite covering over 80% of the business logic.
+
+- **Framework** xUnit
+- **Mocking** Moq
+- **Database** EF Core InMemory Database
+- **Execution** Run via Test Explorer in Visual Studio.
+
+## 💻 Usage & Credentials
+
+### 🧪 Test Account Credentials
+
+To test administrative features, use the seeded account:
+
+- **Email**: `admin@purrfect.com`
+- **Password**: `Admin123!`
+
+---
 
 ### 🏠 Explore & Navigate
 
@@ -180,22 +214,10 @@ PurrfectShot/
 
 ### ⚙️ Management (CRUD)
 
-- **Add Cat**: Use the "Add Cat" button to introduce a new member to the household.
-- **Upload Photo**: Upload new memories via the "Upload" button. You can assign the photo to a specific cat.
-- **Edit/Delete**:
-	- Manage cat profiles (Edit details or Archive them).
-	- Manage photos (Edit captions or Delete permanently).
-	- Note: Archiving a cat hides it from the main lists but preserves its photos in history.
-
----
-
-### 🧪 Test Account Credentials
-
-To test administrative features, use the seeded account:
-- **Email**: admin@purrfect.com
-- **Password**: Admin123!
-
-**Note**: Currently, the system allows all registered users to perform CRUD operations (Family mode).
+- **Add Cat / Upload Photo**: Introduce new members or upload memories.
+- **Edit/Delete**: Manage cat profiles (Edit or Archive) and photos.
+	Note: Archiving a cat hides it from the main lists but preserves its photos in history.
+- **Admin Dashboard**: A dedicated Area for Administrators to manage users (AJAX role assignment), restore archived profiles, or perform permanent hard deletes.
 
 ---
 
@@ -225,4 +247,4 @@ Project Link: [https://github.com/Zarumoth/PurrfectShot](https://github.com/Zaru
 
 ---
 
-*Built as part of the **ASP.NET Fundamentals** course.*
+*Built as part of the **ASP.NET Advanced** course.*
