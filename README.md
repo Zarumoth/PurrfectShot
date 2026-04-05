@@ -71,6 +71,7 @@ Choose the fastest way to explore the application:
 ### Option A: Live Demo (Recommended)
 
 The project is publicly deployed and ready for immediate review. No installation required.
+
 👉 http://purrfectshot.tryasp.net/
 
 ---
@@ -139,7 +140,7 @@ PurrfectShot/
 ├── PurrfectShot.Web.ViewModels/   # InputModels and ViewModels
 ├── PurrfectShot.Data/             # Data Access (DbContext, Configs, Migrations)
 ├── PurrfectShot.Data.Models/      # Domain Entities (ApplicationUser, Cat, Photo, Vote)
-└── PurrfectShot.Common/           # Shared Constants and Validation helpers
+├──PurrfectShot.Common/           # Shared Constants and Validation helpers
 └── PurrfectShot.Tests/            # Unit tests covering the Business Logic layer using xUnit and Moq
 ```
 
