@@ -8,7 +8,7 @@
 ![Database](https://img.shields.io/badge/Database-SQL_Server-red)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-🚀 Live Demo: http://purrfectshot.tryasp.net/ (http://purrfectshot.tryasp.net/)
+🚀 Live Demo: http://purrfectshot.tryasp.net/
 
 ---
 
@@ -140,7 +140,7 @@ PurrfectShot/
 ├── PurrfectShot.Web.ViewModels/   # InputModels and ViewModels
 ├── PurrfectShot.Data/             # Data Access (DbContext, Configs, Migrations)
 ├── PurrfectShot.Data.Models/      # Domain Entities (ApplicationUser, Cat, Photo, Vote)
-├──PurrfectShot.Common/           # Shared Constants and Validation helpers
+├──PurrfectShot.Common/            # Shared Constants and Validation helpers
 └── PurrfectShot.Tests/            # Unit tests covering the Business Logic layer using xUnit and Moq
 ```
 
@@ -219,6 +219,18 @@ To test administrative features, use the seeded account:
 - **Edit/Delete**: Manage cat profiles (Edit or Archive) and photos.
 	Note: Archiving a cat hides it from the main lists but preserves its photos in history.
 - **Admin Dashboard**: A dedicated Area for Administrators to manage users (AJAX role assignment), restore archived profiles, or perform permanent hard deletes.
+
+#### 🗡 Admin Dashboard
+
+**Cats Administration**
+
+![admin-dashboard-cats-page](docs/screenshots/admin-dashboard-cats.jpeg)
+
+**Photos Administration**
+![admin-dashboard-photos-page](docs/screenshots/admin-dashboard-photos.jpeg)
+
+**Users Administration**
+![admin-dashboard-users-page](docs/screenshots/admin-dashboard-users.jpeg)
 
 ---
 
