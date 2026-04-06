@@ -220,10 +220,11 @@ To test administrative features, use the seeded account:
 	Note: Archiving a cat hides it from the main lists but preserves its photos in history.
 - **Admin Dashboard**: A dedicated Area for Administrators to manage users (AJAX role assignment), restore archived profiles, or perform permanent hard deletes.
 
+---
+
 #### 🗡 Admin Dashboard
 
 **Cats Administration**
-
 ![admin-dashboard-cats-page](docs/screenshots/admin-dashboard-cats.jpeg)
 
 **Photos Administration**
