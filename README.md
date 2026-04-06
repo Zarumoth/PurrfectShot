@@ -108,7 +108,7 @@ docker-compose up --build
 **Example for Docker (Default)**:
 ```JSON
 "ConnectionStrings": {
-  "DefaultConnection": "Server=localhost,1433;Database=PurrfectShotDb;User Id=sa;Password=SoftUniTestDb1423!;TrustServerCertificate=True;MultipleActiveResultSets=true"
+  "DefaultConnection": "Server=localhost,1433;Database=PurrfectShotDb;User Id=sa;Password=YOUR_SECRET_PASSWORD;TrustServerCertificate=True;MultipleActiveResultSets=true"
 }
 ```  
 
@@ -140,7 +140,7 @@ PurrfectShot/
 ├── PurrfectShot.Web.ViewModels/   # InputModels and ViewModels
 ├── PurrfectShot.Data/             # Data Access (DbContext, Configs, Migrations)
 ├── PurrfectShot.Data.Models/      # Domain Entities (ApplicationUser, Cat, Photo, Vote)
-├──PurrfectShot.Common/            # Shared Constants and Validation helpers
+├── PurrfectShot.Common/           # Shared Constants and Validation helpers
 └── PurrfectShot.Tests/            # Unit tests covering the Business Logic layer using xUnit and Moq
 ```
 
